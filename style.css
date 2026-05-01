@@ -1,0 +1,195 @@
+/* ====== GLOBAL ====== */
+body {
+  margin: 0;
+  padding: 0;
+  background: #0d0b14; /* fondo oscuro premium */
+  color: #d4d1d6;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+}
+
+/* ====== GRADIENT TEXT ====== */
+.gradient-text {
+  background: linear-gradient(90deg, #ffcc33, #d4a84f);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+a {
+  color: #d4a84f;
+}
+.thank {
+  margin-top: 10rem;
+  text-align: center;
+}
+
+/* ====== HERO ====== */
+.hero {
+  padding: 80px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero img {
+  width: 260px;
+  margin-bottom: 20px;
+}
+
+.microcopy {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+/* ====== TITULOS ====== */
+h1 {
+  font-size: 48px;
+  margin: 0;
+}
+
+h2 {
+  font-size: 2.5rem;
+  margin-top: 0rem;
+}
+
+h3 {
+  color: #987838;
+  margin-bottom: 0rem;
+}
+
+/* ====== SUBTÍTULO ====== */
+.subtitle {
+  margin-top: 10px;
+  font-size: 18px;
+  opacity: 0.85;
+  max-width: 600px;
+}
+
+/* ====== FORMULARIOS ====== */
+.form {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+input {
+  width: 280px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #d4a84f;
+  background: #1a171c; /* input oscuro */
+  color: #d4d1d6;
+  font-size: 16px;
+}
+
+input::placeholder {
+  color: #bfa15a;
+}
+
+button {
+  width: 280px;
+  padding: 14px;
+  background: #ffcc33;
+  border: none;
+  border-radius: 10px;
+  color: #0d0b14;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #e6b62e;
+}
+
+/* ====== SECCIONES ====== */
+.section {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+  line-height: 1.6;
+  background: #14131a; /* card oscura diferenciada */
+  color: #d4d1d6;
+  border: 1px solid #d4a84f;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(212, 168, 79, 0.12);
+  margin-bottom: 40px;
+}
+
+/* ====== ORGANIZER ====== */
+.organizer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 2rem;
+  -border: 2px solid red;
+}
+
+/* ====== IMÁGENES ====== */
+.nologo {
+  width: 30rem;
+  border-radius: 16px;
+  border: 0.8rem solid #f4b703;
+}
+
+/* ====== LISTAS ====== */
+.steps,
+.benefits {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.steps li,
+.benefits li {
+  margin: 10px 0;
+  opacity: 0.9;
+}
+
+/* ====== CTA FINAL ====== */
+.cta-final {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  background: #110f16; /* oscuro suave */
+  border-top: 1px solid rgba(212, 168, 79, 0.25);
+}
+
+/* ====== FOOTER ====== */
+footer {
+  margin-top: 40px;
+  padding: 20px;
+  opacity: 0.5;
+  font-size: 14px;
+}
+.steps,
+.benefits,
+ul {
+  text-align: left;
+}
+.section ul {
+  text-align: left;
+  width: auto;
+  padding-left: 1.5rem;
+}
+.section .text {
+  text-align: left;
+}
+.section ul li {
+  margin-bottom: 0.6rem;
+  line-height: 1.5;
+}
+.text {
+  width: 40rem;
+  padding: 0.5rem;
+}
+strong {
+  -border: 2px solid red;
+  color: #ffcc33;
+  font-size: 1.5rem;
+}
