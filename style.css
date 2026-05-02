@@ -250,6 +250,7 @@ strong {
   /* Imágenes */
   .nologo {
     width: 100%;
+    height: 50%;
     max-width: 320px;
     border-width: 0.5rem;
   }
