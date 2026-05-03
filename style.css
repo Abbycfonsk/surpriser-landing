@@ -194,6 +194,29 @@ strong {
   color: #ffcc33;
   font-size: 1.5rem;
 }
+
+/* Ocultar detalles por defecto */
+.section .details {
+  display: none;
+  margin-top: 1rem;
+}
+
+/* Botón elegante */
+.section .toggle {
+  background: none;
+  border: none;
+  color: #987838; /* tu tono violeta premium */
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  transition: opacity 0.2s ease;
+}
+
+.section .toggle:hover {
+  opacity: 0.7;
+}
 /* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
   /* Ajuste general */
