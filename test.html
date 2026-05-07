@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Surpriser API Tester</title>
+<link rel="icon" href="data:,">
+<style>
+body { font-family: Arial; margin: 20px; display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;}
+.card { border:1px solid #ccc; padding:15px; margin-bottom:20px; }
+.card h3 { margin-top:0; }
+label { display:block; margin-top:8px; }
+input, textarea, select { width:100%; padding:6px; }
+textarea { height:80px; }
+button { margin-top:10px; padding:8px 12px; cursor:pointer; }
+#output { white-space:pre-wrap; background:#111; color:#0f0; padding:15px; margin-top:20px; }
+
+
+/* Cada card */
+.card {
+  width: 470px;          /* Tamaño cómodo */
+  border-radius: 8px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* Inputs y labels dentro de la card */
+.card label {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.card input,
+.card button {
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.4rem;
+  box-sizing: border-box;
+}
+</style>
+</head>
+<body>
+
+<h1>Surpriser API Tester</h1>
+
+<div class="card">
+  <h3>Configuración global</h3>
+  <label>Base URL</label>
+  <input id="base" value="https://api.surpriser.app">
+
+  <label>Token usuario (Bearer)</label>
+  <input id="tokenUser">
+
+  <label>Token admin (Bearer)</label>
+  <input id="tokenAdmin">
+</div>
+
+<script>
+function api(method, route, body, useAdmin=false) {
+    let base = "https://api.surpriser.app";
+
+    // Fallback automático si está vacío o incorrecto
+    //if (!base || base === "/" || base === "https://" || base.includes("surpriser.app/") && !base.includes("api.")) {
+    //    base = "https://api.surpriser.app";
+     //   document.getElementById("base").value = base;
+   // }
+
+    const headers = {};
+
+    const token = useAdmin
+        ? document.getElementById("tokenAdmin").value.trim()
+        : document.getElementById("tokenUser").value.trim();
+
+    headers["Authorization"] = "Bearer " + token.trim();
+
+    
+        headers["Content-Type"] = "application/json";
+    
+
+    return fetch(base + route, {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : undefined
+    })
+    .then(res => res.text().then(text => ({ status: res.status, text })))
+    .then(data => {
+        let out = "Status: " + data.status + "\n\n";
+        try { out += JSON.stringify(JSON.parse(data.text), null, 2); }
+        catch { out += data.text; }
+        document.getElementById("output").textContent = out;
+    })
+    .catch(err => {
+        document.getElementById("output").textContent = "Error: " + err;
+    });
+}
+function updateProfile() {
+    const base = document.getElementById("base").value.trim();
+    const token = document.getElementById("tokenUser").value.trim();
+
+    const formData = new FormData();
+    formData.append("name", document.getElementById("up_name").value);
+    formData.append("username", document.getElementById("up_username").value);
+    formData.append("bio", document.getElementById("up_bio").value);
+    formData.append("phone", document.getElementById("up_phone").value);
+    formData.append("location_city", document.getElementById("up_city").value);
+    formData.append("location_country", document.getElementById("up_country").value);
+    formData.append("is_genius", document.getElementById("up_is_genius").value);
+
+    const file = document.getElementById("up_avatar_file").files[0];
+    if (file) {
+        formData.append("avatar", file);
+    }
+
+    formData.append("_method", "PUT");
+
+    fetch(base + "/api/user/profile", {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        body: formData
+    })
+    .then(res => res.text().then(text => ({ status: res.status, text })))
+    .then(data => {
+        let out = "Status: " + data.status + "\n\n";
+        try { out += JSON.stringify(JSON.parse(data.text), null, 2); }
+        catch { out += data.text; }
+        document.getElementById("output").textContent = out;
+    })
+    .catch(err => {
+        document.getElementById("output").textContent = "Error: " + err;
+    });
+}
+</script>
+
+<!-- ========================================================= -->
+<!-- ======================= 1. AUTH ========================== -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>1.1 Registro (POST /api/register)</h3>
+  <label>Nombre</label><input id="reg_name">
+  <label>Email</label><input id="reg_email">
+  <label>Password</label><input id="reg_pass">
+  <label>Confirmación</label><input id="reg_pass2">
+  <label>¿Quieres ser genio?</label>
+  <input type="checkbox" id="reg_is_genius">
+  <button onclick="api('POST','/api/register',{name:reg_name.value,email:reg_email.value,password:reg_pass.value,password_confirmation:reg_pass2.value})">Registrar</button>
+</div>
+
+<div class="card">
+  <h3>1.2 Login (POST /api/login)</h3>
+  <label>Email</label><input id="log_email">
+  <label>Password</label><input id="log_pass">
+  <button onclick="api('POST','/api/login',{email:log_email.value,password:log_pass.value})">Login</button>
+</div>
+
+<div class="card">
+  <h3>1.3 Forgot Password (POST /api/forgot-password)</h3>
+  <label>Email</label><input id="fp_email">
+  <button onclick="api('POST','/api/forgot-password',{email:fp_email.value})">Enviar email</button>
+</div>
+
+<div class="card">
+  <h3>1.4 Reset Password (POST /api/reset-password)</h3>
+  <label>Token</label><input id="rp_token">
+  <label>Email</label><input id="rp_email">
+  <label>Password</label><input id="rp_pass">
+  <label>Confirmación</label><input id="rp_pass2">
+  <button onclick="api('POST','/api/reset-password',{token:rp_token.value,email:rp_email.value,password:rp_pass.value,password_confirmation:rp_pass2.value})">Reset</button>
+</div>
+
+<div class="card">
+  <h3>1.5 Logout (POST /api/logout)</h3>
+  <button onclick="api('POST','/api/logout',null)">Logout</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 2. LANDING ======================= -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>2.1 Suscripción Landing (POST /api/landing/subscribe)</h3>
+  <label>Email</label><input id="land_email">
+  <button onclick="api('POST','/api/landing/subscribe',{email:land_email.value})">Suscribir</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 3. USUARIOS ====================== -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>3.1 Obtener usuario (GET /api/me)</h3>
+  <button onclick="api('GET','/api/me')">Obtener</button>
+</div>
+
+<div class="card">
+  <h3>3.2 Actualizar perfil (PUT /api/user/profile)</h3>
+
+  <label>name</label><input id="up_name">
+  <label>username</label><input id="up_username">
+  <label>bio</label><input id="up_bio">
+  <label>phone</label><input id="up_phone">
+  <label>location_city</label><input id="up_city">
+  <label>location_country</label><input id="up_country">
+
+  <label>avatar (archivo)</label>
+  <input type="file" id="up_avatar_file" accept="image/*">
+  <label>¿Eres genio?</label>
+<select id="up_is_genius">
+  <option value="0">No</option>
+  <option value="1">Sí</option>
+</select>
+
+  <button onclick="updateProfile()">Actualizar</button>
+</div>
+
+<div class="card">
+  <h3>3.3 Dashboard usuario (GET /api/users/{id}/dashboard)</h3>
+  <label>ID usuario</label><input id="dash_id">
+  <button onclick="api('GET','/api/users/'+dash_id.value+'/dashboard')">Ver dashboard</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 4. SORPRESAS ===================== -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>4.1 Crear sorpresa (POST /api/surprises)</h3>
+  <label>creator_id</label><input id="cs_creator">
+  <label>genius_id</label><input id="cs_genius">
+  <label>title</label><input id="cs_title">
+  <label>description</label><textarea id="cs_desc"></textarea>
+  <label>price</label><input id="cs_price">
+  <label>deadline</label><input id="cs_deadline">
+  <label>skill_id</label><input id="cs_skill">
+  <label>size</label><input id="cs_size">
+  <label>is_urgent</label><select id="cs_urgent"><option value="true">true</option><option value="false">false</option></select>
+  <button onclick="api('POST','/api/surprises',{creator_id:cs_creator.value,genius_id:cs_genius.value,title:cs_title.value,description:cs_desc.value,price:cs_price.value,deadline:cs_deadline.value,skill_id:cs_skill.value,size:cs_size.value,is_urgent:cs_urgent.value==='true'})">Crear</button>
+</div>
+
+<div class="card">
+  <h3>4.2 Actualizar sorpresa (PUT /api/surprises/{id})</h3>
+  <label>ID sorpresa</label><input id="us_id">
+  <label>title</label><input id="us_title">
+  <label>description</label><textarea id="us_desc"></textarea>
+  <label>price</label><input id="us_price">
+  <label>deadline</label><input id="us_deadline">
+  <label>size</label><input id="us_size">
+  <label>is_urgent</label><select id="us_urgent"><option value="true">true</option><option value="false">false</option></select>
+  <label>target_name</label><input id="us_tname">
+  <label>target_city</label><input id="us_tcity">
+  <label>target_country</label><input id="us_tcountry">
+  <label>target_lat</label><input id="us_tlat">
+  <label>target_lng</label><input id="us_tlng">
+  <button onclick="api('PUT','/api/surprises/'+us_id.value,{title:us_title.value,description:us_desc.value,price:us_price.value,deadline:us_deadline.value,size:us_size.value,is_urgent:us_urgent.value==='true',target_name:us_tname.value,target_city:us_tcity.value,target_country:us_tcountry.value,target_lat:us_tlat.value,target_lng:us_tlng.value})">Actualizar</button>
+</div>
+
+<div class="card">
+  <h3>4.3 Listar sorpresas (GET /api/surprises)</h3>
+  <button onclick="api('GET','/api/surprises')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>4.4 Obtener sorpresa (GET /api/surprises/{id})</h3>
+  <label>ID</label><input id="gs_id">
+  <button onclick="api('GET','/api/surprises/'+gs_id.value)">Obtener</button>
+</div>
+
+<div class="card">
+  <h3>4.5 Eliminar sorpresa (DELETE /api/surprises/{id})</h3>
+  <label>ID</label><input id="ds_id">
+  <button onclick="api('DELETE','/api/surprises/'+ds_id.value)">Eliminar</button>
+</div>
+
+<div class="card">
+  <h3>4.6 Start (POST /api/surprises/{id}/start)</h3>
+  <label>ID</label><input id="st_id">
+  <button onclick="api('POST','/api/surprises/'+st_id.value+'/start')">Start</button>
+</div>
+
+<div class="card">
+  <h3>4.7 Deliver (POST /api/surprises/{id}/deliver)</h3>
+  <label>ID</label><input id="del_id">
+  <button onclick="api('POST','/api/surprises/'+del_id.value+'/deliver')">Deliver</button>
+</div>
+
+<div class="card">
+  <h3>4.8 Complete (POST /api/surprises/{id}/complete)</h3>
+  <label>ID</label><input id="comp_id">
+  <button onclick="api('POST','/api/surprises/'+comp_id.value+'/complete')">Complete</button>
+</div>
+
+<div class="card">
+  <h3>4.9 Cancel (POST /api/surprises/{id}/cancel)</h3>
+  <label>ID</label><input id="can_id">
+  <label>reason_key</label><input id="can_key">
+  <label>reason_text</label><input id="can_text">
+  <button onclick="api('POST','/api/surprises/'+can_id.value+'/cancel',{reason_key:can_key.value,reason_text:can_text.value})">Cancelar</button>
+</div>
+
+<div class="card">
+  <h3>4.10 Sorpresas creadas por usuario</h3>
+  <label>ID usuario</label><input id="scu_id">
+  <button onclick="api('GET','/api/users/'+scu_id.value+'/surprises-created')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>4.11 Sorpresas realizadas por genius</h3>
+  <label>ID usuario</label><input id="sgu_id">
+  <button onclick="api('GET','/api/users/'+sgu_id.value+'/surprises-genius')">Listar</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 5. DISPUTAS ====================== -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>5.1 Abrir disputa</h3>
+  <label>ID sorpresa</label><input id="dis_id">
+  <label>reason</label><input id="dis_reason">
+  <button onclick="api('POST','/api/surprises/'+dis_id.value+'/dispute',{reason:dis_reason.value})">Abrir</button>
+</div>
+
+<div class="card">
+  <h3>5.2 Ver disputa</h3>
+  <label>ID disputa</label><input id="vd_id">
+  <button onclick="api('GET','/api/disputes/'+vd_id.value)">Ver</button>
+</div>
+
+<div class="card">
+  <h3>5.3 Mis disputas</h3>
+  <button onclick="api('GET','/api/my/disputes')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>5.4 Disputas como creador</h3>
+  <label>ID usuario</label><input id="dc_id">
+  <button onclick="api('GET','/api/users/'+dc_id.value+'/disputes/creator')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>5.5 Disputas como genius</h3>
+  <label>ID usuario</label><input id="dg_id">
+  <button onclick="api('GET','/api/users/'+dg_id.value+'/disputes/genius')">Listar</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 6. CONVERSACIONES =============== -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>6.1 Listar conversaciones</h3>
+  <button onclick="api('GET','/api/conversations')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>6.2 Crear conversación</h3>
+  <label>ID sorpresa</label>
+  <input id="conv_surprise_id">
+  <button onclick="api('POST','/api/conversations',{
+    surprise_id: conv_surprise_id.value
+  })">Crear</button>
+</div>
+
+<div class="card">
+  <h3>6.3 Eliminar conversación</h3>
+  <label>ID conversación</label><input id="ec_id">
+  <button onclick="api('DELETE','/api/conversations/'+ec_id.value)">Eliminar</button>
+</div>
+
+<div class="card">
+  <h3>6.4 Listar mensajes</h3>
+  <label>ID conversación</label><input id="lm_id">
+  <button onclick="api('GET','/api/conversations/'+lm_id.value+'/messages')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>6.5 Enviar mensaje (con archivo)</h3>
+
+  <label>conversation_id</label>
+  <input id="msg_cid">
+
+  <label>content (opcional)</label>
+  <input id="msg_content">
+
+  <label>Archivo (jpg, png, webp, mp4, pdf)</label>
+  <input type="file" id="msg_file">
+
+  <button onclick="sendMessageWithFile()">Enviar</button>
+</div>
+
+<script>
+function sendMessageWithFile() {
+
+    const api_url = document.getElementById("base").value.trim();
+    const token = document.getElementById("tokenUser").value.trim(); // <-- IMPORTANTE
+
+    const cid = document.getElementById('msg_cid').value;
+    const content = document.getElementById('msg_content').value;
+    const fileInput = document.getElementById('msg_file');
+
+    let form = new FormData();
+    form.append("conversation_id", cid);
+
+    if (content.trim() !== "") {
+        form.append("content", content);
+    }
+
+    if (fileInput.files.length > 0) {
+        form.append("image", fileInput.files[0]);
+    }
+
+    fetch(api_url + "/api/messages", {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        body: form
+    })
+    .then(r => r.text().then(text => ({ status: r.status, text })))
+    .then(data => {
+        let out = "Status: " + data.status + "\n\n";
+        try { out += JSON.stringify(JSON.parse(data.text), null, 2); }
+        catch { out += data.text; }
+        document.getElementById("output").textContent = out;
+    })
+    .catch(err => {
+        document.getElementById("output").textContent = "Error: " + err;
+    });
+}
+</script>
+
+<div class="card">
+  <h3>6.6 Enviar mensaje desde sorpresa (texto + archivo)</h3>
+
+  <label>ID sorpresa</label>
+  <input id="sms_id">
+
+  <label>Mensaje</label>
+  <input id="sms_msg">
+
+  <label>Imagen (opcional)</label>
+  <input type="file" id="sms_file">
+
+  <button onclick="sendMessageBySurprise()">Enviar</button>
+</div>
+
+<script>
+async function sendMessageBySurprise() {
+    const form = new FormData();
+    form.append("content", sms_msg.value);
+
+    if (sms_file.files.length > 0) {
+        form.append("image", sms_file.files[0]);
+    }
+
+    // Guardar token del input en localStorage
+    localStorage.setItem("token", document.getElementById("tokenUser").value.trim());
+
+    apiRaw(
+        "POST",
+        "https://api.surpriser.app/api/surprises/" + sms_id.value + "/messages",
+        form
+    );
+}
+
+async function apiRaw(method, url, body) {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(url, {
+        method,
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        body
+    });
+
+    const data = await res.json().catch(() => ({}));
+    console.log("RAW RESPONSE", data);
+    alert(JSON.stringify(data, null, 2));
+}
+</script>
+
+<div class="card">
+  <h3>6.7 Descargar archivo de mensaje</h3>
+
+  <label>ID mensaje</label>
+  <input id="dm_id">
+
+  <button onclick="downloadMessageFile()">Descargar</button>
+</div>
+
+<script>
+function downloadMessageFile() {
+    const token = localStorage.getItem("token");
+
+    // Abrimos la descarga en una nueva pestaña
+    window.open("/api/messages/file/" + dm_id.value + "?token=" + token, "_blank");
+}
+</script>
+
+<!-- ========================================================= -->
+<!-- ======================= 7. OFERTAS ======================= -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>7.1 Enviar oferta</h3>
+  <label>ID sorpresa</label><input id="of_sid">
+  <label>price</label><input id="of_price">
+  <label>message</label><input id="of_msg">
+  <label>eta_hours</label><input id="of_eta">
+  <button onclick="api('POST','/api/surprises/'+of_sid.value+'/offers',{price:of_price.value,message:of_msg.value,eta_hours:of_eta.value})">Enviar</button>
+</div>
+
+<div class="card">
+  <h3>7.2 Listar ofertas</h3>
+  <label>ID sorpresa</label><input id="lof_sid">
+  <button onclick="api('GET','/api/surprises/'+lof_sid.value+'/offers')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>7.3 Contraoferta</h3>
+  <label>ID oferta</label><input id="co_id">
+  <label>price</label><input id="co_price">
+  <label>message</label><input id="co_msg">
+  <label>eta_hours</label><input id="co_eta">
+  <button onclick="api('POST','/api/offers/'+co_id.value+'/counter',{price:co_price.value,message:co_msg.value,eta_hours:co_eta.value})">Enviar</
+    </button>
+</div>
+
+<div class="card">
+  <h3>7.4 Aceptar oferta</h3>
+  <label>ID oferta</label><input id="ao_id">
+  <button onclick="api('POST','/api/offers/'+ao_id.value+'/accept')">Aceptar</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 8. ARCHIVOS ====================== -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>8.1 Subir archivo</h3>
+  <label>ID sorpresa</label><input id="fa_sid">
+  <label>file_url</label><input id="fa_url">
+  <button onclick="api('POST','/api/surprises/'+fa_sid.value+'/files',{file_url:fa_url.value})">Subir</button>
+</div>
+
+<div class="card">
+  <h3>8.2 Listar archivos</h3>
+  <label>ID sorpresa</label><input id="lf_sid">
+  <button onclick="api('GET','/api/surprises/'+lf_sid.value+'/files')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>8.3 Descargar archivo</h3>
+  <label>ID archivo</label><input id="df_id">
+  <button onclick="api('GET','/api/files/'+df_id.value+'/download')">Descargar</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 9. NOTIFICACIONES =============== -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>9.1 Listar notificaciones</h3>
+  <label>ID usuario</label><input id="nu_id">
+  <button onclick="api('GET','/api/users/'+nu_id.value+'/notifications')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>9.2 Marcar notificación como leída</h3>
+  <label>ID notificación</label><input id="rn_id">
+  <button onclick="api('POST','/api/notifications/'+rn_id.value+'/read')">Marcar</button>
+</div>
+
+<div class="card">
+  <h3>9.3 Marcar todas como leídas</h3>
+  <label>ID usuario</label><input id="rna_id">
+  <button onclick="api('POST','/api/users/'+rna_id.value+'/notifications/read-all')">Marcar todas</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 10. REVIEWS ====================== -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>10.1 Crear review</h3>
+  <label>ID sorpresa</label><input id="cr_sid">
+  <label>rating</label><input id="cr_rating">
+  <label>comment</label><input id="cr_comment">
+  <button onclick="api('POST','/api/surprises/'+cr_sid.value+'/review',{rating:cr_rating.value,comment:cr_comment.value})">Crear</button>
+</div>
+
+<div class="card">
+  <h3>10.2 Listar reviews</h3>
+  <label>ID usuario</label><input id="lr_uid">
+  <button onclick="api('GET','/api/users/'+lr_uid.value+'/reviews')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>10.3 Rating promedio</h3>
+  <label>ID usuario</label><input id="rt_uid">
+  <button onclick="api('GET','/api/users/'+rt_uid.value+'/rating')">Obtener</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 11. SKILLS ======================= -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>11.1 Listar skills</h3>
+  <button onclick="api('GET','/api/skills')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>11.2 Skills usuario</h3>
+  <label>ID usuario</label><input id="su_uid">
+  <button onclick="api('GET','/api/users/'+su_uid.value+'/skills')">Listar</button>
+</div>
+
+<div class="card">
+  <h3>11.3 Actualizar skills propuestas</h3>
+  <label>ID usuario</label><input id="ps_uid">
+  <label>skills (array JSON)</label><input id="ps_list" placeholder='[1,2,3]'>
+  <button onclick="api('POST','/api/users/'+ps_uid.value+'/proposed-skills',{skills:JSON.parse(ps_list.value)})">Actualizar</button>
+</div>
+
+<div class="card">
+  <h3>11.4 Top 10 por skill</h3>
+  <label>ID skill</label><input id="ts_id">
+  <button onclick="api('GET','/api/skills/'+ts_id.value+'/top')">Ver</button>
+</div>
+
+<div class="card">
+  <h3>11.5 Ranking por skill</h3>
+  <label>ID skill</label><input id="rs_id">
+  <button onclick="api('GET','/api/skills/'+rs_id.value+'/ranking')">Ver</button>
+</div>
+
+<div class="card">
+  <h3>11.6 Progreso en skill</h3>
+  <label>ID usuario</label><input id="pg_uid">
+  <label>ID skill</label><input id="pg_sid">
+  <button onclick="api('GET','/api/users/'+pg_uid.value+'/skills/'+pg_sid.value+'/progress')">Ver</button>
+</div>
+
+<div class="card">
+  <h3>11.7 Progreso en todas las skills</h3>
+  <label>ID usuario</label><input id="pg2_uid">
+  <button onclick="api('GET','/api/users/'+pg2_uid.value+'/skills/progress')">Ver</button>
+</div>
+
+<div class="card">
+  <h3>11.8 Historial por skill</h3>
+  <label>ID usuario</label><input id="hs_uid">
+  <label>ID skill</label><input id="hs_sid">
+  <button onclick="api('GET','/api/users/'+hs_uid.value+'/skills/'+hs_sid.value+'/history')">Ver</button>
+</div>
+
+<div class="card">
+  <h3>11.9 Nivel global</h3>
+  <label>ID usuario</label><input id="gl_uid">
+  <button onclick="api('GET','/api/users/'+gl_uid.value+'/level')">Ver</button>
+</div>
+
+<div class="card">
+  <h3>11.10 Dashboard skills</h3>
+  <label>ID usuario</label><input id="ds_uid">
+  <button onclick="api('GET','/api/users/'+ds_uid.value+'/skills/dashboard')">Ver</button>
+</div>
+
+<div class="card">
+  <h3>11.11 Sugerencias de genios</h3>
+  <label>ID skill</label><input id="sg_sid">
+  <button onclick="api('GET','/api/skills/'+sg_sid.value+'/genius-suggestions')">Ver</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= 12. ADMIN ======================== -->
+<!-- ========================================================= -->
+
+<div class="card">
+  <h3>12.1 Dashboard admin</h3>
+  <button onclick="api('GET','/api/admin/dashboard',null,true)">Ver</button>
+</div>
+
+<div class="card">
+  <h3>12.2 Listar disputas admin</h3>
+  <button onclick="api('GET','/api/admin/disputes',null,true)">Listar</button>
+</div>
+
+<div class="card">
+  <h3>12.3 Resolver disputa</h3>
+  <label>ID disputa</label><input id="rd_id">
+  <label>resolution</label><input id="rd_res">
+  <button onclick="api('POST','/api/admin/disputes/'+rd_id.value+'/resolve',{resolution:rd_res.value},true)">Resolver</button>
+</div>
+
+<div class="card">
+  <h3>12.4 Listar usuarios admin</h3>
+  <button onclick="api('GET','/api/admin/users',null,true)">Listar</button>
+</div>
+
+<div class="card">
+  <h3>12.5 Banear usuario</h3>
+  <label>ID usuario</label><input id="ban_uid">
+  <button onclick="api('POST','/api/admin/users/'+ban_uid.value+'/ban',null,true)">Banear</button>
+</div>
+
+<div class="card">
+  <h3>12.6 Desbanear usuario</h3>
+  <label>ID usuario</label><input id="unban_uid">
+  <button onclick="api('POST','/api/admin/users/'+unban_uid.value+'/unban',null,true)">Desbanear</button>
+</div>
+
+<div class="card">
+  <h3>12.7 Listar sorpresas admin</h3>
+  <button onclick="api('GET','/api/admin/surprises',null,true)">Listar</button>
+</div>
+
+<div class="card">
+  <h3>12.8 Cancelación forzada</h3>
+  <label>ID sorpresa</label><input id="fc_sid">
+  <button onclick="api('POST','/api/admin/surprises/'+fc_sid.value+'/force-cancel',null,true)">Cancelar</button>
+</div>
+
+<!-- ========================================================= -->
+<!-- ======================= OUTPUT =========================== -->
+<!-- ========================================================= -->
+
+<div id="output" style="white-space:pre-wrap;background:#111;color:#0f0;padding:15px;margin-top:20px;">
+Esperando respuesta…
+</div>
+
+</body>
+</html>

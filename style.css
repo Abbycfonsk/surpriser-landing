@@ -2,22 +2,22 @@
 body {
   margin: 0;
   padding: 0;
-  background: #ffffff; /* fondo blanco */
-  color: #2a1b3d; /* texto oscuro */
+  background: #0d0b14; /* fondo oscuro premium */
+  color: #d4d1d6;
   font-family: "Poppins", sans-serif;
   text-align: center;
 }
 
+/* ====== GRADIENT TEXT ====== */
 /* ====== GRADIENT TEXT (ahora color sólido) ====== */
 .gradient-text {
-  color: #2a1b3d; /* púrpura sólido */
+  background: linear-gradient(90deg, #ffc94a, #6a2ba8);
+  -webkit-background-clip: text;
+  color: transparent;
 }
-
 a {
-  color: #ffc94a;
-  text-decoration: none;
+  color: #d4a84f;
 }
-
 .thank {
   margin-top: 10rem;
   text-align: center;
@@ -32,31 +32,29 @@ a {
 }
 
 .hero img {
-  width: 240px;
+  width: 260px;
   margin-bottom: 20px;
 }
 
 .microcopy {
   margin-top: 10px;
   font-size: 14px;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 /* ====== TITULOS ====== */
 h1 {
   font-size: 48px;
   margin: 0;
-  color: #2a1b3d;
 }
 
 h2 {
   font-size: 2.5rem;
   margin-top: 0rem;
-  color: #2a1b3d;
 }
 
 h3 {
-  color: #6a2ba8;
+  color: #987838;
   margin-bottom: 0rem;
 }
 
@@ -66,7 +64,6 @@ h3 {
   font-size: 18px;
   opacity: 0.85;
   max-width: 600px;
-  color: #4a3a5c;
 }
 
 /* ====== FORMULARIOS ====== */
@@ -82,31 +79,30 @@ input {
   width: 280px;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid #2a1b3d;
-  background: #faf7ff; /* lila suave */
-  color: #2a1b3d;
+  border: 1px solid #d4a84f;
+  background: #1a171c; /* input oscuro */
+  color: #d4d1d6;
   font-size: 16px;
 }
 
 input::placeholder {
-  color: #2a1b3d;
+  color:#f9d366ff;
 }
 
 button {
   width: 280px;
   padding: 14px;
-  background: #2a1b3d; /* dorado sólido */
+  background: #ffcc33;
   border: none;
   border-radius: 10px;
-  color: #fff;
+  color: #0d0b14;
   font-size: 16px;
   cursor: pointer;
   transition: 0.2s;
 }
 
 button:hover {
-  background: #ffc94a; /* naranja sólido */
-  color: #2a1b3d;
+  background: #f9d366ff;
 }
 
 /* ====== SECCIONES ====== */
@@ -117,11 +113,11 @@ button:hover {
   max-width: 1200px;
   margin: auto;
   line-height: 1.6;
-  background: #ffffff;
-  color: #2a1b3d;
-  border: 1px solid #e9ddf7;
+  background: #14131a; /* card oscura diferenciada */
+  color: #d4d1d6;
+  border: 1px solid #d4a84f;
   border-radius: 16px;
-  box-shadow: 0 0 25px rgba(106, 43, 168, 0.08);
+  box-shadow: 0 0 25px rgba(212, 168, 79, 0.12);
   margin-bottom: 40px;
 }
 
@@ -131,6 +127,7 @@ button:hover {
   flex-direction: row;
   justify-content: space-between;
   gap: 2rem;
+  -border: 2px solid red;
 }
 
 /* ====== IMÁGENES ====== */
@@ -138,7 +135,7 @@ button:hover {
   width: 30rem;
   height: 20rem;
   border-radius: 16px;
-  border: 0.5rem solid #ffc94a;
+  border: 0.5rem solid #f4b703;
 }
 
 /* ====== LISTAS ====== */
@@ -161,47 +158,41 @@ button:hover {
   flex-direction: column;
   align-items: center;
   padding: 60px 20px;
-  background: #f7efdb;
-  border-top: 1px solid rgba(106, 43, 168, 0.15);
+  background: #110f16; /* oscuro suave */
+  border-top: 1px solid rgba(212, 168, 79, 0.25);
 }
 
 /* ====== FOOTER ====== */
 footer {
   margin-top: 40px;
   padding: 20px;
-  opacity: 0.6;
+  opacity: 0.5;
   font-size: 14px;
-  color: #4a3a5c;
 }
-
 .steps,
 .benefits,
 ul {
   text-align: left;
 }
-
 .section ul {
   text-align: left;
   width: auto;
   padding-left: 1.5rem;
 }
-
 .section .text {
   text-align: left;
 }
-
 .section ul li {
   margin-bottom: 0.6rem;
   line-height: 1.5;
 }
-
 .text {
   width: 40rem;
   padding: 0.5rem;
 }
-
 strong {
-  color: #cea23a;
+  -border: 2px solid red;
+  color:#f9d366ff;
   font-size: 1.5rem;
 }
 
@@ -215,7 +206,7 @@ strong {
 .section .toggle {
   background: none;
   border: none;
-  color: #ff8a3d;
+  color: #987838; /* tu tono violeta premium */
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -227,9 +218,9 @@ strong {
 .section .toggle:hover {
   opacity: 0.7;
 }
-
 /* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
+  /* Ajuste general */
   body {
     text-align: left;
     padding: 0;
@@ -251,6 +242,7 @@ strong {
     text-align: center;
   }
 
+  /* HERO */
   .hero {
     padding: 40px 20px;
   }
@@ -259,23 +251,27 @@ strong {
     width: 180px;
   }
 
+  /* Formularios */
   input,
   button {
     width: 100%;
     max-width: 320px;
   }
 
+  /* Secciones */
   .section {
     padding: 25px 18px;
     margin: 20px 10px;
   }
 
+  /* Organizer → columna en móvil */
   .organizer {
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
   }
 
+  /* Imágenes */
   .nologo {
     width: 100%;
     height: 50%;
@@ -283,11 +279,13 @@ strong {
     border-width: 0.5rem;
   }
 
+  /* Texto dentro de secciones */
   .text {
     width: 100%;
     padding: 0;
   }
 
+  /* Listas */
   .section ul {
     padding-left: 1rem;
     font-size: 0.95rem;
@@ -301,6 +299,7 @@ strong {
     font-size: 1.2rem;
   }
 
+  /* CTA final */
   .cta-final {
     padding: 40px 20px;
   }
