@@ -59,6 +59,7 @@ button { margin-top:10px; padding:8px 12px; cursor:pointer; }
 
 <script>
 function api(method, route, body, useAdmin=false) {
+  console.log(method, route, body);
     let base = "https://api.surpriser.app";
 
     // Fallback automático si está vacío o incorrecto
@@ -77,7 +78,9 @@ function api(method, route, body, useAdmin=false) {
 
     
         headers["Content-Type"] = "application/json";
-    
+    console.log("estoy en api", base + route, { method,
+        headers,
+        body})
 
     return fetch(base + route, {
         method,
@@ -229,34 +232,174 @@ function updateProfile() {
 
 <div class="card">
   <h3>4.1 Crear sorpresa (POST /api/surprises)</h3>
-  <label>creator_id</label><input id="cs_creator">
+
+  <label>creator_id</label><input id="cs_creator" value="15">
   <label>genius_id</label><input id="cs_genius">
+
   <label>title</label><input id="cs_title">
   <label>description</label><textarea id="cs_desc"></textarea>
+
   <label>price</label><input id="cs_price">
   <label>deadline</label><input id="cs_deadline">
+
   <label>skill_id</label><input id="cs_skill">
-  <label>size</label><input id="cs_size">
-  <label>is_urgent</label><select id="cs_urgent"><option value="true">true</option><option value="false">false</option></select>
-  <button onclick="api('POST','/api/surprises',{creator_id:cs_creator.value,genius_id:cs_genius.value,title:cs_title.value,description:cs_desc.value,price:cs_price.value,deadline:cs_deadline.value,skill_id:cs_skill.value,size:cs_size.value,is_urgent:cs_urgent.value==='true'})">Crear</button>
+  <label>size</label><input id="cs_size" placeholder="SMALL">
+
+  <label>is_urgent</label>
+  <select id="cs_urgent">
+    <option value="">null</option>
+    <option value="true">true</option>
+    <option value="false">false</option>
+  </select>
+
+  <label>highlight</label>
+  <select id="cs_highlight">
+    <option value="">null</option>
+    <option value="true">true</option>
+    <option value="false">false</option>
+  </select>
+<label>header_image</label>
+<input id="cs_header_image" placeholder="ruta de imagen" readonly style="width:100%">
+<img id="preview_header" style="max-width:200px; margin-top:10px;">
+
+  <button onclick="createSurprise()">Crear</button>
 </div>
+
+<script>
+function createSurprise() {
+
+    console.log("=== CREATE SURPRISE ===");
+
+    const body = {
+        creator_id: cs_creator.value,
+        genius_id: cs_genius.value || null,
+        title: cs_title.value,
+        description: cs_desc.value,
+        price: cs_price.value || null,
+        deadline: cs_deadline.value || null,
+        skill_id: cs_skill.value,
+        size: cs_size.value,
+        is_urgent: cs_urgent.value === 'true' ? true : (cs_urgent.value === 'false' ? false : null),
+        header_image: cs_header_image.value,
+    };
+
+    if (cs_highlight.value === 'true') body.highlight = true;
+    if (cs_highlight.value === 'false') body.highlight = false;
+    
+
+    console.log("Body enviado:", body);
+
+    api('POST', '/api/surprises', body);
+}
+document.getElementById("cs_skill").addEventListener("change", function () {
+    const skill = this.value;
+
+    if (!skill) return;
+
+    // Ruta automática según categoría
+    const imagePath = `https://api.surpriser.app/storage/surprise_headers/category_${skill}.png`;
+preview_header.src = imagePath;
+    // Asignar al input
+    cs_header_image.value = imagePath;
+
+    console.log("Cabecera asignada automáticamente:", imagePath);
+});
+</script>
 
 <div class="card">
   <h3>4.2 Actualizar sorpresa (PUT /api/surprises/{id})</h3>
+
   <label>ID sorpresa</label><input id="us_id">
   <label>title</label><input id="us_title">
   <label>description</label><textarea id="us_desc"></textarea>
   <label>price</label><input id="us_price">
   <label>deadline</label><input id="us_deadline">
   <label>size</label><input id="us_size">
-  <label>is_urgent</label><select id="us_urgent"><option value="true">true</option><option value="false">false</option></select>
+
+  <label>is_urgent</label>
+  <select id="us_urgent">
+    <option value="">null</option>
+    <option value="true">true</option>
+    <option value="false">false</option>
+  </select>
+
   <label>target_name</label><input id="us_tname">
   <label>target_city</label><input id="us_tcity">
   <label>target_country</label><input id="us_tcountry">
   <label>target_lat</label><input id="us_tlat">
   <label>target_lng</label><input id="us_tlng">
-  <button onclick="api('PUT','/api/surprises/'+us_id.value,{title:us_title.value,description:us_desc.value,price:us_price.value,deadline:us_deadline.value,size:us_size.value,is_urgent:us_urgent.value==='true',target_name:us_tname.value,target_city:us_tcity.value,target_country:us_tcountry.value,target_lat:us_tlat.value,target_lng:us_tlng.value})">Actualizar</button>
+
+  <hr>
+
+  <h4>Cabecera</h4>
+
+  <!-- Opción 1: imagen de galería -->
+  <label>URL / Path de galería</label>
+  <input id="us_header_image" placeholder="p.ej: https://api.surpriser.app/storage/surprise_headers/category_165.png">
+
+  <!-- Opción 2: subir archivo -->
+  <label>Subir imagen personalizada</label>
+  <input type="file" id="us_header_file" accept="image/*">
+
+  <!-- Miniatura -->
+  <img id="us_header_preview" style="max-width:200px; margin-top:10px; display:none;">
+
+  <button onclick="updateSurprise()">Actualizar</button>
 </div>
+
+<script>
+function updateSurprise() {
+
+    const id = us_id.value;
+    const file = us_header_file.files[0];
+    const galleryImage = us_header_image.value;
+
+    let formData = new FormData();
+
+    // Campos normales (todo como string)
+    formData.append('title', us_title.value || '');
+    formData.append('description', us_desc.value || '');
+    formData.append('price', us_price.value || '');
+    formData.append('deadline', us_deadline.value || '');
+    formData.append('size', us_size.value || '');
+
+    // is_urgent → SIEMPRE string
+    let urgentValue = '';
+    if (us_urgent.value === 'true') urgentValue = 'true';
+    if (us_urgent.value === 'false') urgentValue = 'false';
+    formData.append('is_urgent', urgentValue);
+
+    formData.append('target_name', us_tname.value || '');
+    formData.append('target_city', us_tcity.value || '');
+    formData.append('target_country', us_tcountry.value || '');
+    formData.append('target_lat', us_tlat.value || '');
+    formData.append('target_lng', us_tlng.value || '');
+
+    // Lógica de header_image:
+    if (file) {
+        // Archivo personalizado
+        formData.append('header_image', file);
+    } else if (galleryImage.trim() !== '') {
+        // Imagen de galería (string)
+        formData.append('header_image', galleryImage.trim());
+    }
+    // Si no envían nada → no se envía header_image
+
+    // Método PUT
+    formData.append('_method', 'PUT');
+
+    fetch('/api/surprises/' + id, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: formData
+    })
+    .then(r => r.json())
+    .then(r => console.log(r));
+}
+</script>
 
 <div class="card">
   <h3>4.3 Listar sorpresas (GET /api/surprises)</h3>
@@ -497,8 +640,7 @@ async function apiRaw(method, url, body) {
 function downloadMessageFile() {
     const token = localStorage.getItem("token");
 
-    // Abrimos la descarga en una nueva pestaña
-    window.open("/api/messages/file/" + dm_id.value + "?token=" + token, "_blank");
+    window.open("https://api.surpriser.app/api/messages/file/" + dm_id.value + "?token=" + token);
 }
 </script>
 
@@ -544,9 +686,24 @@ function downloadMessageFile() {
 <div class="card">
   <h3>8.1 Subir archivo</h3>
   <label>ID sorpresa</label><input id="fa_sid">
-  <label>file_url</label><input id="fa_url">
-  <button onclick="api('POST','/api/surprises/'+fa_sid.value+'/files',{file_url:fa_url.value})">Subir</button>
+  <label>Archivo</label><input type="file" id="fa_file">
+  <button onclick="uploadSurpriseFile()">Subir</button>
 </div>
+
+<script>
+async function uploadSurpriseFile() {
+    const form = new FormData();
+    form.append("file", fa_file.files[0]);
+
+    const token = localStorage.getItem("token");
+
+    apiRaw(
+        "POST",
+        "https://api.surpriser.app/api/surprises/" + fa_sid.value + "/files",
+        form
+    );
+}
+</script>
 
 <div class="card">
   <h3>8.2 Listar archivos</h3>
@@ -557,8 +714,19 @@ function downloadMessageFile() {
 <div class="card">
   <h3>8.3 Descargar archivo</h3>
   <label>ID archivo</label><input id="df_id">
-  <button onclick="api('GET','/api/files/'+df_id.value+'/download')">Descargar</button>
+  <button onclick="downloadSurpriseFile()">Descargar</button>
 </div>
+
+<script>
+function downloadSurpriseFile() {
+    const token = localStorage.getItem("token");
+
+    window.open(
+        "https://api.surpriser.app/api/files/" + df_id.value + "/download?token=" + token,
+        "_blank"
+    );
+}
+</script>
 
 <!-- ========================================================= -->
 <!-- ======================= 9. NOTIFICACIONES =============== -->
@@ -588,11 +756,31 @@ function downloadMessageFile() {
 
 <div class="card">
   <h3>10.1 Crear review</h3>
+
   <label>ID sorpresa</label><input id="cr_sid">
-  <label>rating</label><input id="cr_rating">
-  <label>comment</label><input id="cr_comment">
-  <button onclick="api('POST','/api/surprises/'+cr_sid.value+'/review',{rating:cr_rating.value,comment:cr_comment.value})">Crear</button>
+
+  <label>Rating sorpresa</label><input id="cr_rating_s">
+
+  <label>Rating genio</label><input id="cr_rating_g">
+
+  <label>Comentario</label><input id="cr_comment">
+
+  <button onclick="createReview()">Crear</button>
 </div>
+
+<script>
+function createReview() {
+    api(
+        "POST",
+        "/api/surprises/" + cr_sid.value + "/review",
+        {
+            rating_surprise: parseInt(cr_rating_s.value),
+            rating_genius: parseInt(cr_rating_g.value),
+            comment: cr_comment.value
+        }
+    );
+}
+</script>
 
 <div class="card">
   <h3>10.2 Listar reviews</h3>
@@ -624,7 +812,7 @@ function downloadMessageFile() {
 <div class="card">
   <h3>11.3 Actualizar skills propuestas</h3>
   <label>ID usuario</label><input id="ps_uid">
-  <label>skills (array JSON)</label><input id="ps_list" placeholder='[1,2,3]'>
+  <label>skills (array JSON) ej: [160,170]</label><input id="ps_list" placeholder='[1,2,3]'>
   <button onclick="api('POST','/api/users/'+ps_uid.value+'/proposed-skills',{skills:JSON.parse(ps_list.value)})">Actualizar</button>
 </div>
 
@@ -694,10 +882,32 @@ function downloadMessageFile() {
 
 <div class="card">
   <h3>12.3 Resolver disputa</h3>
-  <label>ID disputa</label><input id="rd_id">
-  <label>resolution</label><input id="rd_res">
-  <button onclick="api('POST','/api/admin/disputes/'+rd_id.value+'/resolve',{resolution:rd_res.value},true)">Resolver</button>
+
+  <label>ID disputa</label>
+  <input id="rd_id">
+
+  <label>winner (creator/genius/none)</label>
+  <input id="rd_winner" placeholder="creator">
+
+  <label>resolution</label>
+  <input id="rd_res" placeholder="Explicación de la resolución">
+
+  <button onclick="resolveDispute()">Resolver</button>
 </div>
+
+<script>
+function resolveDispute() {
+    api(
+        "POST",
+        "/api/admin/disputes/" + rd_id.value + "/resolve",
+        {
+            winner: rd_winner.value,
+            resolution: rd_res.value
+        },
+        true // porque es endpoint admin
+    );
+}
+</script>
 
 <div class="card">
   <h3>12.4 Listar usuarios admin</h3>
