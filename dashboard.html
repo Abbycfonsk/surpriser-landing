@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/surpriser.js"></script>
+</head>
+<body onload="dashboardInit()">
+
+<header class="nav">
+    <button class="nav-btn" onclick="showSection('profile')">Perfil</button>
+    <button class="nav-btn" onclick="showSection('userdash')">Dashboard usuario</button>
+    <button class="nav-btn" onclick="showSection('create')">Crear sorpresa</button>
+    <button class="nav-btn" onclick="showSection('created'); loadCreatedSurprisesController()">Mis sorpresas</button>
+    <button class="nav-btn" onclick="showSection('update')">Actualizar sorpresa</button>
+    <button class="nav-btn" onclick="logoutController()">Logout</button>
+</header>
+
+<h1>Dashboard del usuario</h1>
+
+<!-- SECCIONES -->
+<div id="section-profile" class="section profile-section">
+  <div class="profile-layout">
+
+    <div class="profile-card profile-summary-card">
+      <div class="profile-avatar-wrap">
+        <img id="profile_avatar_preview" class="profile-avatar" src="" alt="Avatar">
+      </div>
+
+      <div class="profile-summary">
+       <div class="profile-roles" id="profile_roles"></div>
+        <h3 id="profile_name">Tu perfil</h3>
+        <p id="profile_username">@username</p>
+        <p id="profile_bio">Sin bio todavía.</p>
+      </div>
+
+      <div class="profile-info-grid">
+        <div>
+          <span>Teléfono</span>
+          <strong id="profile_phone">-</strong>
+          <span>Ciudad</span>
+          <strong id="profile_city">-</strong>
+          <span>País</span>
+          <strong id="profile_country">-</strong>
+        </div>
+       
+      </div>
+
+      <button class="btn profile-refresh-btn" onclick="loadUserController()">Actualizar datos</button>
+    </div>
+
+    <div class="profile-card profile-edit-card">
+      <h3>Editar perfil</h3>
+
+      <label>Nombre</label>
+      <input id="up_name">
+
+      <label>Username</label>
+      <input id="up_username">
+
+      <label>Bio</label>
+      <textarea id="up_bio"></textarea>
+
+      <label>Teléfono</label>
+      <input id="up_phone">
+
+      <label>Ciudad</label>
+      <input id="up_city">
+
+      <label>País</label>
+      <input id="up_country">
+
+      <label>Avatar</label>
+      <input type="file" id="up_avatar_file" accept="image/*">
+
+      <label>¿Eres genio?</label>
+      <select id="up_is_genius">
+        <option value="0">No</option>
+        <option value="1">Sí</option>
+      </select>
+
+      <button class="btn" onclick="updateProfileController()">Guardar cambios</button>
+    </div>
+
+  </div>
+</div>
+<div id="section-userdash" class="section" style="display:none">
+    <!-- Aquí va tu card de dashboard usuario -->
+     <div class="card">
+  <h3>3.3 Dashboard usuario</h3>
+  <label>ID usuario</label><input id="dash_id">
+  <button class="btn" onclick="userDashboardController()">Ver dashboard</button>
+</div>
+</div>
+
+<div id="section-create" class="section" style="display:none">
+    <!-- Aquí va tu card de crear sorpresa -->
+     <div class="card">
+  <h3>4.1 Crear sorpresa</h3>
+
+  <label>creator_id</label><input id="cs_creator" value="15">
+  <label>genius_id</label><input id="cs_genius">
+
+  <label>title</label><input id="cs_title">
+  <label>description</label><textarea id="cs_desc"></textarea>
+
+  <label>price</label><input id="cs_price">
+  <label>deadline</label><input id="cs_deadline">
+
+  <label>skill_id</label><input id="cs_skill">
+  <label>size</label>
+<select id="cs_size">
+    <option value="SMALL">SMALL</option>
+    <option value="MEDIUM">MEDIUM</option>
+    <option value="LARGE">LARGE</option>
+    <option value="PREMIUM">PREMIUM</option>
+</select>
+
+  <label>is_urgent</label>
+  <select id="cs_urgent">
+    <option value="">null</option>
+    <option value="true">true</option>
+    <option value="false">false</option>
+  </select>
+
+  <label>highlight</label>
+  <select id="cs_highlight">
+    <option value="">null</option>
+    <option value="true">true</option>
+    <option value="false">false</option>
+  </select>
+
+ <label>header_image</label>
+<input id="cs_header_image" placeholder="URL / Path opcional">
+
+<label>Subir imagen</label>
+<input type="file" id="cs_header_file" accept="image/*" onchange="previewCreateHeaderImage()">
+
+<img id="preview_header" style="max-width:200px; margin-top:10px; display:none;">
+
+  <button class="btn" onclick="createSurpriseController()">Crear</button>
+</div>
+</div>
+
+<div id="section-created" class="section" style="display:none">
+  <div class="card">
+    <h3>Mis sorpresas creadas</h3>
+    <div id="created_surprises_list"></div>
+  </div>
+</div>
+
+<div id="section-update" class="section" style="display:none">
+    <!-- Aquí va tu card de actualizar sorpresa -->
+     <div class="card">
+  <h3>4.2 Actualizar sorpresa</h3>
+
+  <label>ID sorpresa</label><input id="us_id">
+  <label>title</label><input id="us_title">
+  <label>description</label><textarea id="us_desc"></textarea>
+  <label>price</label><input id="us_price">
+  <label>deadline</label><input id="us_deadline">
+  <label>size</label><input id="us_size">
+
+  <label>is_urgent</label>
+  <select id="us_urgent">
+    <option value="">null</option>
+    <option value="true">true</option>
+    <option value="false">false</option>
+  </select>
+
+  <label>target_name</label><input id="us_tname">
+  <label>target_city</label><input id="us_tcity">
+  <label>target_country</label><input id="us_tcountry">
+  <label>target_lat</label><input id="us_tlat">
+  <label>target_lng</label><input id="us_tlng">
+
+  <h4>Cabecera</h4>
+
+  <label>URL / Path</label>
+  <input id="us_header_image">
+
+  <label>Subir imagen</label>
+  <input type="file" id="us_header_file" accept="image/*">
+
+  <img id="us_header_preview" style="max-width:200px; margin-top:10px; display:none;">
+
+  <button class="btn" onclick="updateSurpriseController()">Actualizar</button>
+</div>
+</div>
+
+<pre id="output"></pre>
+
+</body>
+</html>

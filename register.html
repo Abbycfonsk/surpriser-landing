@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/surpriser.js"></script>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Crear cuenta</h2>
+
+    <input id="reg_name" placeholder="Nombre">
+    <input id="reg_email" type="email" placeholder="Email">
+    <input id="reg_pass" type="password" placeholder="Password">
+    <input id="reg_pass2" type="password" placeholder="Confirmar Password">
+
+    <label>
+        <input type="checkbox" id="reg_is_genius"> ¿Quieres ser genio?
+    </label>
+
+    <button class="btn" onclick="registerController()">Registrar</button>
+
+    <pre id="output"></pre>
+</div>
+
+</body>
+</html>

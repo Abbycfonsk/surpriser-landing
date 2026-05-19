@@ -75,18 +75,20 @@ function api(method, route, body, useAdmin=false) {
         : document.getElementById("tokenUser").value.trim();
 
     headers["Authorization"] = "Bearer " + token.trim();
-
+      headers["X-Requested-With"] = "XMLHttpRequest";
     
         headers["Content-Type"] = "application/json";
     console.log("estoy en api", base + route, { method,
         headers,
         body})
 
-    return fetch(base + route, {
-        method,
-        headers,
-        body: body ? JSON.stringify(body) : undefined
-    })
+   return fetch(base + route, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined,
+    mode: "cors",
+    credentials: "omit"
+})
     .then(res => res.text().then(text => ({ status: res.status, text })))
     .then(data => {
         let out = "Status: " + data.status + "\n\n";
@@ -95,6 +97,46 @@ function api(method, route, body, useAdmin=false) {
         document.getElementById("output").textContent = out;
     })
     .catch(err => {
+        document.getElementById("output").textContent = "Error: " + err;
+    });
+}
+function apiForm(method, route, formData, useAdmin = false) {
+
+    let base = "https://api.surpriser.app";
+
+    const token = useAdmin
+        ? document.getElementById("tokenAdmin").value.trim()
+        : document.getElementById("tokenUser").value.trim();
+
+    const headers = {};
+
+    if (token) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+
+    console.log("LLAMANDO A:", base + route);
+
+    return fetch(base + route, {
+        method,
+        headers,
+        body: formData,
+        mode: "cors",          // ← OBLIGATORIO
+        credentials: "include", // ← PERMITE AUTH
+        redirect: "follow"      // ← EVITA 302 → CORS
+    })
+    .then(async res => {
+        const text = await res.text();
+
+        console.log("STATUS:", res.status);
+        console.log("RESPUESTA RAW:", text);
+
+        document.getElementById("output").textContent =
+            "Status: " + res.status + "\n\n" + text;
+
+        return { status: res.status, text };
+    })
+    .catch(err => {
+        console.error("ERROR FETCH:", err);
         document.getElementById("output").textContent = "Error: " + err;
     });
 }
@@ -348,6 +390,26 @@ preview_header.src = imagePath;
 </div>
 
 <script>
+  
+// PREVISUALIZACIÓN DE IMAGEN PERSONALIZADA
+document.getElementById("us_header_file").addEventListener("change", function () {
+    const file = this.files[0];
+    const preview = document.getElementById("us_header_preview");
+
+    if (!file) {
+        preview.style.display = "none";
+        preview.src = "";
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+});
+
 function updateSurprise() {
 
     const id = us_id.value;
@@ -356,48 +418,39 @@ function updateSurprise() {
 
     let formData = new FormData();
 
-    // Campos normales (todo como string)
-    formData.append('title', us_title.value || '');
-    formData.append('description', us_desc.value || '');
-    formData.append('price', us_price.value || '');
-    formData.append('deadline', us_deadline.value || '');
-    formData.append('size', us_size.value || '');
+    // Campos normales
+    formData.append('title', us_title.value || null);
+    formData.append('description', us_desc.value || null);
 
-    // is_urgent → SIEMPRE string
-    let urgentValue = '';
-    if (us_urgent.value === 'true') urgentValue = 'true';
-    if (us_urgent.value === 'false') urgentValue = 'false';
+    formData.append('price', us_price.value === '' ? null : us_price.value);
+    formData.append('deadline', us_deadline.value === '' ? null : us_deadline.value);
+    formData.append('size', us_size.value || null);
+
+    // is_urgent
+    let urgentValue = null;
+    if (us_urgent.value === 'true') urgentValue = true;
+    if (us_urgent.value === 'false') urgentValue = false;
     formData.append('is_urgent', urgentValue);
 
-    formData.append('target_name', us_tname.value || '');
-    formData.append('target_city', us_tcity.value || '');
-    formData.append('target_country', us_tcountry.value || '');
-    formData.append('target_lat', us_tlat.value || '');
-    formData.append('target_lng', us_tlng.value || '');
+    // Targets
+    formData.append('target_name', us_tname.value || null);
+    formData.append('target_city', us_tcity.value || null);
+    formData.append('target_country', us_tcountry.value || null);
+    formData.append('target_lat', us_tlat.value === '' ? null : us_tlat.value);
+    formData.append('target_lng', us_tlng.value === '' ? null : us_tlng.value);
 
-    // Lógica de header_image:
+    // header_image
     if (file) {
-        // Archivo personalizado
         formData.append('header_image', file);
     } else if (galleryImage.trim() !== '') {
-        // Imagen de galería (string)
         formData.append('header_image', galleryImage.trim());
     }
-    // Si no envían nada → no se envía header_image
 
     // Método PUT
     formData.append('_method', 'PUT');
 
-    fetch('/api/surprises/' + id, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        },
-        body: formData
-    })
-    .then(r => r.json())
-    .then(r => console.log(r));
+    // LLAMADA CORRECTA A LA API
+    apiForm('POST', '/api/surprises/' + id, formData);
 }
 </script>
 

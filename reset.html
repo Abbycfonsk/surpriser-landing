@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/surpriser.js"></script>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Resetear contraseña</h2>
+
+    <input id="rp_token" placeholder="Token recibido por email">
+    <input id="rp_email" type="email" placeholder="Email">
+    <input id="rp_pass" type="password" placeholder="Nueva contraseña">
+    <input id="rp_pass2" type="password" placeholder="Confirmar contraseña">
+
+    <button class="btn" onclick="resetPasswordController()">Resetear</button>
+
+    <pre id="output"></pre>
+</div>
+
+</body>
+</html>

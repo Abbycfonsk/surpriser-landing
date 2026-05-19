@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/surpriser.js"></script>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Login</h2>
+
+    <input id="log_email" type="email" placeholder="Email">
+    <input id="log_pass" type="password" placeholder="Password">
+
+    <button class="btn" onclick="loginController()">Entrar</button>
+
+    <p>
+        <a href="reset.html">Resetear contraseña</a><br>
+        <a href="#" onclick="forgotPasswordController()">¿Olvidaste la contraseña?</a>
+    </p>
+
+    <pre id="output"></pre>
+</div>
+
+</body>
+</html>
