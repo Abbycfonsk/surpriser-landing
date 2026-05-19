@@ -121,9 +121,7 @@ function fillProfileCard(user) {
     document.getElementById("profile_name").textContent = user.name || "Sin nombre";
     document.getElementById("profile_username").textContent = user.username ? "@" + user.username : "@usuario";
     document.getElementById("profile_bio").textContent = user.bio || "Sin bio todavía.";
-    document.getElementById("profile_phone").textContent = user.phone || "-";
-    document.getElementById("profile_city").textContent = user.location_city || "-";
-    document.getElementById("profile_country").textContent = user.location_country || "-";
+    
     renderUserRoles(user);
     const avatar = document.getElementById("profile_avatar_preview");
 
@@ -266,20 +264,17 @@ function createSurpriseController() {
     let formData = new FormData();
 
     formData.append("creator_id", document.getElementById("cs_creator").value);
-    formData.append("genius_id", document.getElementById("cs_genius").value);
     formData.append("title", document.getElementById("cs_title").value);
     formData.append("description", document.getElementById("cs_desc").value);
     formData.append("skill_id", document.getElementById("cs_skill").value);
     formData.append("size", document.getElementById("cs_size").value);
 
-    const price = document.getElementById("cs_price").value.trim();
+   
     const deadline = document.getElementById("cs_deadline").value.trim();
     const urgent = document.getElementById("cs_urgent").value;
     const highlight = document.getElementById("cs_highlight").value;
 
-    if (price !== "") {
-        formData.append("price", price);
-    }
+   
 
     if (deadline !== "") {
         formData.append("deadline", deadline);
@@ -792,6 +787,10 @@ function fillUpdateSurpriseForm(index) {
     showMsg("Sorpresa cargada para modificar.");
 }
 
+
+
+
+
 function getImageUrl(path) {
     if (!path) return "";
 
@@ -799,5 +798,78 @@ function getImageUrl(path) {
         return path;
     }
 
+    if (path.startsWith("/storage/")) {
+        return API + path;
+    }
+
     return API + "/storage/" + path;
 }
+let landingCarouselTimer = null;
+let landingCarouselPaused = false;
+
+function initLandingCarousel() {
+    const carousel = document.getElementById("landing_carousel");
+    const track = document.getElementById("landing_carousel_track");
+
+    if (!carousel || !track) return;
+
+    if (landingCarouselTimer) {
+        clearInterval(landingCarouselTimer);
+    }
+
+    track.querySelectorAll(".landing-slide-clone").forEach(clone => clone.remove());
+
+    const slides = Array.from(track.querySelectorAll(".landing-slide:not(.landing-slide-clone)"));
+
+    if (slides.length <= 1) return;
+
+    const firstClone = slides[0].cloneNode(true);
+    firstClone.classList.add("landing-slide-clone");
+    track.appendChild(firstClone);
+
+    let current = 0;
+    const transitionMs = 750;
+    const pauseMs = 4000;
+
+    function goNext() {
+        if (landingCarouselPaused) return;
+
+        current++;
+
+        track.style.transition = `transform ${transitionMs}ms ease`;
+        track.style.transform = `translateX(-${current * 100}%)`;
+
+        if (current === slides.length) {
+            setTimeout(() => {
+                track.style.transition = "none";
+                current = 0;
+                track.style.transform = "translateX(0%)";
+
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        track.style.transition = `transform ${transitionMs}ms ease`;
+                    });
+                });
+            }, transitionMs);
+        }
+    }
+
+    carousel.addEventListener("mouseenter", () => {
+        landingCarouselPaused = true;
+    });
+
+    carousel.addEventListener("mouseleave", () => {
+        landingCarouselPaused = false;
+    });
+
+    track.style.transition = "none";
+    track.style.transform = "translateX(0%)";
+
+    requestAnimationFrame(() => {
+        track.style.transition = `transform ${transitionMs}ms ease`;
+    });
+
+    landingCarouselTimer = setInterval(goNext, pauseMs);
+}
+
+document.addEventListener("DOMContentLoaded", initLandingCarousel);

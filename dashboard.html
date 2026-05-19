@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
     <script src="js/surpriser.js"></script>
 </head>
 <body onload="dashboardInit()">
@@ -34,20 +34,6 @@
         <p id="profile_username">@username</p>
         <p id="profile_bio">Sin bio todavía.</p>
       </div>
-
-      <div class="profile-info-grid">
-        <div>
-          <span>Teléfono</span>
-          <strong id="profile_phone">-</strong>
-          <span>Ciudad</span>
-          <strong id="profile_city">-</strong>
-          <span>País</span>
-          <strong id="profile_country">-</strong>
-        </div>
-       
-      </div>
-
-      <button class="btn profile-refresh-btn" onclick="loadUserController()">Actualizar datos</button>
     </div>
 
     <div class="profile-card profile-edit-card">
@@ -100,15 +86,14 @@
   <h3>4.1 Crear sorpresa</h3>
 
   <label>creator_id</label><input id="cs_creator" value="15">
-  <label>genius_id</label><input id="cs_genius">
+ 
 
   <label>title</label><input id="cs_title">
   <label>description</label><textarea id="cs_desc"></textarea>
 
-  <label>price</label><input id="cs_price">
-  <label>deadline</label><input id="cs_deadline">
 
   <label>skill_id</label><input id="cs_skill">
+
   <label>size</label>
 <select id="cs_size">
     <option value="SMALL">SMALL</option>
@@ -119,14 +104,12 @@
 
   <label>is_urgent</label>
   <select id="cs_urgent">
-    <option value="">null</option>
     <option value="true">true</option>
     <option value="false">false</option>
   </select>
 
   <label>highlight</label>
   <select id="cs_highlight">
-    <option value="">null</option>
     <option value="true">true</option>
     <option value="false">false</option>
   </select>

@@ -2,21 +2,179 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Surpriser Web</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/surpriser.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Surpriser</title>
+    <link rel="stylesheet" href="css/style.css?v=30">
+   <script src="js/surpriser.js?v=15" defer></script>
 </head>
 
-<body onload="indexController()">
+<body class="auth-page">
 
-    <h1>Bienvenida a Surpriser</h1>
+<main class="auth-shell">
+    <section class="auth-panel">
+        <a class="auth-brand" href="index.html">
+            <img src="img/logo.png" alt="Surpriser">
+            <span>Surpriser</span>
+        </a>
 
-    <div id="buttons">
-        <a class="btn" href="login.html">Login</a>
-        <a class="btn" href="register.html">Register</a>
+        <div class="auth-heading">
+            <span>De vuelta por aquí?</span>
+            <h1>Entra en tu mundo de sorpresas.</h1>
+            <p>Accede a tu dashboard para crear, pedir y gestionar experiencias personalizadas.</p>
+        </div>
+
+        <div class="auth-form">
+            <label>Email</label>
+            <input id="log_email" type="email" placeholder="tu@email.com">
+
+            <label>Contraseña</label>
+            <input id="log_pass" type="password" placeholder="Tu contraseña">
+
+            <button class="auth-btn" onclick="loginController()">Entrar</button>
+            <div class="auth-register-cta">
+    <span>¿Todavía no tienes cuenta?</span>
+    <a href="register.html">Crear cuenta</a>
+</div>
+
+            <div class="auth-links">
+                <a href="reset.html">Resetear contraseña</a>
+                <a href="#" onclick="forgotPasswordController()">¿Olvidaste la contraseña?</a>
+            </div>
+        </div>
+
+       
+    </section>
+<aside class="auth-side">
+    <div class="landing-carousel" id="landing_carousel">
+        <div class="landing-carousel-track" id="landing_carousel_track">
+
+            <article class="landing-slide">
+                <img src="img/problema.png" alt="El problema">
+                <div class="landing-slide-copy">
+                    <span>El problema</span>
+                    <h2>Horas buscando, mucho trabajo, poca emoción.</h2>
+                    <p>Preparar una sorpresa debería ser emocionante, pero hoy es un caos.</p>
+                    <ul>
+                        <li>Horas buscando ideas de sorpresas</li>
+                        <li>Dificultad para encontrar a alguien que la haga</li>
+                        <li>Resultados genéricos, repetidos o poco creativos</li>
+                        <li>Gestión complicada: contactar, pagar, coordinar, enviar</li>
+                    </ul>
+                    <strong>Surpriser nace para que sorprender vuelva a ser fácil, rápido y emocionante.</strong>
+                </div>
+            </article>
+
+            <article class="landing-slide">
+                <img src="img/creadores.png" alt="Creadora">
+                <div class="landing-slide-copy">
+                    <span>Creadores</span>
+                    <h2>Describe tu idea y deja que los genios propongan.</h2>
+                    <p>Publica una sorpresa con presupuesto, fecha, estilo y detalles importantes.</p>
+                    <ul>
+                        <li>Explica qué quieres conseguir</li>
+                        <li>Recibe propuestas creativas</li>
+                        <li>Elige la opción que más te emocione</li>
+                    </ul>
+                    <strong>Tú tienes la intención. Surpriser te ayuda a convertirla en experiencia.</strong>
+                </div>
+            </article>
+
+            <article class="landing-slide">
+                <img src="img/genios.png" alt="Genio">
+                <div class="landing-slide-copy">
+                    <span>Genio</span>
+                    <h2>Convierte tu creatividad en oportunidades reales.</h2>
+                    <p>Encuentra sorpresas que encajan contigo y envía propuestas personalizadas.</p>
+                    <ul>
+                        <li>Ofrece ideas únicas</li>
+                        <li>Trabaja según tus habilidades</li>
+                        <li>Gana dinero creando momentos memorables</li>
+                    </ul>
+                    <strong>Tu talento puede ser justo lo que alguien necesita para sorprender.</strong>
+                </div>
+            </article>
+
+            <article class="landing-slide">
+                <img src="img/eliges.png" alt="Ofertas">
+                <div class="landing-slide-copy">
+                    <span>Ofertas</span>
+                    <h2>Compara propuestas sin perderte en mensajes eternos.</h2>
+                    <p>Cada genio puede enviar una oferta clara con precio, idea y forma de realizarla.</p>
+                    <ul>
+                        <li>Propuestas organizadas</li>
+                        <li>Precios visibles</li>
+                        <li>Decisiones más fáciles</li>
+                    </ul>
+                    <strong>Menos caos, más claridad.</strong>
+                </div>
+            </article>
+
+            <article class="landing-slide">
+                <img src="img/solucion.png" alt="Coordinación">
+                <div class="landing-slide-copy">
+                    <span>Coordinación</span>
+                    <h2>Todo el proceso en un mismo lugar.</h2>
+                    <p>Desde la idea hasta la entrega, Surpriser centraliza la comunicación y el seguimiento.</p>
+                    <ul>
+                        <li>Estados de la sorpresa</li>
+                        <li>Fechas límite</li>
+                        <li>Entrega y validación</li>
+                    </ul>
+                    <strong>Para que sorprender no dependa de mil conversaciones sueltas.</strong>
+                </div>
+            </article>
+
+            <article class="landing-slide">
+                <img src="img/funcionamiento.png" alt="Creaciones estrella">
+                <div class="landing-slide-copy">
+                    <span>Creaciones estrella</span>
+                    <h2>Destaca tus sorpresas cuando quieras más visibilidad.</h2>
+                    <p>Las sorpresas promocionadas ganan presencia dentro de la plataforma.</p>
+                    <ul>
+                        <li>Más visibilidad</li>
+                        <li>Más opciones de recibir propuestas</li>
+                        <li>Mejor posicionamiento</li>
+                    </ul>
+                    <strong>Ideal para sorpresas importantes o urgentes.</strong>
+                </div>
+            </article>
+
+            <article class="landing-slide">
+                <img src="img/beneficios.png" alt="Surpriser">
+                <div class="landing-slide-copy">
+                    <span>Surpriser</span>
+                    <h2>Dos roles, una plataforma.</h2>
+                    <p>Pide una sorpresa o crea una. Surpriser conecta intención, creatividad y emoción.</p>
+                    <ul>
+                        <li>Creadores que quieren sorprender</li>
+                        <li>Genios que saben crear experiencias</li>
+                        <li>Una plataforma para hacerlo posible</li>
+                    </ul>
+                    <strong>La sorpresa empieza aquí.</strong>
+                </div>
+            </article>
+            <template>
+                <article class="landing-slide">
+    <img src="img/tu-imagen.png" alt="Texto descriptivo">
+    <div class="landing-slide-copy">
+        <span>Categoría</span>
+        <h2>Título del apartado.</h2>
+        <p>Texto principal.</p>
+        <ul>
+            <li>Punto uno</li>
+            <li>Punto dos</li>
+            <li>Punto tres</li>
+        </ul>
+        <strong>Frase destacada final.</strong>
     </div>
+</article>
+            </template>
 
-    <div id="sessionBox"></div>
+        </div>
+    </div>
+</aside>
+    
+</main>
 
 </body>
 </html>
