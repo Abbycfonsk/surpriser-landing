@@ -253,3 +253,24 @@ export function getImageUrl(path) {
 
     return API + "/storage/" + path;
 }
+// ======================
+// INDEX CONTROLLER
+// ======================
+function indexController() {
+    const token = localStorage.getItem("token");
+    const box = document.getElementById("sessionBox");
+
+    if (!box) return;
+
+    if (!token) {
+        box.textContent = "No has iniciado sesión.";
+        return;
+    }
+
+    box.innerHTML = `
+        <p>Ya has iniciado sesión.</p>
+        <a class="btn" href="dashboard.html">Ir al Dashboard</a>
+        <br><br>
+        <button class="btn" onclick="logoutController()">Logout</button>
+    `;
+}

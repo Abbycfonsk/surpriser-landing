@@ -1,73 +1,151 @@
-import { initNavigation } from "./router.js";
+import { initNavigation, showAppSection } from "./router.js";
 
-import { initCreateSurpriseListeners } from "./sections/creator.js";
-import { initUpdateSurpriseListeners } from "./sections/creator.js";
+/* =========================
+   SERVICES
+========================= */
+import { getMe } from "./services/userService.js";
+import { getSurprises } from "./services/surpriseService.js";
+import { getGeniusDashboard } from "./services/geniusService.js";
+import { getNotifications } from "./services/notificationService.js";
 
-import { loadUserControllerV2 } from "./sections/profile.js";
-import { loadAllSurprisesController } from "./sections/home.js";
-import { loadDashboardSummaryController } from "./sections/genius.js";
-import { loadNotificationsController } from "./sections/genius.js"; // o notifications.js si lo separas luego
+/* =========================
+   UI MODULES
+========================= */
+import { initCreateSurpriseListeners, initUpdateSurpriseListeners } from "./sections/creator.js";
 
-import { showAppSection } from "./router.js";
-
-const API = "https://api.surpriser.app";
-
+/* =========================
+   STATE
+========================= */
 let surpriseCountdownInterval = null;
+let currentUser = null;
 
-document.addEventListener("DOMContentLoaded", dashboardInitV2);
+document.addEventListener("DOMContentLoaded", dashboardInit);
 
-async function dashboardInitV2() {
+/* =====================================================
+   INIT APP
+===================================================== */
+async function dashboardInit() {
 
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-  if (!token) {
-    location.href = "index.html";
-    return;
-  }
+    if (!token) {
+        location.href = "index.html";
+        return;
+    }
 
-  // =========================
-  // INIT GLOBAL APP BEHAVIOR
-  // =========================
-  initNavigation();
+    try {
 
-  initCreateSurpriseListeners();
-  initUpdateSurpriseListeners();
+        // =========================
+        // INIT UI
+        // =========================
+        initNavigation();
+        initCreateSurpriseListeners();
+        initUpdateSurpriseListeners();
 
-  try {
+        // =========================
+        // LOAD USER (SERVICE)
+        // =========================
+        const meRes = await getMe(token);
 
-    // =========================
-    // LOAD USER FIRST
-    // =========================
-    await loadUserControllerV2();
+        if (meRes.status !== 200) {
+            throw new Error("Sesión inválida");
+        }
 
-    // =========================
-    // LOAD INITIAL DATA
-    // =========================
-    await Promise.all([
-      loadAllSurprisesController(),
-      loadDashboardSummaryController(),
-      loadNotificationsController()
-    ]);
+        currentUser = meRes.json;
 
-    // =========================
-    // SHOW INITIAL VIEW
-    // =========================
-    showAppSection("home");
+        // =========================
+        // LOAD INITIAL DATA (SERVICES)
+        // =========================
+        const [surprisesRes, geniusRes, notifRes] = await Promise.all([
+            getSurprises(token),
+            getGeniusDashboard(currentUser.id, token),
+            getNotifications(currentUser.id, token)
+        ]);
 
-  } catch (err) {
-    console.error(err);
-  }
+        // =========================
+        // HANDLE SURPRISES
+        // =========================
+        if (surprisesRes.status === 200) {
+            const surprises = surprisesRes.json?.data || [];
+            renderSurprisesHome(surprises);
+        }
+
+        // =========================
+        // HANDLE GENIUS
+        // =========================
+        if (geniusRes.status === 200) {
+            const data = geniusRes.json?.data;
+            if (data) renderGenius(data);
+        }
+
+        // =========================
+        // HANDLE NOTIFICATIONS
+        // =========================
+        if (notifRes.status === 200) {
+            const notifications = notifRes.json?.data || [];
+            renderNotifications(notifications);
+        }
+
+        // =========================
+        // START APP
+        // =========================
+        showAppSection("home");
+
+        restartCountdowns();
+
+    } catch (err) {
+        console.error("APP INIT ERROR:", err);
+    }
 }
+
+/* =====================================================
+   SIMPLE RENDERERS (puedes moverlos luego a sections/)
+===================================================== */
+
+function renderSurprisesHome(surprises) {
+    const container = document.getElementById("all_surprises_list");
+    if (!container) return;
+
+    container.innerHTML = surprises.length
+        ? surprises.map(s => `<div>${s.title}</div>`).join("")
+        : "<p>No hay sorpresas</p>";
+}
+
+function renderGenius(data) {
+    const level = document.getElementById("genius_level_label");
+    const points = document.getElementById("genius_points_label");
+
+    if (level) level.textContent = data.user?.genius_level || "SPARK";
+    if (points) points.textContent = `${data.user?.genius_points || 0} puntos`;
+}
+
+function renderNotifications(notifications) {
+    const box = document.getElementById("notifications_list");
+    if (!box) return;
+
+    box.innerHTML = notifications.length
+        ? notifications.map(n => `
+            <div class="mini-item">
+                <strong>${n.title}</strong>
+                <span>${n.message}</span>
+            </div>
+        `).join("")
+        : "<div>No notifications</div>";
+}
+
+/* =====================================================
+   COUNTDOWN SYSTEM
+===================================================== */
 
 function restartCountdowns() {
 
-  if (typeof updateSurpriseCountdowns !== "function") return;
+    if (typeof updateSurpriseCountdowns !== "function") return;
 
-  updateSurpriseCountdowns();
+    updateSurpriseCountdowns();
 
-  if (surpriseCountdownInterval) {
-    clearInterval(surpriseCountdownInterval);
-  }
+    if (surpriseCountdownInterval) {
+        clearInterval(surpriseCountdownInterval);
+    }
 
-  surpriseCountdownInterval = setInterval(updateSurpriseCountdowns, 1000);
+    surpriseCountdownInterval = setInterval(updateSurpriseCountdowns, 1000);
 }

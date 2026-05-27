@@ -28,11 +28,12 @@ export function api(method, route, body = null, token = null) {
     .then(async res => {
         const text = await res.text();
 
-        return {
-            status: res.status,
-            text,
-            json: safeJSON(text)
-        };
+       return {
+    ok: res.ok,
+    status: res.status,
+    text,
+    json: safeJSON(text)
+};
     });
 }
 
