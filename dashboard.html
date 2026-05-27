@@ -1,178 +1,387 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/style.css?v=2">
-    <script src="js/surpriser.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Surpriser</title>
+
+  <link rel="stylesheet" href="css/style.css?v=127">
+  <script type="module" src="js/main.js?v=46"></script>
 </head>
-<body onload="dashboardInit()">
 
-<header class="nav">
-    <button class="nav-btn" onclick="showSection('profile')">Perfil</button>
-    <button class="nav-btn" onclick="showSection('userdash')">Dashboard usuario</button>
-    <button class="nav-btn" onclick="showSection('create')">Crear sorpresa</button>
-    <button class="nav-btn" onclick="showSection('created'); loadCreatedSurprisesController()">Mis sorpresas</button>
-    <button class="nav-btn" onclick="showSection('update')">Actualizar sorpresa</button>
-    <button class="nav-btn" onclick="logoutController()">Logout</button>
-</header>
+<body class="app-dashboard">
 
-<h1>Dashboard del usuario</h1>
 
-<!-- SECCIONES -->
-<div id="section-profile" class="section profile-section">
-  <div class="profile-layout">
+<!-- =====================================================
+  HEADER (SIEMPRE VISIBLE)
+===================================================== -->
 
-    <div class="profile-card profile-summary-card">
-      <div class="profile-avatar-wrap">
-        <img id="profile_avatar_preview" class="profile-avatar" src="" alt="Avatar">
-      </div>
+<header class="app-topbar">
+<div class="logoNavSuperior">
+   <img src="img/logo.png" alt="logo surpriser">
 
-      <div class="profile-summary">
-       <div class="profile-roles" id="profile_roles"></div>
-        <h3 id="profile_name">Tu perfil</h3>
-        <p id="profile_username">@username</p>
-        <p id="profile_bio">Sin bio todavía.</p>
-      </div>
-    </div>
-
-    <div class="profile-card profile-edit-card">
-      <h3>Editar perfil</h3>
-
-      <label>Nombre</label>
-      <input id="up_name">
-
-      <label>Username</label>
-      <input id="up_username">
-
-      <label>Bio</label>
-      <textarea id="up_bio"></textarea>
-
-      <label>Teléfono</label>
-      <input id="up_phone">
-
-      <label>Ciudad</label>
-      <input id="up_city">
-
-      <label>País</label>
-      <input id="up_country">
-
-      <label>Avatar</label>
-      <input type="file" id="up_avatar_file" accept="image/*">
-
-      <label>¿Eres genio?</label>
-      <select id="up_is_genius">
-        <option value="0">No</option>
-        <option value="1">Sí</option>
-      </select>
-
-      <button class="btn" onclick="updateProfileController()">Guardar cambios</button>
-    </div>
-
-  </div>
+  <button class="app-logo" data-section="home">
+    Surpriser
+  </button>
 </div>
-<div id="section-userdash" class="section" style="display:none">
-    <!-- Aquí va tu card de dashboard usuario -->
-     <div class="card">
-  <h3>3.3 Dashboard usuario</h3>
-  <label>ID usuario</label><input id="dash_id">
-  <button class="btn" onclick="userDashboardController()">Ver dashboard</button>
-</div>
-</div>
-
-<div id="section-create" class="section" style="display:none">
-    <!-- Aquí va tu card de crear sorpresa -->
-     <div class="card">
-  <h3>4.1 Crear sorpresa</h3>
-
-  <label>creator_id</label><input id="cs_creator" value="15">
  
 
-  <label>title</label><input id="cs_title">
-  <label>description</label><textarea id="cs_desc"></textarea>
+  <nav class="app-menu">
+    <button data-section="home">Inicio</button>
+    <button data-section="creator">Creador</button>
+    <button data-section="genius">Genio</button>
+    <button data-section="shopping">Ads y compras</button>
+  </nav>
 
+  <div class="app-top-actions">
 
-  <label>skill_id</label><input id="cs_skill">
+    <button class="top-avatar-btn" data-section="profile">
+      <img id="profile_avatar_preview" class="top-avatar" src="" alt="Avatar">
+    </button>
 
-  <label>size</label>
-<select id="cs_size">
-    <option value="SMALL">SMALL</option>
-    <option value="MEDIUM">MEDIUM</option>
-    <option value="LARGE">LARGE</option>
-    <option value="PREMIUM">PREMIUM</option>
-</select>
+    <button class="top-pill" data-section="notifications">
+      Notificaciones <span id="notif_count">0</span>
+    </button>
 
-  <label>is_urgent</label>
-  <select id="cs_urgent">
-    <option value="true">true</option>
-    <option value="false">false</option>
-  </select>
+    <button class="top-pill" data-action="logout">
+      Salir
+    </button>
 
-  <label>highlight</label>
-  <select id="cs_highlight">
-    <option value="true">true</option>
-    <option value="false">false</option>
-  </select>
-
- <label>header_image</label>
-<input id="cs_header_image" placeholder="URL / Path opcional">
-
-<label>Subir imagen</label>
-<input type="file" id="cs_header_file" accept="image/*" onchange="previewCreateHeaderImage()">
-
-<img id="preview_header" style="max-width:200px; margin-top:10px; display:none;">
-
-  <button class="btn" onclick="createSurpriseController()">Crear</button>
-</div>
-</div>
-
-<div id="section-created" class="section" style="display:none">
-  <div class="card">
-    <h3>Mis sorpresas creadas</h3>
-    <div id="created_surprises_list"></div>
   </div>
-</div>
 
-<div id="section-update" class="section" style="display:none">
-    <!-- Aquí va tu card de actualizar sorpresa -->
-     <div class="card">
-  <h3>4.2 Actualizar sorpresa</h3>
+</header>
 
-  <label>ID sorpresa</label><input id="us_id">
-  <label>title</label><input id="us_title">
-  <label>description</label><textarea id="us_desc"></textarea>
-  <label>price</label><input id="us_price">
-  <label>deadline</label><input id="us_deadline">
-  <label>size</label><input id="us_size">
 
-  <label>is_urgent</label>
-  <select id="us_urgent">
-    <option value="">null</option>
-    <option value="true">true</option>
-    <option value="false">false</option>
-  </select>
+<!-- =====================================================
+  CONTENEDOR PRINCIPAL (DONDE CAMBIAN LAS VISTAS)
+===================================================== -->
 
-  <label>target_name</label><input id="us_tname">
-  <label>target_city</label><input id="us_tcity">
-  <label>target_country</label><input id="us_tcountry">
-  <label>target_lat</label><input id="us_tlat">
-  <label>target_lng</label><input id="us_tlng">
+<main class="app-shell full-layout">
+  <section class="app-content full-width-content">
 
-  <h4>Cabecera</h4>
 
-  <label>URL / Path</label>
-  <input id="us_header_image">
+  <!-- =====================================================
+    SECTION: HOME (INICIO)
+  ===================================================== -->
 
-  <label>Subir imagen</label>
-  <input type="file" id="us_header_file" accept="image/*">
+  <section id="section-home" class="section app-section">
 
-  <img id="us_header_preview" style="max-width:200px; margin-top:10px; display:none;">
+    <!-- HERO HOME -->
+    <div class="discover-hero">
 
-  <button class="btn" onclick="updateSurpriseController()">Actualizar</button>
-</div>
-</div>
+      <div class="discover-hero-content">
 
-<pre id="output"></pre>
+        <span class="discover-badge">
+          Explorar sorpresas
+        </span>
+
+        <h1>
+          Descubre experiencias increíbles creadas para sorprender
+        </h1>
+
+        <p>
+          Música, viajes, arte, mascotas, vídeos,
+          naturaleza y mucho más en un único lugar.
+        </p>
+
+        <button class="discover-main-btn" data-action="scroll-surprises">
+          Ver sorpresas
+        </button>
+
+      </div>
+
+      <div class="discover-hero-visual">
+
+        <div class="discover-demo-card">
+
+          <img src="img/funcionamiento.png" alt="Sorpresas">
+
+          <div class="discover-demo-overlay">
+
+            <div class="discover-step">
+              <span>🎵</span>
+              <p>Experiencias musicales</p>
+            </div>
+
+            <div class="discover-step">
+              <span>🌿</span>
+              <p>Momentos en la naturaleza</p>
+            </div>
+
+            <div class="discover-step">
+              <span>🎨</span>
+              <p>Creatividad, danza y arte</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- LISTA DE SORPRESAS -->
+    <div class="section-head">
+      <span>Deseos abiertos</span>
+      <h1>Sorpresas esperando genio</h1>
+    </div>
+
+    <div id="all_surprises_list" class="surprise-grid"></div>
+
+  </section>
+
+
+  <!-- =====================================================
+    SECTION: PROFILE (PERFIL)
+  ===================================================== -->
+
+  <section id="section-profile" class="section app-section" style="display:none">
+
+    <div class="section-head">
+      <span>Perfil</span>
+      <h1>Tu cuenta</h1>
+    </div>
+
+    <div class="profile-layout">
+
+      <div class="app-card profile-card-large">
+
+        <img id="profile_avatar_preview_large" class="profile-avatar-large" src="" alt="Avatar">
+
+        <div class="profile-roles" id="profile_roles"></div>
+
+        <h2 id="profile_name">Tu perfil</h2>
+        <p id="profile_username">@usuario</p>
+        <p id="profile_bio">Sin bio todavía.</p>
+
+      </div>
+
+      <form id="profile_editor" class="app-card profile-editor-large">
+
+        <h3>Editar perfil</h3>
+
+        <label>Nombre</label>
+        <input id="up_name">
+
+        <label>Username</label>
+        <input id="up_username">
+
+        <label>Bio</label>
+        <textarea id="up_bio"></textarea>
+
+        <label>Teléfono</label>
+        <input id="up_phone">
+
+        <label>Ciudad</label>
+        <input id="up_city">
+
+        <label>País</label>
+        <input id="up_country">
+
+        <label>Avatar</label>
+        <input type="file" id="up_avatar_file" accept="image/*">
+
+        <label>¿Eres genio?</label>
+        <select id="up_is_genius">
+          <option value="0">No</option>
+          <option value="1">Sí</option>
+        </select>
+
+        <button type="button" class="btn" data-action="update-profile">
+          Guardar
+        </button>
+
+      </form>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+    SECTION: CREATOR (CREADOR)
+  ===================================================== -->
+
+  <section id="section-creator" class="section app-section creator-dashboard" style="display:none">
+
+    <div class="creator-hero">
+
+      <div class="creator-hero-content">
+
+        <span class="creator-badge">Dashboard creador</span>
+
+        <h1>Convierte ideas en sorpresas increíbles</h1>
+
+        <p>
+          Gestiona tus publicaciones, crea nuevas experiencias
+          y coordina todo desde un único panel visual.
+        </p>
+
+        <button class="creator-main-btn" data-section="create-surprise">
+          + Crear sorpresa
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="section-head">
+      <span>Tus publicaciones</span>
+      <h1>Mis sorpresas</h1>
+    </div>
+
+    <div id="created_surprises_list" class="surprise-grid compact-grid"></div>
+
+  </section>
+
+
+  <!-- =====================================================
+    SECTION: CREATE SURPRISE (FORMULARIO CREAR)
+  ===================================================== -->
+
+  <section id="section-create-surprise" class="section app-section" style="display:none">
+
+    <div class="create-layout">
+
+      <form class="app-card create-card-modern">
+
+        <div class="create-header">
+          <span>Nueva sorpresa</span>
+          <h2>Diseña una experiencia</h2>
+        </div>
+
+        <input id="cs_creator" type="hidden">
+
+        <label>Título</label>
+        <input id="cs_title">
+
+        <label>Descripción</label>
+        <textarea id="cs_desc"></textarea>
+
+        <label>Skill ID</label>
+        <input id="cs_skill">
+
+        <label>Deadline</label>
+        <input id="cs_deadline" type="date">
+
+        <label>Tamaño</label>
+        <select id="cs_size">
+          <option value="SMALL">SMALL</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="LARGE">LARGE</option>
+          <option value="PREMIUM">PREMIUM</option>
+        </select>
+
+        <label>Imagen</label>
+        <input type="file" id="cs_header_file" accept="image/*">
+
+        <button type="button" class="btn" data-action="create-surprise">
+          Publicar sorpresa
+        </button>
+
+      </form>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+    SECTION: GENIUS
+  ===================================================== -->
+
+  <section id="section-genius" class="section app-section genius-section" style="display:none">
+
+    <div class="section-head">
+      <span>Genio</span>
+      <h1>Oportunidades para ti</h1>
+    </div>
+
+    <div id="genius_feed_list"></div>
+
+  </section>
+
+
+  <!-- =====================================================
+    SECTION: SHOPPING (ADS)
+  ===================================================== -->
+
+  <section id="section-shopping" class="section app-section" style="display:none">
+
+    <div class="section-head">
+      <span>Ads y compras</span>
+      <h1>Impulsa tus creaciones</h1>
+    </div>
+
+    <div class="shopping-grid">
+
+      <button class="purchase-card" data-action="purchase-plan" data-plan="starter">
+        Starter
+      </button>
+
+      <button class="purchase-card" data-action="purchase-plan" data-plan="pro">
+        Pro
+      </button>
+
+      <button class="purchase-card" data-action="purchase-plan" data-plan="premium">
+        Premium
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+    SECTION: NOTIFICATIONS
+  ===================================================== -->
+
+  <section id="section-notifications" class="section app-section" style="display:none">
+
+    <div class="section-head">
+      <span>Actividad</span>
+      <h1>Notificaciones</h1>
+    </div>
+
+    <div id="notifications_list"></div>
+
+  </section>
+
+
+  <!-- =====================================================
+    SECTION: UPDATE SURPRISE
+  ===================================================== -->
+
+  <section id="section-update" class="section app-section" style="display:none">
+
+    <form class="app-card update-card">
+
+      <h3>Actualizar sorpresa</h3>
+
+      <input id="us_id" readonly>
+      <input id="us_title">
+      <textarea id="us_desc"></textarea>
+
+      <button type="button" class="btn" data-action="update-surprise">
+        Actualizar
+      </button>
+
+    </form>
+
+  </section>
+
+
+  </section>
+</main>
+
+
+<!-- =====================================================
+  DEBUG OUTPUT
+===================================================== -->
+
+<pre id="output" class="app-output"></pre>
 
 </body>
 </html>
