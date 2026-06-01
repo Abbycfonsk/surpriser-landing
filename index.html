@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Surpriser</title>
     <link rel="stylesheet" href="css/style.css?v=31">
-   <script src="js/surpriser.js?v=15" defer></script>
+<script type="module" src="js/login.js"></script>
 </head>
 
 <body class="auth-page">
@@ -30,7 +30,7 @@
             <label>Contraseña</label>
             <input id="log_pass" type="password" placeholder="Tu contraseña">
 
-            <button class="auth-btn" onclick="loginController()">Entrar</button>
+            <button class="auth-btn" id="loginBtn">Entrar</button>
             <div class="auth-register-cta">
     <span>¿Todavía no tienes cuenta?</span>
     <a href="register.html">Crear cuenta</a>

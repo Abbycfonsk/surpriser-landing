@@ -12,10 +12,14 @@ export function logout(token) {
     return api("POST", "/api/logout", null, token);
 }
 
-export function forgotPassword(data) {
-    return api("POST", "/api/forgot-password", data);
+export function forgotPassword(email) {
+    return api("POST", "/api/forgot-password", { email });
 }
 
 export function resetPassword(data) {
     return api("POST", "/api/reset-password", data);
+}
+
+export function subscribeLanding(email) {
+    return api("POST", "/api/landing/subscribe", { email });
 }

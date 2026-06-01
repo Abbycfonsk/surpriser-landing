@@ -15,7 +15,3 @@ export function getGeniusOffers(token) {
 export function getGeniusSuggestions(skillId, token) {
     return api("GET", `/api/skills/${skillId}/genius-suggestions`, null, token);
 }
-
-export function getUserSkills(userId, token) {
-    return api("GET", `/api/users/${userId}/skills`, null, token);
-}

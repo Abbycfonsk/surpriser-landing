@@ -1,3 +1,5 @@
+import { restartCountdowns } from "../sections/home.js";
+
 // =====================
 // STATE
 // =====================
@@ -192,4 +194,11 @@ export function openChatController(id) {
 
 export function openNegotiationController(id) {
     showMsg(`Abrir regateo de la sorpresa ${id}. Pendiente de vista.`);
+}
+export function renderGenius(data) {
+    const level = document.getElementById("genius_level_label");
+    const points = document.getElementById("genius_points_label");
+
+    if (level) level.textContent = data.user?.genius_level || "SPARK";
+    if (points) points.textContent = `${data.user?.genius_points || 0} puntos`;
 }

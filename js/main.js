@@ -1,31 +1,48 @@
 import { initNavigation, showAppSection } from "./router.js";
 
-/* =========================
-   SERVICES
-========================= */
 import { getMe } from "./services/userService.js";
-import { getSurprises } from "./services/surpriseService.js";
-import { getGeniusDashboard } from "./services/geniusService.js";
-import { getNotifications } from "./services/notificationService.js";
+import { getFeed } from "./services/surpriseService.js";
+import { getSkills } from "./services/skillService.js";
+import {
+  loadOwnerSurprises,
+  openOwnerSurpriseDetail,
+  saveOwnerSurprise,
+  cancelOwnerSurprise,
+  deleteOwnerFile,
+  initOwnerCancelModal,
+  closeOwnerCancelModal
+} from "./sections/creatorSurprises.js";
 
-/* =========================
-   UI MODULES
-========================= */
-import { initCreateSurpriseListeners, initUpdateSurpriseListeners } from "./sections/creator.js";
+import {
+    getNotifications,
+    getUnreadNotificationsCount
+} from "./services/notificationService.js";
 
-/* =========================
-   STATE
-========================= */
-let surpriseCountdownInterval = null;
-let currentUser = null;
+import {
+    renderSurprisesHome,
+    restartCountdowns
+} from "./sections/home.js";
 
-document.addEventListener("DOMContentLoaded", dashboardInit);
+import { renderNotifications } from "./sections/notifications.js";
+import { initCreateSurpriseListeners } from "./sections/creator.js";
 
-/* =====================================================
-   INIT APP
-===================================================== */
-async function dashboardInit() {
+import {
+    initSurpriseDetail,
+    showNotificationToast
+} from "./sections/surpriseDetail.js";
 
+import { state } from "./state/appState.js";
+
+let notificationTimer = null;
+let lastUnreadCount = 0;
+
+document.addEventListener("DOMContentLoaded", initApp);
+
+function getData(res) {
+    return res.json?.data ?? res.json ?? [];
+}
+
+async function initApp() {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -33,119 +50,183 @@ async function dashboardInit() {
         return;
     }
 
-    try {
+    state.token = token;
 
-        // =========================
-        // INIT UI
-        // =========================
+    try {
         initNavigation();
         initCreateSurpriseListeners();
-        initUpdateSurpriseListeners();
 
-        // =========================
-        // LOAD USER (SERVICE)
-        // =========================
+        window.openOwnerSurpriseDetail = openOwnerSurpriseDetail;
+        window.saveOwnerSurprise = saveOwnerSurprise;
+        window.cancelOwnerSurprise = cancelOwnerSurprise;
+        window.loadOwnerSurprises = loadOwnerSurprises;
+        window.deleteOwnerFile = deleteOwnerFile;
+        initSurpriseDetail();
+
         const meRes = await getMe(token);
 
         if (meRes.status !== 200) {
-            throw new Error("Sesión inválida");
+            location.href = "index.html";
+            return;
         }
 
-        currentUser = meRes.json;
+        state.user = meRes.json?.data || meRes.json;
 
-        // =========================
-        // LOAD INITIAL DATA (SERVICES)
-        // =========================
-        const [surprisesRes, geniusRes, notifRes] = await Promise.all([
-            getSurprises(token),
-            getGeniusDashboard(currentUser.id, token),
-            getNotifications(currentUser.id, token)
-        ]);
+        renderTopMenuUser(state.user);
 
-        // =========================
-        // HANDLE SURPRISES
-        // =========================
-        if (surprisesRes.status === 200) {
-            const surprises = surprisesRes.json?.data || [];
-            renderSurprisesHome(surprises);
-        }
-
-        // =========================
-        // HANDLE GENIUS
-        // =========================
-        if (geniusRes.status === 200) {
-            const data = geniusRes.json?.data;
-            if (data) renderGenius(data);
-        }
-
-        // =========================
-        // HANDLE NOTIFICATIONS
-        // =========================
-        if (notifRes.status === 200) {
-            const notifications = notifRes.json?.data || [];
-            renderNotifications(notifications);
-        }
-
-        // =========================
-        // START APP
-        // =========================
         showAppSection("home");
 
-        restartCountdowns();
+        loadHomeFeed(token);
+        startNotificationWatcher(token);
+        preloadSecondaryData(token);
 
     } catch (err) {
-        console.error("APP INIT ERROR:", err);
+        console.error("Error inicializando app:", err);
     }
 }
 
-/* =====================================================
-   SIMPLE RENDERERS (puedes moverlos luego a sections/)
-===================================================== */
+async function loadHomeFeed(token) {
+    try {
+        const surprisesRes = await getFeed(token);
 
-function renderSurprisesHome(surprises) {
-    const container = document.getElementById("all_surprises_list");
-    if (!container) return;
-
-    container.innerHTML = surprises.length
-        ? surprises.map(s => `<div>${s.title}</div>`).join("")
-        : "<p>No hay sorpresas</p>";
+        if (surprisesRes.status === 200) {
+            state.surprises = getData(surprisesRes);
+            renderSurprisesHome(state.surprises);
+            restartCountdowns();
+        }
+    } catch (error) {
+        console.error("Error cargando sorpresas:", error);
+    }
 }
 
-function renderGenius(data) {
-    const level = document.getElementById("genius_level_label");
-    const points = document.getElementById("genius_points_label");
+function renderTopMenuUser(user) {
+    const avatar = document.getElementById("profile_avatar_preview");
+    const avatarLarge = document.getElementById("profile_avatar_preview_large");
+    const name = document.getElementById("top_user_name");
 
-    if (level) level.textContent = data.user?.genius_level || "SPARK";
-    if (points) points.textContent = `${data.user?.genius_points || 0} puntos`;
+    const avatarUrl = user.avatar
+        ? getImageUrl(user.avatar)
+        : "https://api.surpriser.app/storage/defaults/avatar.png";
+
+    if (avatar) avatar.src = avatarUrl;
+    if (avatarLarge) avatarLarge.src = avatarUrl;
+
+    if (name) {
+        name.textContent = user.username
+            ? `@${user.username}`
+            : user.name || "Usuario";
+    }
 }
 
-function renderNotifications(notifications) {
-    const box = document.getElementById("notifications_list");
-    if (!box) return;
+function getImageUrl(path) {
+    if (!path) return "";
 
-    box.innerHTML = notifications.length
-        ? notifications.map(n => `
-            <div class="mini-item">
-                <strong>${n.title}</strong>
-                <span>${n.message}</span>
-            </div>
-        `).join("")
-        : "<div>No notifications</div>";
-}
-
-/* =====================================================
-   COUNTDOWN SYSTEM
-===================================================== */
-
-function restartCountdowns() {
-
-    if (typeof updateSurpriseCountdowns !== "function") return;
-
-    updateSurpriseCountdowns();
-
-    if (surpriseCountdownInterval) {
-        clearInterval(surpriseCountdownInterval);
+    if (path.startsWith("http://") || path.startsWith("https://")) {
+        return path;
     }
 
-    surpriseCountdownInterval = setInterval(updateSurpriseCountdowns, 1000);
+    if (path.startsWith("/storage/")) {
+        return "https://api.surpriser.app" + path;
+    }
+
+    return "https://api.surpriser.app/storage/" + path;
+}
+
+/* =====================================================
+   NOTIFICATIONS
+===================================================== */
+
+window.loadNotificationsSection = async function () {
+    const token = localStorage.getItem("token");
+
+    if (!state.user?.id) return;
+
+    const res = await getNotifications(state.user.id, token);
+
+    if (res.status === 200) {
+        state.notifications = getData(res);
+        renderNotifications(state.notifications);
+    }
+
+    // Solo ocultamos la burbuja visualmente.
+    // No marcamos como leídas en backend.
+    renderNotificationBadge(0);
+};
+
+function startNotificationWatcher(token) {
+    refreshUnreadNotifications(token);
+
+    if (notificationTimer) {
+        clearInterval(notificationTimer);
+    }
+
+    notificationTimer = setInterval(() => {
+        refreshUnreadNotifications(token);
+    }, 30000);
+}
+
+async function refreshUnreadNotifications(token) {
+    if (!state.user?.id) return;
+
+    const notificationsSection = document.getElementById("section-notifications");
+    const isViewingNotifications =
+        notificationsSection &&
+        notificationsSection.style.display !== "none";
+
+    if (isViewingNotifications) {
+        renderNotificationBadge(0);
+        return;
+    }
+
+    try {
+        const res = await getUnreadNotificationsCount(state.user.id, token);
+
+        if (res.status !== 200) return;
+
+        const count = res.json?.count ?? res.json?.data?.count ?? 0;
+
+        if (count > lastUnreadCount) {
+            showNotificationToast({
+                title: "Nueva notificación",
+                message: `Tienes ${count} notificación${count === 1 ? "" : "es"} pendiente${count === 1 ? "" : "s"}.`
+            });
+        }
+
+        lastUnreadCount = count;
+        renderNotificationBadge(count);
+
+    } catch (error) {
+        console.error("Error cargando contador de notificaciones:", error);
+    }
+}
+
+function renderNotificationBadge(count) {
+    const badge = document.getElementById("notif_count");
+
+    if (!badge) return;
+
+    if (!count || count <= 0) {
+        badge.textContent = "";
+        badge.style.display = "none";
+        return;
+    }
+
+    badge.textContent = count > 99 ? "99+" : count;
+    badge.style.display = "inline-flex";
+}
+
+/* =====================================================
+   SECONDARY DATA
+===================================================== */
+
+async function preloadSecondaryData(token) {
+    try {
+        const skillsRes = await getSkills(token);
+
+        if (skillsRes.status === 200) {
+            state.skills = skillsRes.json?.data || [];
+        }
+    } catch (error) {
+        console.error("Error precargando skills:", error);
+    }
 }

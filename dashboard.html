@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | Surpriser</title>
-
-  <link rel="stylesheet" href="css/style.css?v=127">
-  <script type="module" src="js/main.js?v=48"></script>
+<link rel="icon" type="image/png" href="img/logo-mini.png">
+  <link rel="stylesheet" href="css/style.css?v=160">
+  <script type="module" src="js/main.js?v=999999999999"></script>
 </head>
 
 <body class="app-dashboard">
@@ -40,9 +40,10 @@
       <img id="profile_avatar_preview" class="top-avatar" src="" alt="Avatar">
     </button>
 
-    <button class="top-pill" data-section="notifications">
-      Notificaciones <span id="notif_count">0</span>
-    </button>
+   <button class="top-pill notif-button" data-section="notifications">
+  Notificaciones
+  <span id="notif_count" class="notif-badge"></span>
+</button>
 
     <button class="top-pill" data-action="logout">
       Salir
@@ -73,7 +74,7 @@
       <div class="discover-hero-content">
 
         <span class="discover-badge">
-          Explorar sorpresas
+          Tablero de sorpresas general
         </span>
 
         <h1>
@@ -81,58 +82,112 @@
         </h1>
 
         <p>
-          Música, viajes, arte, mascotas, vídeos,
+          Música, arte, mascotas, vídeos,
           naturaleza y mucho más en un único lugar.
         </p>
 
-        <button class="discover-main-btn" data-action="scroll-surprises">
-          Ver sorpresas
-        </button>
-
-      </div>
-
-      <div class="discover-hero-visual">
-
-        <div class="discover-demo-card">
-
-          <img src="img/funcionamiento.png" alt="Sorpresas">
-
-          <div class="discover-demo-overlay">
-
-            <div class="discover-step">
-              <span>🎵</span>
-              <p>Experiencias musicales</p>
-            </div>
-
-            <div class="discover-step">
-              <span>🌿</span>
-              <p>Momentos en la naturaleza</p>
-            </div>
-
-            <div class="discover-step">
-              <span>🎨</span>
-              <p>Creatividad, danza y arte</p>
-            </div>
-
-          </div>
-
-        </div>
 
       </div>
 
     </div>
+<!-- FILTER BAR COMPACTA -->
+<nav class="surpriser-filter-nav">
 
-    <!-- LISTA DE SORPRESAS -->
+  <!-- CATEGORÍA -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="skill">
+      Categoría ▾
+    </button>
+    <div class="dropdown-menu" id="skill_menu"></div>
+  </div>
+
+  <!-- TAMAÑO -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="size">
+      Tamaño ▾
+    </button>
+    <div class="dropdown-menu">
+      <div class="option" data-size="">Todos</div>
+      <div class="option" data-size="SMALL">Small</div>
+      <div class="option" data-size="MEDIUM">Medium</div>
+      <div class="option" data-size="LARGE">Large</div>
+      <div class="option" data-size="PREMIUM">Premium</div>
+    </div>
+  </div>
+
+  <!-- TIEMPO -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="deadline">
+      Tiempo ▾
+    </button>
+   <div class="dropdown-menu">
+  <div class="option" data-order-deadline="asc">Expiran pronto</div>
+  <div class="option" data-order-deadline="desc">Expiran más tarde</div>
+</div>
+  </div>
+
+  <!-- EXTRA -->
+  <div class="filter-item toggles">
+    <label>
+      <input type="checkbox" id="filter_urgent">
+      Urgentes
+    </label>
+
+    <label>
+      <input type="checkbox" id="filter_featured">
+      Destacadas
+    </label>
+  </div>
+
+  <!-- RESET -->
+  <button id="reset_filters" class="reset-btn">
+    Reset
+  </button>
+
+</nav>
+     <!-- =====================================================
+    LISTA DE SURPRISES
+  ===================================================== -->
     <div class="section-head">
-      <span>Deseos abiertos</span>
-      <h1>Sorpresas esperando genio</h1>
+      <span>Explorar sorpresas</span>
+      <h1>Sorpresas buscando Genio...</h1>
     </div>
 
     <div id="all_surprises_list" class="surprise-grid"></div>
 
   </section>
 
+ <!-- =====================================================
+    DETAIL SURPRISE
+  ===================================================== -->
+  
+<section id="section-surprise-detail" class="section app-section" style="display:none">
 
+  <button class="detail-back-btn" data-section="home">
+    Volver a sorpresas
+  </button>
+
+  <div id="surprise_detail_container" class="surprise-detail-shell">
+    <!-- JS pinta aquí el detalle -->
+  </div>
+
+</section>
+
+ <!-- =====================================================
+    OWNER SURPRISE DETAIL
+  ===================================================== -->
+
+<section id="section-owner-surprise-detail" class="section app-section" style="display:none">
+
+  <button class="detail-back-btn" data-section="creator">
+    Volver a mis sorpresas
+  </button>
+
+  <div id="owner_surprise_detail_container">
+    <!-- JS pinta aquí -->
+  </div>
+
+</section>
   <!-- =====================================================
     SECTION: PROFILE (PERFIL)
   ===================================================== -->
@@ -206,26 +261,27 @@
 
   <section id="section-creator" class="section app-section creator-dashboard" style="display:none">
 
-    <div class="creator-hero">
+  <div class="creator-hero">
 
-      <div class="creator-hero-content">
+    <div class="creator-hero-content">
 
-        <span class="creator-badge">Dashboard creador</span>
+      <span class="creator-badge">Dashboard creador</span>
 
-        <h1>Convierte ideas en sorpresas increíbles</h1>
+      <h1>Convierte ideas en sorpresas increíbles</h1>
 
-        <p>
-          Gestiona tus publicaciones, crea nuevas experiencias
-          y coordina todo desde un único panel visual.
-        </p>
-
-        <button class="creator-main-btn" data-section="create-surprise">
-          + Crear sorpresa
-        </button>
-
-      </div>
+      <p>
+        Gestiona tus publicaciones, crea nuevas experiencias
+        y coordina todo desde un único panel visual.
+      </p>
 
     </div>
+
+    <button class="creator-main-btn" data-section="create-surprise">
+      + Crear sorpresa
+    </button>
+
+  </div>
+
 
     <div class="section-head">
       <span>Tus publicaciones</span>
@@ -382,6 +438,97 @@
 ===================================================== -->
 
 <pre id="output" class="app-output"></pre>
+<!-- OFFER MODAL -->
+<div id="offer_modal" class="offer-modal" style="display:none">
+  <div class="offer-modal-backdrop" data-action="close-offer-modal"></div>
 
+  <form class="offer-modal-card" id="offer_form">
+    <h2>Hacer oferta</h2>
+    <p class="offer-help">
+      Propón un precio, explica cómo resolverías la sorpresa y estima cuánto tardarías.
+    </p>
+
+    <input type="hidden" id="offer_surprise_id">
+
+    <label>Precio de tu oferta</label>
+    <small>Indica cuánto cobrarías por realizar esta sorpresa.</small>
+    <input id="offer_price" type="number" min="1" step="0.01" placeholder="Ej: 45">
+
+    <label>Mensaje para la creadora</label>
+    <small>Cuenta brevemente tu idea, experiencia o propuesta.</small>
+    <textarea id="offer_message" placeholder="Puedo hacerlo así..."></textarea>
+
+    <label>Horas estimadas</label>
+    <small>Tiempo aproximado que necesitas desde que acepten tu oferta.</small>
+    <input id="offer_eta" type="number" min="1" placeholder="Ej: 24">
+
+    <div class="offer-modal-actions">
+      <button type="button" class="detail-secondary-btn" data-action="close-offer-modal">
+        Cancelar
+      </button>
+
+      <button type="submit" class="detail-offer-btn">
+        Enviar oferta
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- NOTIFICATION TOAST -->
+<div id="notification_toast" class="notification-toast" style="display:none"></div>
+<div id="owner_cancel_modal" class="surpriser-modal" style="display:none">
+  <div class="surpriser-modal-card cancel-modal-card">
+
+    <div class="modal-head">
+      <span>Cancelar sorpresa</span>
+      <h2>¿Por qué quieres cancelarla?</h2>
+      <p>
+        Selecciona un motivo. Esto ayuda a gestionar penalizaciones,
+        avisos y el historial de la sorpresa.
+      </p>
+    </div>
+
+    <form id="owner_cancel_form">
+      <input type="hidden" id="cancel_surprise_id">
+
+      <label>Motivo</label>
+      <select id="cancel_reason_key" required>
+        <option value="">Selecciona un motivo</option>
+        <option value="illness">Enfermedad</option>
+        <option value="personal_issue">Problema personal</option>
+        <option value="force_majeure">Fuerza mayor</option>
+        <option value="technical_issue">Problema técnico</option>
+        <option value="no_time">No tengo tiempo</option>
+        <option value="uncomfortable">No me siento cómodo/a</option>
+        <option value="cant_now">No puedo ahora</option>
+        <option value="no_reason">Prefiero no decirlo</option>
+      </select>
+
+      <label>Detalles opcionales</label>
+      <textarea
+        id="cancel_reason_text"
+        maxlength="1000"
+        placeholder="Puedes explicar un poco más el motivo si quieres."
+      ></textarea>
+
+      <div id="cancel_modal_message" class="owner-detail-message" style="display:none"></div>
+
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="detail-secondary-btn"
+          data-action="close-owner-cancel-modal"
+        >
+          Volver
+        </button>
+
+        <button type="submit" class="action-danger modal-danger-btn">
+          Cancelar sorpresa
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
 </body>
 </html>

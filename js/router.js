@@ -1,32 +1,22 @@
+import { state } from "./state/appState.js";
+
 export function initNavigation() {
-
   document.addEventListener("click", (e) => {
-
-    // =========================
-    // CAMBIO DE SECCIÓN
-    // =========================
     const sectionBtn = e.target.closest("[data-section]");
 
     if (sectionBtn) {
+      e.preventDefault();
       showAppSection(sectionBtn.dataset.section);
       return;
     }
 
-    // =========================
-    // ACCIONES GLOBALES
-    // =========================
     const actionBtn = e.target.closest("[data-action]");
 
     if (!actionBtn) return;
 
+    e.preventDefault();
+
     const action = actionBtn.dataset.action;
-
-    // DEBUG
-    console.log("ACTION:", action);
-
-    // =========================
-    // ACTION ROUTER
-    // =========================
 
     if (action === "logout") {
       logoutController();
@@ -48,6 +38,59 @@ export function initNavigation() {
       return;
     }
 
+    if (action === "surprise-detail") {
+      window.openSurpriseDetail?.(actionBtn.dataset.surpriseId);
+      return;
+    }
+
+    if (action === "open-offer-modal") {
+      window.openOfferModal?.(actionBtn.dataset.surpriseId);
+      return;
+    }
+
+    if (action === "close-offer-modal") {
+      window.closeOfferModal?.();
+      return;
+    }
+if (action === "close-owner-cancel-modal") {
+  window.closeOwnerCancelModal?.();
+  return;
+}
+    if (action === "offer-from-detail") {
+      window.offerFromDetail?.(actionBtn.dataset.surpriseId);
+      return;
+    }
+
+    if (action === "creator-detail") {
+      window.openCreatorDetail?.(actionBtn.dataset.creatorId);
+      return;
+    }
+
+    if (action === "owner-surprise-detail") {
+      window.openOwnerSurpriseDetail?.(actionBtn.dataset.surpriseId);
+      return;
+    }
+
+    if (action === "owner-cancel-surprise") {
+      window.cancelOwnerSurprise?.(actionBtn.dataset.surpriseId);
+      return;
+    }
+
+    if (action === "owner-save-surprise") {
+      window.saveOwnerSurprise?.(actionBtn.dataset.surpriseId);
+      return;
+    }
+
+    if (action === "owner-delete-file") {
+      window.deleteOwnerFile?.(actionBtn.dataset.fileId);
+      return;
+    }
+
+    if (action === "owner-preview-image") {
+      window.previewOwnerHeaderImage?.();
+      return;
+    }
+
     if (action === "update-surprise") {
       updateSurpriseController();
       return;
@@ -56,29 +99,13 @@ export function initNavigation() {
 }
 
 export function showSection(sectionName) {
-
-  document.querySelectorAll(".app-section")
-    .forEach(section => {
-      section.style.display = "none";
-    });
-
-  const active = document.getElementById(`section-${sectionName}`);
-
-  if (active) {
-    active.style.display = "block";
-  }
+  showAppSection(sectionName);
 }
 
-// =========================
-// APP SECTION CONTROLLER
-// =========================
-
 export function showAppSection(name) {
-
-  document.querySelectorAll(".app-section")
-    .forEach(section => {
-      section.style.display = "none";
-    });
+  document.querySelectorAll(".app-section").forEach(section => {
+    section.style.display = "none";
+  });
 
   const section = document.getElementById(`section-${name}`);
 
@@ -86,18 +113,19 @@ export function showAppSection(name) {
     section.style.display = "block";
   }
 
-  // =========================
-  // LAZY LOAD POR SECCIÓN
-  // =========================
-  if (name === "creator") {
-    loadCreatorDashboardController();
+  if (name === "creator" && state.user) {
+    window.loadOwnerSurprises?.();
   }
 
   if (name === "genius") {
-    loadGeniusDashboardController();
+    window.loadGeniusDashboardController?.();
+  }
+
+  if (name === "notifications") {
+    window.loadNotificationsSection?.();
   }
 
   if (name === "shopping") {
-    loadShoppingController();
+    window.loadShoppingController?.();
   }
 }

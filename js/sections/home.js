@@ -1,276 +1,423 @@
-let allSurprises = [];
+import { state } from "../state/appState.js";
 
 /* =====================================================
-   DASHBOARD (usuario)
+   RESTART COUNTDOWN (IMPORTANTE: SOLO UNA)
 ===================================================== */
+console.log(state);
+export function restartCountdowns() {
+    updateSurpriseCountdowns();
 
-export function userDashboardController() {
-    const id = dash_id?.value;
-    if (!id) return;
+    if (state.ui.countdownInterval) {
+        clearInterval(state.ui.countdownInterval);
+    }
 
-    api("GET", `/api/users/${id}/dashboard`)
-        .then(r => showMsg(r.text));
+    state.ui.countdownInterval = setInterval(() => {
+        updateSurpriseCountdowns();
+    }, 1000);
 }
 
 /* =====================================================
-   FEED SORPRESAS
+   HOME - RENDER LISTA PRINCIPAL
 ===================================================== */
 
-export function loadAllSurprisesController() {
-    const token = localStorage.getItem("token");
+export function renderSurprisesHome(surprises = []) {
 
-    return api("GET", "/api/surprises", null, token)
-        .then(r => {
-            if (r.status !== 200 || !r.json.success) {
-                throw new Error("No se pudo cargar el feed.");
-            }
+    const container = document.getElementById("all_surprises_list");
 
-            allSurprises = (r.json.data || []).filter(s => s.status === "open");
-
-            renderSurpriseCards("all_surprises_list", allSurprises, {
-                mode: "offer"
-            });
-        });
-}
-
-/* =====================================================
-   NOTIFICACIONES
-===================================================== */
-
-export function loadNotificationsController() {
-    if (!currentUser) return Promise.resolve();
-
-    const token = localStorage.getItem("token");
-
-    return api("GET", `/api/users/${currentUser.id}/notifications`, null, token)
-        .then(r => {
-            const notifications = r.json?.data || [];
-
-            const unread = notifications.filter(n => !n.read_flag).length;
-
-            const count = document.getElementById("notif_count");
-            if (count) count.textContent = unread;
-
-            renderNotifications(notifications);
-        });
-}
-
-/* =====================================================
-   RENDER SORPRESAS
-===================================================== */
-
-export function renderSurpriseCards(containerId, surprises, options = {}) {
-    const container = document.getElementById(containerId);
     if (!container) return;
 
-    if (!surprises.length) {
-        container.innerHTML = `<div class="app-card">No hay sorpresas para mostrar.</div>`;
+    // solo sorpresas OPEN
+    const openSurprises = surprises.filter(
+        surprise => surprise.status === "open"
+    );
+
+    if (openSurprises.length === 0) {
+        container.innerHTML = `
+            <p>No hay sorpresas abiertas disponibles</p>
+        `;
         return;
     }
 
-    container.innerHTML = surprises
-        .map(s => renderSurpriseCard(s, options))
+    container.innerHTML = openSurprises
+        .map(renderSimpleSurprise)
         .join("");
 
     restartCountdowns();
 }
 
-export function renderSurpriseCard(surprise, options = {}) {
+/* =====================================================
+   CARD SIMPLE (nivel básico)
+===================================================== */
 
-    const status = surprise.status || "open";
-    const statusClass = "surprise-status-" + String(status).replace("_", "-");
+export function renderSimpleSurprise(surprise) {
 
-    const isFeatured =
-        surprise.ads_exists === true ||
-        surprise.ads_exists === 1 ||
-        surprise.ads_exists === "1" ||
-        (surprise.ads && surprise.ads.length);
-
-    const skillName = surprise.skill?.name || "Sin categoría";
-    const size = surprise.size || "";
     const title = surprise.title || "Sin título";
+    const status = surprise.status || "open";
+
+    const category = surprise.skill?.name || "Sin categoría";
+    const size = surprise.size || "STANDARD";
+
+    const isFeatured = Number(surprise.ads_count) > 0;
+    const isUrgent = Number(surprise.is_urgent) === 1;
 
     return `
         <div class="surprise-card-v2 ${isFeatured ? "surprise-card-v2-featured" : ""}">
 
+            <!-- TOP -->
             <div class="surprise-card-v2-top">
-                <span class="surprise-status-v2 ${statusClass}">
+
+                <span class="surprise-status-v2 surprise-status-${status}">
                     ${status}
                 </span>
 
-                ${isFeatured ? `
-                    <div class="surprise-featured-stack">
-                        <img src="img/creacionestrellablanco.png" class="surprise-featured-v2 surprise-featured-bg" alt="">
-                        <img src="img/creacionestrella.png" class="surprise-featured-v2 surprise-featured-main" alt="Featured">
-                    </div>
-                ` : ""}
+                ${
+                    isFeatured
+                        ? `
+                        <div class="surprise-featured-stack">
+
+                            <img
+                                class="surprise-featured-v2 surprise-featured-bg"
+                                src="img/creacionestrellablanco.png"
+                                alt=""
+                            >
+
+                            <img
+                                class="surprise-featured-v2 surprise-featured-main"
+                                src="img/creacionestrella.png"
+                                alt="Creación estrella"
+                            >
+
+                        </div>
+                        `
+                        : ""
+                }
+
             </div>
 
+            <!-- BODY -->
             <div class="surprise-card-v2-body">
 
                 <div class="surprise-card-v2-meta">
 
                     ${
-                        surprise.is_urgent === 1 ||
-                        surprise.is_urgent === true ||
-                        surprise.is_urgent === "1"
-                        ? `<img src="img/destello.png" class="urgent-icon-v2" alt="Urgente">`
-                        : `<span class="urgent-icon-v2 urgent-icon-empty"></span>`
+                        isUrgent
+                            ? `
+                            <img
+                                src="img/destello.png"
+                                class="urgent-icon-v2"
+                                alt="Urgente"
+                            >
+                            `
+                            : `
+                            <span class="urgent-icon-placeholder"></span>
+                            `
                     }
 
-                    <div>
-                        <p>${skillName}</p>
+                    <div class="categorySize">
+                        <p>${category}</p>
                         <strong>${size}</strong>
                     </div>
 
-                    <span class="surprise-countdown-v2" data-deadline="${surprise.deadline || ""}">
-                        Calculando...
-                    </span>
+                    ${
+                        surprise.deadline
+                            ? `
+                            <span
+                                class="surprise-countdown-v2"
+                                data-deadline="${surprise.deadline}"
+                            >
+                                Calculando...
+                            </span>
+                            `
+                            : ""
+                    }
 
                 </div>
 
                 <h4>${title}</h4>
 
-                ${renderCardActions(surprise, options.mode)}
+                <div class="surprise-card-v2-actions">
+
+                  <a
+    class="surprise-card-v2-actions-offer"
+    href="#"
+    data-action="open-offer-modal"
+    data-surprise-id="${surprise.id}"
+>
+    HACER OFERTA
+</a>
+
+                <a
+  class="action-more"
+  href="#"
+  data-action="surprise-detail"
+  data-surprise-id="${surprise.id}"
+>
+  MÁS INFO
+</a>
+
+                </div>
 
             </div>
-        </div>
-    `;
-}
-
-export function renderCardActions(surprise, mode) {
-
-    if (mode === "creator") {
-        return `
-            <div class="surprise-card-v2-actions">
-
-                <a href="#" onclick="fillUpdateSurpriseById(${surprise.id}); return false;" class="action-primary">
-                    MODIFICAR
-                </a>
-
-                <a href="#" onclick="cancelSurpriseController(${surprise.id}); return false;" class="action-danger">
-                    CANCELAR
-                </a>
-
-            </div>
-        `;
-    }
-
-    return `
-        <div class="surprise-card-v2-actions">
-
-            <a href="#" onclick="offerSurpriseController(${surprise.id}); return false;" class="surprise-card-v2-actions-offer">
-                HACER OFERTA
-            </a>
-
-            <a href="#" onclick="showMsg('Más info de la sorpresa ${surprise.id}'); return false;" class="action-more">
-                Más info
-            </a>
 
         </div>
     `;
 }
 
 /* =====================================================
-   NOTIFICACIONES UI
-===================================================== */
-
-export function renderNotifications(notifications) {
-    const box = document.getElementById("notifications_list");
-    if (!box) return;
-
-    box.innerHTML = notifications.length
-        ? notifications.map(n => `
-            <div class="mini-item">
-                <strong>${n.title}</strong>
-                <span>${n.message}</span>
-            </div>
-        `).join("")
-        : `<div class="mini-item">Sin notificaciones.</div>`;
-}
-
-/* =====================================================
-   COUNTDOWN (UI GLOBAL)
+   COUNTDOWN SIMPLE
 ===================================================== */
 
 export function updateSurpriseCountdowns() {
+  const elements = document.querySelectorAll(".surprise-countdown-v2[data-deadline]");
 
-    document.querySelectorAll(".surprise-countdown, .surprise-countdown-v2")
-        .forEach(el => {
-
-            const deadline = el.dataset.deadline;
-            el.textContent = getCountdownText(deadline);
-
-            if (el.textContent === "Expirada") {
-                el.classList.add("surprise-countdown-expired");
-            } else {
-                el.classList.remove("surprise-countdown-expired");
-            }
-        });
+  elements.forEach(el => {
+    const deadline = el.dataset.deadline;
+    el.textContent = getTimeLeft(deadline);
+  });
 }
 
-export function getCountdownText(deadline) {
+/* =====================================================
+   TIEMPO RESTANTE
+===================================================== */
+
+export function getTimeLeft(deadline) {
 
     if (!deadline) return "Sin fecha";
 
-    const deadlineDate = new Date(deadline);
+    const end = new Date(String(deadline).replace(" ", "T"));
     const now = new Date();
 
-    if (isNaN(deadlineDate.getTime())) return "Fecha no válida";
+    if (isNaN(end.getTime())) {
+        return "Fecha inválida";
+    }
 
-    const diff = deadlineDate - now;
+    const diff = end - now;
 
-    if (diff <= 0) return "Expirada";
+    if (diff <= 0) {
+        return "Expirada";
+    }
 
-    const seconds = Math.floor(diff / 1000);
-    const days = Math.floor(seconds / 86400);
-    const hours = Math.floor((seconds % 86400) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
+    const totalSeconds = Math.floor(diff / 1000);
 
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    // Si queda al menos 1 día
     if (days > 0) {
         return `${days}d ${hours}h ${minutes}m`;
     }
 
-    return `${hours}h ${minutes}m ${secs}s`;
+    // Últimas 24 horas
+    return `${hours}h ${minutes}m ${seconds}s`;
 }
-
 /* =====================================================
-   HELPERS
+   FILTROS
 ===================================================== */
 
-export function getImageUrl(path) {
+let filters = {
+  skill_id: "",
+  size: "",
+  order_deadline: "",
+  featured: "",
+  is_urgent: ""
+};
 
-    if (!path) return "";
+document.addEventListener("DOMContentLoaded", () => {
+  initFilterDropdowns();
+  initStaticFilterOptions();
+  initToggleFilters();
+  initResetFilters();
 
-    if (path.startsWith("http://") || path.startsWith("https://")) {
-        return path;
-    }
+  loadSkillMenu();
+  fetchSurprises();
+});
 
-    if (path.startsWith("/storage/")) {
-        return API + path;
-    }
+function initFilterDropdowns() {
+  document.querySelectorAll(".filter-item.dropdown").forEach(item => {
+    const btn = item.querySelector(".filter-btn");
+    const menu = item.querySelector(".dropdown-menu");
 
-    return API + "/storage/" + path;
+    if (!btn || !menu) return;
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      document.querySelectorAll(".dropdown-menu").forEach(other => {
+        if (other !== menu) other.classList.remove("is-open");
+      });
+
+      menu.classList.toggle("is-open");
+    });
+
+    menu.addEventListener("click", e => e.stopPropagation());
+  });
+
+  document.addEventListener("click", closeAllFilterMenus);
 }
-// ======================
-// INDEX CONTROLLER
-// ======================
-function indexController() {
-    const token = localStorage.getItem("token");
-    const box = document.getElementById("sessionBox");
 
-    if (!box) return;
+function closeAllFilterMenus() {
+  document.querySelectorAll(".dropdown-menu").forEach(menu => {
+    menu.classList.remove("is-open");
+  });
+}
 
-    if (!token) {
-        box.textContent = "No has iniciado sesión.";
-        return;
+function initStaticFilterOptions() {
+  document.querySelectorAll("[data-size]").forEach(el => {
+    el.addEventListener("click", () => {
+      filters.size = el.dataset.size || "";
+      updateFilterButtonText(el, "Tamaño");
+      closeAllFilterMenus();
+      fetchSurprises();
+    });
+  });
+
+  document.querySelectorAll("[data-order-deadline]").forEach(el => {
+    el.addEventListener("click", () => {
+      filters.order_deadline = el.dataset.orderDeadline || "";
+      updateFilterButtonText(el, "Tiempo");
+      closeAllFilterMenus();
+      fetchSurprises();
+    });
+  });
+}
+
+function initToggleFilters() {
+  const urgent = document.getElementById("filter_urgent");
+  const featured = document.getElementById("filter_featured");
+
+  if (urgent) {
+    urgent.addEventListener("change", e => {
+      filters.is_urgent = e.target.checked ? "1" : "";
+      fetchSurprises();
+    });
+  }
+
+  if (featured) {
+    featured.addEventListener("change", e => {
+      filters.featured = e.target.checked ? "1" : "";
+      fetchSurprises();
+    });
+  }
+}
+
+function initResetFilters() {
+  const resetBtn = document.getElementById("reset_filters");
+  if (!resetBtn) return;
+
+  resetBtn.addEventListener("click", () => {
+    filters = {
+      skill_id: "",
+      size: "",
+      order_deadline: "",
+      featured: "",
+      is_urgent: ""
+    };
+
+    document.querySelectorAll(".surpriser-filter-nav input").forEach(input => {
+      input.checked = false;
+    });
+
+    resetFilterButtonTexts();
+    closeAllFilterMenus();
+    fetchSurprises();
+  });
+}
+
+function loadSkillMenu() {
+  const menu = document.getElementById("skill_menu");
+  if (!menu) return;
+
+  fetch("https://api.surpriser.app/api/skills", {
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token")
     }
+  })
+    .then(res => res.json())
+    .then(response => {
+      const skills = response.data || [];
 
-    box.innerHTML = `
-        <p>Ya has iniciado sesión.</p>
-        <a class="btn" href="dashboard.html">Ir al Dashboard</a>
-        <br><br>
-        <button class="btn" onclick="logoutController()">Logout</button>
-    `;
+      menu.innerHTML = `
+        <div class="option" data-skill="">Todas</div>
+        ${skills.map(skill => `
+          <div class="option" data-skill="${skill.id}">
+            ${skill.name}
+          </div>
+        `).join("")}
+      `;
+
+      bindSkillOptions();
+    });
+}
+
+function bindSkillOptions() {
+  document.querySelectorAll("[data-skill]").forEach(el => {
+    el.addEventListener("click", () => {
+      filters.skill_id = el.dataset.skill || "";
+      updateFilterButtonText(el, "Categoría");
+      closeAllFilterMenus();
+      fetchSurprises();
+    });
+  });
+}
+
+function fetchSurprises() {
+  const params = new URLSearchParams();
+
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== "" && value !== null && value !== undefined) {
+      params.append(key, value);
+    }
+  });
+
+ const url = `https://api.surpriser.app/api/surprises/feed?${params.toString()}`;
+
+ 
+
+  fetch(url, {
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token")
+    }
+  })
+    .then(async res => {
+      const data = await res.json();
+
+     
+
+      if (!res.ok) {
+        throw new Error(data.message || "Error cargando sorpresas");
+      }
+
+      renderSurprisesHome(data.data || []);
+    })
+    .catch(error => {
+      console.error("Error cargando sorpresas:", error);
+    });
+}
+
+function updateFilterButtonText(option, fallback) {
+  const dropdown = option.closest(".dropdown");
+  const btn = dropdown?.querySelector(".filter-btn");
+
+  if (!btn) return;
+
+  const text = option.textContent.trim();
+
+  btn.textContent = text && text !== "Todas" && text !== "Todos"
+    ? `${fallback}: ${text} ▾`
+    : `${fallback} ▾`;
+}
+
+function resetFilterButtonTexts() {
+  const skillBtn = document.querySelector('[data-toggle="skill"]');
+  const sizeBtn = document.querySelector('[data-toggle="size"]');
+  const deadlineBtn = document.querySelector('[data-toggle="deadline"]');
+
+  if (skillBtn) skillBtn.textContent = "Categoría ▾";
+  if (sizeBtn) sizeBtn.textContent = "Tamaño ▾";
+  if (deadlineBtn) deadlineBtn.textContent = "Tiempo ▾";
 }

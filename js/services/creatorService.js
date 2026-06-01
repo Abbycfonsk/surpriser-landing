@@ -1,9 +1,5 @@
 import { api } from "../api.js";
 
-/* =========================
-   PLAN
-========================= */
-
 export function getCurrentPlan(token) {
     return api("GET", "/api/creator/plan/current", null, token);
 }
@@ -12,10 +8,6 @@ export function purchasePlan(planType, token) {
     return api("POST", "/api/creator/plan/purchase", { plan_type: planType }, token);
 }
 
-/* =========================
-   PACKAGE
-========================= */
-
 export function getCurrentPackage(token) {
     return api("GET", "/api/creator/package/current", null, token);
 }
@@ -23,10 +15,6 @@ export function getCurrentPackage(token) {
 export function purchasePackage(packageType, token) {
     return api("POST", "/api/creator/package/purchase", { package_type: packageType }, token);
 }
-
-/* =========================
-   ADS
-========================= */
 
 export function getAdsStats(token) {
     return api("GET", "/api/creator/ads/stats", null, token);

@@ -4,7 +4,7 @@ import {
     logout,
     forgotPassword,
     resetPassword
-} from "../services/auth.service.js";
+} from "../services/authService.js";
 
 
 // ======================
@@ -108,7 +108,7 @@ export function logoutController() {
 // LOGIN
 // ======================
 export function loginController() {
-
+ console.log("estoy en login controler");
     const out = document.getElementById("output");
 
     const email = document.getElementById("log_email").value.trim();
@@ -148,3 +148,4 @@ export function loginController() {
 
         });
 }
+

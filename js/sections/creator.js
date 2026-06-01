@@ -1,5 +1,6 @@
 import { createSurprise, updateSurprise, getCreatedSurprises, cancelSurprise } from "../services/surpriseService.js";
-import { restartCountdowns } from "../main.js";
+import { restartCountdowns, renderSimpleSurprise } from "../sections/home.js";
+import { showMsg, renderSimpleSurpriseList } from "../utils/ui.js";
 
 let createdSurprises = [];
 
@@ -44,11 +45,7 @@ export function loadCreatedSurprisesControllerV2(currentUser, token) {
         .then(r => {
             createdSurprises = r.json?.data || [];
 
-            renderSurpriseCards(
-                "created_surprises_list",
-                createdSurprises,
-                { mode: "creator" }
-            );
+          renderSimpleSurpriseList("created_surprises_list", createdSurprises);
 
             restartCountdowns();
         })
