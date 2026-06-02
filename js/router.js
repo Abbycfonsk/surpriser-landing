@@ -56,6 +56,30 @@ if (action === "close-owner-cancel-modal") {
   window.closeOwnerCancelModal?.();
   return;
 }
+if (action === "open-conversation") {
+  window.openConversation?.(actionBtn.dataset.conversationId);
+  return;
+}
+
+if (action === "delete-current-conversation") {
+  window.deleteCurrentConversation?.();
+  return;
+}
+
+if (action === "dashboard-update-profile") {
+  window.updateDashboardProfile?.();
+  return;
+}
+
+if (action === "purchase-genius-plan") {
+  window.purchaseGeniusPlan?.(actionBtn.dataset.plan);
+  return;
+}
+
+if (action === "purchase-genius-package") {
+  window.purchaseGeniusPackage?.(actionBtn.dataset.package);
+  return;
+}
     if (action === "offer-from-detail") {
       window.offerFromDetail?.(actionBtn.dataset.surpriseId);
       return;
@@ -116,7 +140,13 @@ export function showAppSection(name) {
   if (name === "creator" && state.user) {
     window.loadOwnerSurprises?.();
   }
+if (name === "conversations") {
+  window.loadConversations?.();
+}
 
+if (name === "user-dashboard") {
+  window.loadUserDashboard?.();
+}
   if (name === "genius") {
     window.loadGeniusDashboardController?.();
   }

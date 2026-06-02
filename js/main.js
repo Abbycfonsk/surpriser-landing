@@ -1,5 +1,12 @@
 import { initNavigation, showAppSection } from "./router.js";
+import {
+  loadConversations,
+  openConversation,
+  deleteCurrentConversation,
+  initChatForm
+} from "./sections/conversations.js";
 
+import { renderUserDashboard } from "./sections/userDashboard.js";
 import { getMe } from "./services/userService.js";
 import { getFeed } from "./services/surpriseService.js";
 import { getSkills } from "./services/skillService.js";
@@ -61,6 +68,29 @@ async function initApp() {
         window.cancelOwnerSurprise = cancelOwnerSurprise;
         window.loadOwnerSurprises = loadOwnerSurprises;
         window.deleteOwnerFile = deleteOwnerFile;
+        window.loadConversations = loadConversations;
+window.openConversation = openConversation;
+window.deleteCurrentConversation = deleteCurrentConversation;
+
+window.loadUserDashboard = async function () {
+    renderUserDashboard(state.dashboard || {});
+};
+
+window.purchaseGeniusPlan = function (plan) {
+    window.showNotificationToast?.({
+        title: "Plan genius",
+        message: `Todavía falta conectar el plan ${plan}.`
+    });
+};
+
+window.purchaseGeniusPackage = function (pack) {
+    window.showNotificationToast?.({
+        title: "Pack genius",
+        message: `Todavía falta conectar el paquete ${pack}.`
+    });
+};
+
+initChatForm();
         initSurpriseDetail();
 
         const meRes = await getMe(token);

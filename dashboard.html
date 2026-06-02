@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Surpriser</title>
-<link rel="icon" type="image/png" href="img/logo-mini.png">
-  <link rel="stylesheet" href="css/style.css?v=160">
-  <script type="module" src="js/main.js?v=999999999999"></script>
-</head>
+
 
 <body class="app-dashboard">
 
@@ -32,6 +25,8 @@
     <button data-section="creator">Creador</button>
     <button data-section="genius">Genio</button>
     <button data-section="shopping">Ads y compras</button>
+    <button data-section="user-dashboard">Dashboard</button>
+<button data-section="conversations">Conversaciones</button>
   </nav>
 
   <div class="app-top-actions">
@@ -265,7 +260,7 @@
 
     <div class="creator-hero-content">
 
-      <span class="creator-badge">Dashboard creador</span>
+      <span class="creator-badge">Panel del creador</span>
 
       <h1>Convierte ideas en sorpresas increíbles</h1>
 
@@ -284,8 +279,8 @@
 
 
     <div class="section-head">
-      <span>Tus publicaciones</span>
-      <h1>Mis sorpresas</h1>
+      <span>Tablero de sorpresas</span>
+      <h1>Mis creaciones</h1>
     </div>
 
     <div id="created_surprises_list" class="surprise-grid compact-grid"></div>
@@ -343,7 +338,257 @@
 
   </section>
 
+<!-- USER DASHBOARD -->
+<section id="section-user-dashboard" class="section app-section" style="display:none">
+  <div class="dash-hero">
+    <div>
+      <span class="creator-badge">Panel personal</span>
+      <h1>Tu actividad en Surpriser</h1>
+      <p>Resumen de creador, genio y perfil en un solo vistazo.</p>
+    </div>
+  </div>
 
+  <div class="surpriser-dashboard-grid">
+    <article class="dashboard-panel">
+      <h2>Creador</h2>
+      <div id="user_creator_stats" class="stats-grid"></div>
+    </article>
+
+    <article class="dashboard-panel">
+      <h2>Genio</h2>
+      <div id="user_genius_stats" class="stats-grid"></div>
+      <div id="user_skills_stats" class="skill-dashboard-list"></div>
+    </article>
+
+    <article class="dashboard-panel profile-dashboard-panel">
+      <h2>Perfil</h2>
+
+      <div class="profile-mini-head">
+        <img id="dash_avatar_preview" src="" alt="Avatar">
+        <div>
+          <strong id="dash_user_name">Usuario</strong>
+          <span id="dash_user_roles"></span>
+        </div>
+      </div>
+
+      <label>Nombre</label>
+      <input id="dash_up_name">
+
+      <label>Username</label>
+      <input id="dash_up_username">
+
+      <label>Bio</label>
+      <textarea id="dash_up_bio"></textarea>
+
+      <label>Avatar</label>
+      <input type="file" id="dash_up_avatar_file" accept="image/*">
+
+      <button class="btn" data-action="dashboard-update-profile">
+        Guardar perfil
+      </button>
+    </article>
+  </div>
+</section>
+
+<!-- CONVERSACIONES -->
+<section id="section-conversations" class="section app-section" style="display:none">
+  <div class="section-head">
+    <span>Mensajes</span>
+    <h1>Conversaciones</h1>
+  </div>
+
+  <div class="conversation-shell">
+    <aside class="conversation-list-panel">
+      <div id="conversation_list" class="conversation-list"></div>
+    </aside>
+
+    <section class="chat-panel">
+      <div id="chat_empty" class="chat-empty">
+        Selecciona una conversación para ver los mensajes.
+      </div>
+
+      <div id="chat_view" class="chat-view" style="display:none">
+        <header class="chat-head">
+          <div>
+            <span id="chat_surprise_title">Sorpresa</span>
+            <strong id="chat_interlocutor_name">Conversación</strong>
+          </div>
+
+          <button class="detail-secondary-btn" data-action="delete-current-conversation">
+            Eliminar conversación
+          </button>
+        </header>
+
+        <div id="chat_messages" class="chat-messages"></div>
+
+        <form id="chat_form" class="chat-form">
+          <input id="chat_message_input" placeholder="Escribe un mensaje...">
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ADS Y PLANES -->
+<section id="section-shopping" class="section app-section" style="display:none">
+  <div class="section-head">
+    <span>Ads y compras</span>
+    <h1>Impulsa tu actividad</h1>
+  </div>
+
+  <div class="pricing-block">
+    <h2>Planes para creadores</h2>
+    <div class="pricing-grid">
+      <button class="pricing-card" data-action="purchase-plan" data-plan="starter">
+        <span>Starter</span><strong>9,99€</strong>
+        <p>5 anuncios al mes</p><small>Ideal para probar visibilidad.</small>
+      </button>
+
+      <button class="pricing-card featured" data-action="purchase-plan" data-plan="pro">
+        <span>Pro</span><strong>19,99€</strong>
+        <p>12 anuncios al mes</p><small>Más alcance y prioridad.</small>
+      </button>
+
+      <button class="pricing-card premium" data-action="purchase-plan" data-plan="premium">
+        <span>Premium</span><strong>39,99€</strong>
+        <p>25 anuncios al mes</p><small>Máxima exposición.</small>
+      </button>
+    </div>
+  </div>
+
+  <div class="pricing-block">
+    <h2>Paquetes para creadores</h2>
+    <div class="pricing-grid">
+      <button class="pricing-card" data-action="purchase-package" data-package="1">
+        <span>Pack 1</span><strong>2,99€</strong><p>1 ad extra</p>
+      </button>
+      <button class="pricing-card" data-action="purchase-package" data-package="3">
+        <span>Pack 3</span><strong>7,99€</strong><p>3 ads extra</p>
+      </button>
+      <button class="pricing-card" data-action="purchase-package" data-package="5">
+        <span>Pack 5</span><strong>11,99€</strong><p>5 ads extra</p>
+      </button>
+    </div>
+  </div>
+
+  <div class="pricing-block genius-pricing">
+    <h2>Planes para genios</h2>
+    <div class="pricing-grid">
+      <button class="pricing-card" data-action="purchase-genius-plan" data-plan="spark">
+        <span>Spark</span><strong>Gratis</strong><p>Perfil básico</p><small>Para empezar.</small>
+      </button>
+      <button class="pricing-card featured" data-action="purchase-genius-plan" data-plan="talent">
+        <span>Talent</span><strong>9,99€</strong><p>Más visibilidad</p><small>Destaca tus habilidades.</small>
+      </button>
+      <button class="pricing-card premium" data-action="purchase-genius-plan" data-plan="master">
+        <span>Master</span><strong>24,99€</strong><p>Prioridad total</p><small>Para genios top.</small>
+      </button>
+    </div>
+  </div>
+
+  <div class="pricing-block genius-pricing">
+    <h2>Paquetes para genios</h2>
+    <div class="pricing-grid">
+      <button class="pricing-card" data-action="purchase-genius-package" data-package="boost1">
+        <span>Boost 1</span><strong>2,99€</strong><p>1 impulso</p>
+      </button>
+      <button class="pricing-card" data-action="purchase-genius-package" data-package="boost3">
+        <span>Boost 3</span><strong>6,99€</strong><p>3 impulsos</p>
+      </button>
+      <button class="pricing-card" data-action="purchase-genius-package" data-package="boost10">
+        <span>Boost 10</span><strong>14,99€</strong><p>10 impulsos</p>
+      </button>
+    </div>
+  </div>
+
+  <div id="shopping_status" class="app-card"></div>
+</section>
+
+<!-- CREAR SORPRESA REDISEÑADA -->
+<section id="section-create-surprise" class="section app-section" style="display:none">
+  <div class="create-surprise-pro">
+
+    <div class="create-pro-head">
+      <div>
+        <span>Nueva sorpresa</span>
+        <h1>Diseña una experiencia memorable</h1>
+        <p>Define lo importante de un vistazo. La urgencia se marcará automáticamente en las últimas 48 horas.</p>
+      </div>
+
+      <button class="creator-main-btn" data-action="create-surprise">
+        Publicar sorpresa
+      </button>
+    </div>
+
+    <form class="create-pro-form">
+      <input id="cs_creator" type="hidden">
+
+      <div class="create-pro-main">
+        <div class="create-field large">
+          <label>Título</label>
+          <input id="cs_title" placeholder="Ej: Vídeo sorpresa para cumpleaños">
+        </div>
+
+        <div class="create-field large">
+          <label>Descripción</label>
+          <textarea id="cs_desc" placeholder="Explica qué necesitas, tono, detalles importantes y cualquier idea especial."></textarea>
+        </div>
+
+        <div class="create-row">
+          <div class="create-field">
+            <label>Skill</label>
+            <input id="cs_skill" placeholder="ID o selector de skill">
+          </div>
+
+          <div class="create-field">
+            <label>Deadline</label>
+            <input id="cs_deadline" type="date">
+          </div>
+
+          <div class="create-field">
+            <label>Tamaño</label>
+            <select id="cs_size">
+              <option value="SMALL">SMALL</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="LARGE">LARGE</option>
+              <option value="PREMIUM">PREMIUM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="create-row">
+          <div class="create-field">
+            <label>Ciudad</label>
+            <input id="cs_target_city" placeholder="Madrid">
+          </div>
+
+          <div class="create-field">
+            <label>País</label>
+            <input id="cs_target_country" placeholder="España">
+          </div>
+
+          <div class="create-field">
+            <label>Precio orientativo</label>
+            <input id="cs_price" type="number" min="0" step="0.01">
+          </div>
+        </div>
+      </div>
+
+      <aside class="create-media-panel">
+        <label>Imagen principal</label>
+        <input type="file" id="cs_header_file" accept="image/*">
+        <img id="preview_header" class="create-preview-image" style="display:none">
+
+        <label>Archivos de referencia</label>
+        <input type="file" id="cs_files" multiple accept=".jpg,.jpeg,.png,.webp,.pdf,.mp4,.mp3">
+        <p>Imágenes, PDF, vídeo o audio para ayudar al genio.</p>
+
+        <div id="create_message" class="owner-detail-message" style="display:none"></div>
+      </aside>
+    </form>
+  </div>
+</section>
   <!-- =====================================================
     SECTION: GENIUS
   ===================================================== -->
