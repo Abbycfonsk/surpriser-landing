@@ -1,779 +1,901 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Surpriser</title>
+    <link rel="icon" type="image/png" href="img/logo-mini.png" />
+    <link rel="stylesheet" href="css/style.css?v=160" />
+    <script type="module" src="js/main.js?v=999999999999"></script>
+  </head>
 
-
-
-<body class="app-dashboard">
-
-
-<!-- =====================================================
+  <body class="app-dashboard">
+    <!-- =====================================================
   HEADER (SIEMPRE VISIBLE)
 ===================================================== -->
 
-<header class="app-topbar">
-<div class="logoNavSuperior">
-   <img src="img/logo.png" alt="logo surpriser">
+    <header class="app-topbar">
+      <div class="logoNavSuperior">
+        <img src="img/logo.png" alt="logo surpriser" />
 
-  <button class="app-logo" data-section="home">
-    Surpriser
-  </button>
-</div>
- 
+        <button class="app-logo" data-section="home">Surpriser</button>
+      </div>
 
-  <nav class="app-menu">
-    <button data-section="home">Inicio</button>
-    <button data-section="creator">Creador</button>
-    <button data-section="genius">Genio</button>
-    <button data-section="shopping">Ads y compras</button>
-    <button data-section="user-dashboard">Dashboard</button>
-<button data-section="conversations">Conversaciones</button>
-  </nav>
+      <nav class="app-menu">
+        <button data-section="home">Inicio</button>
+        <button data-section="creator">Creador</button>
+        <button data-section="genius">Genio</button>
+        <button data-section="shopping">Ads y compras</button>
+        <button data-section="user-dashboard">Dashboard</button>
+        <button data-section="conversations">Conversaciones</button>
+      </nav>
 
-  <div class="app-top-actions">
+      <div class="app-top-actions">
+        <button class="top-avatar-btn" data-section="profile">
+          <img
+            id="profile_avatar_preview"
+            class="top-avatar"
+            src=""
+            alt="Avatar"
+          />
+        </button>
 
-    <button class="top-avatar-btn" data-section="profile">
-      <img id="profile_avatar_preview" class="top-avatar" src="" alt="Avatar">
-    </button>
+        <button class="top-pill notif-button" data-section="notifications">
+          Notificaciones
+          <span id="notif_count" class="notif-badge"></span>
+        </button>
 
-   <button class="top-pill notif-button" data-section="notifications">
-  Notificaciones
-  <span id="notif_count" class="notif-badge"></span>
-</button>
+        <button class="top-pill" data-action="logout">Salir</button>
+      </div>
+    </header>
 
-    <button class="top-pill" data-action="logout">
-      Salir
-    </button>
-
-  </div>
-
-</header>
-
-
-<!-- =====================================================
+    <!-- =====================================================
   CONTENEDOR PRINCIPAL (DONDE CAMBIAN LAS VISTAS)
 ===================================================== -->
 
-<main class="app-shell full-layout">
-  <section class="app-content full-width-content">
-
-
-  <!-- =====================================================
+    <main class="app-shell full-layout">
+      <section class="app-content full-width-content">
+        <!-- =====================================================
     SECTION: HOME (INICIO)
   ===================================================== -->
 
-  <section id="section-home" class="section app-section">
+        <section id="section-home" class="section app-section">
+          <!-- HERO HOME -->
+          <div class="discover-hero">
+            <div class="discover-hero-content">
+              <span class="discover-badge"> Tablero de sorpresas general </span>
 
-    <!-- HERO HOME -->
-    <div class="discover-hero">
+              <h1>Descubre experiencias increíbles creadas para sorprender</h1>
 
-      <div class="discover-hero-content">
+              <p>
+                Música, arte, mascotas, vídeos, naturaleza y mucho más en un
+                único lugar.
+              </p>
+            </div>
+          </div>
+          <!-- FILTER BAR COMPACTA -->
+          <nav class="surpriser-filter-nav">
+            <!-- CATEGORÍA -->
+            <div class="filter-item dropdown">
+              <button class="filter-btn" data-toggle="skill">
+                Categoría ▾
+              </button>
+              <div class="dropdown-menu" id="skill_menu"></div>
+            </div>
 
-        <span class="discover-badge">
-          Tablero de sorpresas general
-        </span>
+            <!-- TAMAÑO -->
+            <div class="filter-item dropdown">
+              <button class="filter-btn" data-toggle="size">Tamaño ▾</button>
+              <div class="dropdown-menu">
+                <div class="option" data-size="">Todos</div>
+                <div class="option" data-size="SMALL">Small</div>
+                <div class="option" data-size="MEDIUM">Medium</div>
+                <div class="option" data-size="LARGE">Large</div>
+                <div class="option" data-size="PREMIUM">Premium</div>
+              </div>
+            </div>
 
-        <h1>
-          Descubre experiencias increíbles creadas para sorprender
-        </h1>
+            <!-- TIEMPO -->
+            <div class="filter-item dropdown">
+              <button class="filter-btn" data-toggle="deadline">
+                Tiempo ▾
+              </button>
+              <div class="dropdown-menu">
+                <div class="option" data-order-deadline="asc">
+                  Expiran pronto
+                </div>
+                <div class="option" data-order-deadline="desc">
+                  Expiran más tarde
+                </div>
+              </div>
+            </div>
 
-        <p>
-          Música, arte, mascotas, vídeos,
-          naturaleza y mucho más en un único lugar.
-        </p>
+            <!-- EXTRA -->
+            <div class="filter-item toggles">
+              <label>
+                <input type="checkbox" id="filter_urgent" />
+                Urgentes
+              </label>
 
+              <label>
+                <input type="checkbox" id="filter_featured" />
+                Destacadas
+              </label>
+            </div>
 
-      </div>
-
-    </div>
-<!-- FILTER BAR COMPACTA -->
-<nav class="surpriser-filter-nav">
-
-  <!-- CATEGORÍA -->
-  <div class="filter-item dropdown">
-    <button class="filter-btn" data-toggle="skill">
-      Categoría ▾
-    </button>
-    <div class="dropdown-menu" id="skill_menu"></div>
-  </div>
-
-  <!-- TAMAÑO -->
-  <div class="filter-item dropdown">
-    <button class="filter-btn" data-toggle="size">
-      Tamaño ▾
-    </button>
-    <div class="dropdown-menu">
-      <div class="option" data-size="">Todos</div>
-      <div class="option" data-size="SMALL">Small</div>
-      <div class="option" data-size="MEDIUM">Medium</div>
-      <div class="option" data-size="LARGE">Large</div>
-      <div class="option" data-size="PREMIUM">Premium</div>
-    </div>
-  </div>
-
-  <!-- TIEMPO -->
-  <div class="filter-item dropdown">
-    <button class="filter-btn" data-toggle="deadline">
-      Tiempo ▾
-    </button>
-   <div class="dropdown-menu">
-  <div class="option" data-order-deadline="asc">Expiran pronto</div>
-  <div class="option" data-order-deadline="desc">Expiran más tarde</div>
-</div>
-  </div>
-
-  <!-- EXTRA -->
-  <div class="filter-item toggles">
-    <label>
-      <input type="checkbox" id="filter_urgent">
-      Urgentes
-    </label>
-
-    <label>
-      <input type="checkbox" id="filter_featured">
-      Destacadas
-    </label>
-  </div>
-
-  <!-- RESET -->
-  <button id="reset_filters" class="reset-btn">
-    Reset
-  </button>
-
-</nav>
-     <!-- =====================================================
+            <!-- RESET -->
+            <button id="reset_filters" class="reset-btn">Reset</button>
+          </nav>
+          <!-- =====================================================
     LISTA DE SURPRISES
   ===================================================== -->
-    <div class="section-head">
-      <span>Explorar sorpresas</span>
-      <h1>Sorpresas buscando Genio...</h1>
-    </div>
+          <div class="section-head">
+            <span>Explorar sorpresas</span>
+            <h1>Sorpresas buscando Genio...</h1>
+          </div>
 
-    <div id="all_surprises_list" class="surprise-grid"></div>
+          <div id="all_surprises_list" class="surprise-grid"></div>
+        </section>
 
-  </section>
-
- <!-- =====================================================
+        <!-- =====================================================
     DETAIL SURPRISE
   ===================================================== -->
-  
-<section id="section-surprise-detail" class="section app-section" style="display:none">
 
-  <button class="detail-back-btn" data-section="home">
-    Volver a sorpresas
-  </button>
+        <section
+          id="section-surprise-detail"
+          class="section app-section"
+          style="display: none"
+        >
+          <button class="detail-back-btn" data-section="home">
+            Volver a sorpresas
+          </button>
 
-  <div id="surprise_detail_container" class="surprise-detail-shell">
-    <!-- JS pinta aquí el detalle -->
-  </div>
+          <div id="surprise_detail_container" class="surprise-detail-shell">
+            <!-- JS pinta aquí el detalle -->
+          </div>
+        </section>
 
-</section>
-
- <!-- =====================================================
+        <!-- =====================================================
     OWNER SURPRISE DETAIL
   ===================================================== -->
 
-<section id="section-owner-surprise-detail" class="section app-section" style="display:none">
+        <section
+          id="section-owner-surprise-detail"
+          class="section app-section"
+          style="display: none"
+        >
+          <button class="detail-back-btn" data-section="creator">
+            Volver a mis sorpresas
+          </button>
 
-  <button class="detail-back-btn" data-section="creator">
-    Volver a mis sorpresas
-  </button>
-
-  <div id="owner_surprise_detail_container">
-    <!-- JS pinta aquí -->
-  </div>
-
-</section>
-  <!-- =====================================================
+          <div id="owner_surprise_detail_container">
+            <!-- JS pinta aquí -->
+          </div>
+        </section>
+        <!-- =====================================================
     SECTION: PROFILE (PERFIL)
   ===================================================== -->
 
-  <section id="section-profile" class="section app-section" style="display:none">
+        <section
+          id="section-profile"
+          class="section app-section"
+          style="display: none"
+        >
+          <div class="section-head">
+            <span>Perfil</span>
+            <h1>Tu cuenta</h1>
+          </div>
 
-    <div class="section-head">
-      <span>Perfil</span>
-      <h1>Tu cuenta</h1>
-    </div>
+          <div class="profile-layout">
+            <div class="app-card profile-card-large">
+              <img
+                id="profile_avatar_preview_large"
+                class="profile-avatar-large"
+                src=""
+                alt="Avatar"
+              />
 
-    <div class="profile-layout">
+              <div class="profile-roles" id="profile_roles"></div>
 
-      <div class="app-card profile-card-large">
+              <h2 id="profile_name">Tu perfil</h2>
+              <p id="profile_username">@usuario</p>
+              <p id="profile_bio">Sin bio todavía.</p>
+            </div>
 
-        <img id="profile_avatar_preview_large" class="profile-avatar-large" src="" alt="Avatar">
+            <form id="profile_editor" class="app-card profile-editor-large">
+              <h3>Editar perfil</h3>
 
-        <div class="profile-roles" id="profile_roles"></div>
+              <label>Nombre</label>
+              <input id="up_name" />
 
-        <h2 id="profile_name">Tu perfil</h2>
-        <p id="profile_username">@usuario</p>
-        <p id="profile_bio">Sin bio todavía.</p>
+              <label>Username</label>
+              <input id="up_username" />
 
-      </div>
+              <label>Bio</label>
+              <textarea id="up_bio"></textarea>
 
-      <form id="profile_editor" class="app-card profile-editor-large">
+              <label>Teléfono</label>
+              <input id="up_phone" />
 
-        <h3>Editar perfil</h3>
+              <label>Ciudad</label>
+              <input id="up_city" />
 
-        <label>Nombre</label>
-        <input id="up_name">
+              <label>País</label>
+              <input id="up_country" />
 
-        <label>Username</label>
-        <input id="up_username">
+              <label>Avatar</label>
+              <input type="file" id="up_avatar_file" accept="image/*" />
 
-        <label>Bio</label>
-        <textarea id="up_bio"></textarea>
+              <label>¿Eres genio?</label>
+              <select id="up_is_genius">
+                <option value="0">No</option>
+                <option value="1">Sí</option>
+              </select>
 
-        <label>Teléfono</label>
-        <input id="up_phone">
+              <button type="button" class="btn" data-action="update-profile">
+                Guardar
+              </button>
+            </form>
+          </div>
+        </section>
 
-        <label>Ciudad</label>
-        <input id="up_city">
-
-        <label>País</label>
-        <input id="up_country">
-
-        <label>Avatar</label>
-        <input type="file" id="up_avatar_file" accept="image/*">
-
-        <label>¿Eres genio?</label>
-        <select id="up_is_genius">
-          <option value="0">No</option>
-          <option value="1">Sí</option>
-        </select>
-
-        <button type="button" class="btn" data-action="update-profile">
-          Guardar
-        </button>
-
-      </form>
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================================
+        <!-- =====================================================
     SECTION: CREATOR (CREADOR)
   ===================================================== -->
 
-  <section id="section-creator" class="section app-section creator-dashboard" style="display:none">
+        <section
+          id="section-creator"
+          class="section app-section creator-dashboard"
+          style="display: none"
+        >
+          <div class="creator-hero">
+            <div class="creator-hero-content">
+              <span class="creator-badge">Panel del creador</span>
 
-  <div class="creator-hero">
+              <h1>Convierte ideas en sorpresas increíbles</h1>
 
-    <div class="creator-hero-content">
+              <p>
+                Gestiona tus publicaciones, crea nuevas experiencias y coordina
+                todo desde un único panel visual.
+              </p>
+            </div>
 
-      <span class="creator-badge">Panel del creador</span>
+            <button class="creator-main-btn" data-section="create-surprise">
+              + Crear sorpresa
+            </button>
+          </div>
 
-      <h1>Convierte ideas en sorpresas increíbles</h1>
+          <div class="section-head">
+            <span>Tablero de sorpresas</span>
+            <h1>Mis creaciones</h1>
+          </div>
 
-      <p>
-        Gestiona tus publicaciones, crea nuevas experiencias
-        y coordina todo desde un único panel visual.
-      </p>
+          <div
+            id="created_surprises_list"
+            class="surprise-grid compact-grid"
+          ></div>
+        </section>
 
-    </div>
-
-    <button class="creator-main-btn" data-section="create-surprise">
-      + Crear sorpresa
-    </button>
-
-  </div>
-
-
-    <div class="section-head">
-      <span>Tablero de sorpresas</span>
-      <h1>Mis creaciones</h1>
-    </div>
-
-    <div id="created_surprises_list" class="surprise-grid compact-grid"></div>
-
-  </section>
-
-
-  <!-- =====================================================
+        <!-- =====================================================
     SECTION: CREATE SURPRISE (FORMULARIO CREAR)
   ===================================================== -->
 
-  <section id="section-create-surprise" class="section app-section" style="display:none">
+        <section
+          id="section-create-surprise"
+          class="section app-section"
+          style="display: none"
+        >
+          <div class="create-layout">
+            <form class="app-card create-card-modern">
+              <div class="create-header">
+                <span>Nueva sorpresa</span>
+                <h2>Diseña una experiencia</h2>
+              </div>
 
-    <div class="create-layout">
+              <input id="cs_creator" type="hidden" />
 
-      <form class="app-card create-card-modern">
+              <label>Título</label>
+              <input id="cs_title" />
 
-        <div class="create-header">
-          <span>Nueva sorpresa</span>
-          <h2>Diseña una experiencia</h2>
-        </div>
+              <label>Descripción</label>
+              <textarea id="cs_desc"></textarea>
 
-        <input id="cs_creator" type="hidden">
+              <label>Skill ID</label>
+              <input id="cs_skill" />
 
-        <label>Título</label>
-        <input id="cs_title">
+              <label>Deadline</label>
+              <input id="cs_deadline" type="date" />
 
-        <label>Descripción</label>
-        <textarea id="cs_desc"></textarea>
+              <label>Tamaño</label>
+              <select id="cs_size">
+                <option value="SMALL">SMALL</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="LARGE">LARGE</option>
+                <option value="PREMIUM">PREMIUM</option>
+              </select>
 
-        <label>Skill ID</label>
-        <input id="cs_skill">
+              <label>Imagen</label>
+              <input type="file" id="cs_header_file" accept="image/*" />
 
-        <label>Deadline</label>
-        <input id="cs_deadline" type="date">
+              <button type="button" class="btn" data-action="create-surprise">
+                Publicar sorpresa
+              </button>
+            </form>
+          </div>
+        </section>
 
-        <label>Tamaño</label>
-        <select id="cs_size">
-          <option value="SMALL">SMALL</option>
-          <option value="MEDIUM">MEDIUM</option>
-          <option value="LARGE">LARGE</option>
-          <option value="PREMIUM">PREMIUM</option>
-        </select>
-
-        <label>Imagen</label>
-        <input type="file" id="cs_header_file" accept="image/*">
-
-        <button type="button" class="btn" data-action="create-surprise">
-          Publicar sorpresa
-        </button>
-
-      </form>
-
-    </div>
-
-  </section>
-
-<!-- USER DASHBOARD -->
-<section id="section-user-dashboard" class="section app-section" style="display:none">
-  <div class="dash-hero">
-    <div>
-      <span class="creator-badge">Panel personal</span>
-      <h1>Tu actividad en Surpriser</h1>
-      <p>Resumen de creador, genio y perfil en un solo vistazo.</p>
-    </div>
-  </div>
-
-  <div class="surpriser-dashboard-grid">
-    <article class="dashboard-panel">
-      <h2>Creador</h2>
-      <div id="user_creator_stats" class="stats-grid"></div>
-    </article>
-
-    <article class="dashboard-panel">
-      <h2>Genio</h2>
-      <div id="user_genius_stats" class="stats-grid"></div>
-      <div id="user_skills_stats" class="skill-dashboard-list"></div>
-    </article>
-
-    <article class="dashboard-panel profile-dashboard-panel">
-      <h2>Perfil</h2>
-
-      <div class="profile-mini-head">
-        <img id="dash_avatar_preview" src="" alt="Avatar">
-        <div>
-          <strong id="dash_user_name">Usuario</strong>
-          <span id="dash_user_roles"></span>
-        </div>
-      </div>
-
-      <label>Nombre</label>
-      <input id="dash_up_name">
-
-      <label>Username</label>
-      <input id="dash_up_username">
-
-      <label>Bio</label>
-      <textarea id="dash_up_bio"></textarea>
-
-      <label>Avatar</label>
-      <input type="file" id="dash_up_avatar_file" accept="image/*">
-
-      <button class="btn" data-action="dashboard-update-profile">
-        Guardar perfil
-      </button>
-    </article>
-  </div>
-</section>
-
-<!-- CONVERSACIONES -->
-<section id="section-conversations" class="section app-section" style="display:none">
-  <div class="section-head">
-    <span>Mensajes</span>
-    <h1>Conversaciones</h1>
-  </div>
-
-  <div class="conversation-shell">
-    <aside class="conversation-list-panel">
-      <div id="conversation_list" class="conversation-list"></div>
-    </aside>
-
-    <section class="chat-panel">
-      <div id="chat_empty" class="chat-empty">
-        Selecciona una conversación para ver los mensajes.
-      </div>
-
-      <div id="chat_view" class="chat-view" style="display:none">
-        <header class="chat-head">
-          <div>
-            <span id="chat_surprise_title">Sorpresa</span>
-            <strong id="chat_interlocutor_name">Conversación</strong>
+        <!-- USER DASHBOARD -->
+        <section
+          id="section-user-dashboard"
+          class="section app-section"
+          style="display: none"
+        >
+          <div class="dash-hero">
+            <div>
+              <span class="creator-badge">Panel personal</span>
+              <h1>Tu actividad en Surpriser</h1>
+              <p>Resumen de creador, genio y perfil en un solo vistazo.</p>
+            </div>
           </div>
 
-          <button class="detail-secondary-btn" data-action="delete-current-conversation">
-            Eliminar conversación
-          </button>
-        </header>
+          <div class="surpriser-dashboard-grid">
+            <article class="dashboard-panel">
+              <h2>Creador</h2>
+              <div id="user_creator_stats" class="stats-grid"></div>
+            </article>
 
-        <div id="chat_messages" class="chat-messages"></div>
+            <article class="dashboard-panel">
+              <h2>Genio</h2>
+              <div id="user_genius_stats" class="stats-grid"></div>
+              <div id="user_skills_stats" class="skill-dashboard-list"></div>
+            </article>
 
-        <form id="chat_form" class="chat-form">
-          <input id="chat_message_input" placeholder="Escribe un mensaje...">
-          <button type="submit">Enviar</button>
-        </form>
-      </div>
-    </section>
-  </div>
-</section>
+            <article class="dashboard-panel profile-dashboard-panel">
+              <h2>Perfil</h2>
 
-<!-- ADS Y PLANES -->
-<section id="section-shopping" class="section app-section" style="display:none">
-  <div class="section-head">
-    <span>Ads y compras</span>
-    <h1>Impulsa tu actividad</h1>
-  </div>
+              <div class="profile-mini-head">
+                <img id="dash_avatar_preview" src="" alt="Avatar" />
+                <div>
+                  <strong id="dash_user_name">Usuario</strong>
+                  <span id="dash_user_roles"></span>
+                </div>
+              </div>
 
-  <div class="pricing-block">
-    <h2>Planes para creadores</h2>
-    <div class="pricing-grid">
-      <button class="pricing-card" data-action="purchase-plan" data-plan="starter">
-        <span>Starter</span><strong>9,99€</strong>
-        <p>5 anuncios al mes</p><small>Ideal para probar visibilidad.</small>
-      </button>
+              <label>Nombre</label>
+              <input id="dash_up_name" />
 
-      <button class="pricing-card featured" data-action="purchase-plan" data-plan="pro">
-        <span>Pro</span><strong>19,99€</strong>
-        <p>12 anuncios al mes</p><small>Más alcance y prioridad.</small>
-      </button>
+              <label>Username</label>
+              <input id="dash_up_username" />
 
-      <button class="pricing-card premium" data-action="purchase-plan" data-plan="premium">
-        <span>Premium</span><strong>39,99€</strong>
-        <p>25 anuncios al mes</p><small>Máxima exposición.</small>
-      </button>
-    </div>
-  </div>
+              <label>Bio</label>
+              <textarea id="dash_up_bio"></textarea>
 
-  <div class="pricing-block">
-    <h2>Paquetes para creadores</h2>
-    <div class="pricing-grid">
-      <button class="pricing-card" data-action="purchase-package" data-package="1">
-        <span>Pack 1</span><strong>2,99€</strong><p>1 ad extra</p>
-      </button>
-      <button class="pricing-card" data-action="purchase-package" data-package="3">
-        <span>Pack 3</span><strong>7,99€</strong><p>3 ads extra</p>
-      </button>
-      <button class="pricing-card" data-action="purchase-package" data-package="5">
-        <span>Pack 5</span><strong>11,99€</strong><p>5 ads extra</p>
-      </button>
-    </div>
-  </div>
+              <label>Avatar</label>
+              <input type="file" id="dash_up_avatar_file" accept="image/*" />
 
-  <div class="pricing-block genius-pricing">
-    <h2>Planes para genios</h2>
-    <div class="pricing-grid">
-      <button class="pricing-card" data-action="purchase-genius-plan" data-plan="spark">
-        <span>Spark</span><strong>Gratis</strong><p>Perfil básico</p><small>Para empezar.</small>
-      </button>
-      <button class="pricing-card featured" data-action="purchase-genius-plan" data-plan="talent">
-        <span>Talent</span><strong>9,99€</strong><p>Más visibilidad</p><small>Destaca tus habilidades.</small>
-      </button>
-      <button class="pricing-card premium" data-action="purchase-genius-plan" data-plan="master">
-        <span>Master</span><strong>24,99€</strong><p>Prioridad total</p><small>Para genios top.</small>
-      </button>
-    </div>
-  </div>
+              <button class="btn" data-action="dashboard-update-profile">
+                Guardar perfil
+              </button>
+            </article>
+          </div>
+        </section>
 
-  <div class="pricing-block genius-pricing">
-    <h2>Paquetes para genios</h2>
-    <div class="pricing-grid">
-      <button class="pricing-card" data-action="purchase-genius-package" data-package="boost1">
-        <span>Boost 1</span><strong>2,99€</strong><p>1 impulso</p>
-      </button>
-      <button class="pricing-card" data-action="purchase-genius-package" data-package="boost3">
-        <span>Boost 3</span><strong>6,99€</strong><p>3 impulsos</p>
-      </button>
-      <button class="pricing-card" data-action="purchase-genius-package" data-package="boost10">
-        <span>Boost 10</span><strong>14,99€</strong><p>10 impulsos</p>
-      </button>
-    </div>
-  </div>
-
-  <div id="shopping_status" class="app-card"></div>
-</section>
-
-<!-- CREAR SORPRESA REDISEÑADA -->
-<section id="section-create-surprise" class="section app-section" style="display:none">
-  <div class="create-surprise-pro">
-
-    <div class="create-pro-head">
-      <div>
-        <span>Nueva sorpresa</span>
-        <h1>Diseña una experiencia memorable</h1>
-        <p>Define lo importante de un vistazo. La urgencia se marcará automáticamente en las últimas 48 horas.</p>
-      </div>
-
-      <button class="creator-main-btn" data-action="create-surprise">
-        Publicar sorpresa
-      </button>
-    </div>
-
-    <form class="create-pro-form">
-      <input id="cs_creator" type="hidden">
-
-      <div class="create-pro-main">
-        <div class="create-field large">
-          <label>Título</label>
-          <input id="cs_title" placeholder="Ej: Vídeo sorpresa para cumpleaños">
-        </div>
-
-        <div class="create-field large">
-          <label>Descripción</label>
-          <textarea id="cs_desc" placeholder="Explica qué necesitas, tono, detalles importantes y cualquier idea especial."></textarea>
-        </div>
-
-        <div class="create-row">
-          <div class="create-field">
-            <label>Skill</label>
-            <input id="cs_skill" placeholder="ID o selector de skill">
+        <!-- CONVERSACIONES -->
+        <section
+          id="section-conversations"
+          class="section app-section"
+          style="display: none"
+        >
+          <div class="section-head">
+            <span>Mensajes</span>
+            <h1>Conversaciones</h1>
           </div>
 
-          <div class="create-field">
-            <label>Deadline</label>
-            <input id="cs_deadline" type="date">
+          <div class="conversation-shell">
+            <aside class="conversation-list-panel">
+              <div id="conversation_list" class="conversation-list"></div>
+            </aside>
+
+            <section class="chat-panel">
+              <div id="chat_empty" class="chat-empty">
+                Selecciona una conversación para ver los mensajes.
+              </div>
+
+              <div id="chat_view" class="chat-view" style="display: none">
+                <header class="chat-head">
+                  <div>
+                    <span id="chat_surprise_title">Sorpresa</span>
+                    <strong id="chat_interlocutor_name">Conversación</strong>
+                  </div>
+
+                  <button
+                    class="detail-secondary-btn"
+                    data-action="delete-current-conversation"
+                  >
+                    Eliminar conversación
+                  </button>
+                </header>
+
+                <div id="chat_messages" class="chat-messages"></div>
+
+                <form id="chat_form" class="chat-form">
+                  <input
+                    id="chat_message_input"
+                    placeholder="Escribe un mensaje..."
+                  />
+                  <button type="submit">Enviar</button>
+                </form>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- ADS Y PLANES -->
+        <section
+          id="section-shopping"
+          class="section app-section"
+          style="display: none"
+        >
+          <div class="section-head">
+            <span>Ads y compras</span>
+            <h1>Impulsa tu actividad</h1>
           </div>
 
-          <div class="create-field">
-            <label>Tamaño</label>
-            <select id="cs_size">
-              <option value="SMALL">SMALL</option>
-              <option value="MEDIUM">MEDIUM</option>
-              <option value="LARGE">LARGE</option>
-              <option value="PREMIUM">PREMIUM</option>
-            </select>
+          <div class="pricing-block">
+            <h2>Planes para creadores</h2>
+            <div class="pricing-grid">
+              <button
+                class="pricing-card"
+                data-action="purchase-plan"
+                data-plan="starter"
+              >
+                <span>Starter</span><strong>9,99€</strong>
+                <p>5 anuncios al mes</p>
+                <small>Ideal para probar visibilidad.</small>
+              </button>
+
+              <button
+                class="pricing-card featured"
+                data-action="purchase-plan"
+                data-plan="pro"
+              >
+                <span>Pro</span><strong>19,99€</strong>
+                <p>12 anuncios al mes</p>
+                <small>Más alcance y prioridad.</small>
+              </button>
+
+              <button
+                class="pricing-card premium"
+                data-action="purchase-plan"
+                data-plan="premium"
+              >
+                <span>Premium</span><strong>39,99€</strong>
+                <p>25 anuncios al mes</p>
+                <small>Máxima exposición.</small>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div class="create-row">
-          <div class="create-field">
-            <label>Ciudad</label>
-            <input id="cs_target_city" placeholder="Madrid">
+          <div class="pricing-block">
+            <h2>Paquetes para creadores</h2>
+            <div class="pricing-grid">
+              <button
+                class="pricing-card"
+                data-action="purchase-package"
+                data-package="1"
+              >
+                <span>Pack 1</span><strong>2,99€</strong>
+                <p>1 ad extra</p>
+              </button>
+              <button
+                class="pricing-card"
+                data-action="purchase-package"
+                data-package="3"
+              >
+                <span>Pack 3</span><strong>7,99€</strong>
+                <p>3 ads extra</p>
+              </button>
+              <button
+                class="pricing-card"
+                data-action="purchase-package"
+                data-package="5"
+              >
+                <span>Pack 5</span><strong>11,99€</strong>
+                <p>5 ads extra</p>
+              </button>
+            </div>
           </div>
 
-          <div class="create-field">
-            <label>País</label>
-            <input id="cs_target_country" placeholder="España">
+          <div class="pricing-block genius-pricing">
+            <h2>Planes para genios</h2>
+            <div class="pricing-grid">
+              <button
+                class="pricing-card"
+                data-action="purchase-genius-plan"
+                data-plan="spark"
+              >
+                <span>Spark</span><strong>Gratis</strong>
+                <p>Perfil básico</p>
+                <small>Para empezar.</small>
+              </button>
+              <button
+                class="pricing-card featured"
+                data-action="purchase-genius-plan"
+                data-plan="talent"
+              >
+                <span>Talent</span><strong>9,99€</strong>
+                <p>Más visibilidad</p>
+                <small>Destaca tus habilidades.</small>
+              </button>
+              <button
+                class="pricing-card premium"
+                data-action="purchase-genius-plan"
+                data-plan="master"
+              >
+                <span>Master</span><strong>24,99€</strong>
+                <p>Prioridad total</p>
+                <small>Para genios top.</small>
+              </button>
+            </div>
           </div>
 
-          <div class="create-field">
-            <label>Precio orientativo</label>
-            <input id="cs_price" type="number" min="0" step="0.01">
+          <div class="pricing-block genius-pricing">
+            <h2>Paquetes para genios</h2>
+            <div class="pricing-grid">
+              <button
+                class="pricing-card"
+                data-action="purchase-genius-package"
+                data-package="boost1"
+              >
+                <span>Boost 1</span><strong>2,99€</strong>
+                <p>1 impulso</p>
+              </button>
+              <button
+                class="pricing-card"
+                data-action="purchase-genius-package"
+                data-package="boost3"
+              >
+                <span>Boost 3</span><strong>6,99€</strong>
+                <p>3 impulsos</p>
+              </button>
+              <button
+                class="pricing-card"
+                data-action="purchase-genius-package"
+                data-package="boost10"
+              >
+                <span>Boost 10</span><strong>14,99€</strong>
+                <p>10 impulsos</p>
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <aside class="create-media-panel">
-        <label>Imagen principal</label>
-        <input type="file" id="cs_header_file" accept="image/*">
-        <img id="preview_header" class="create-preview-image" style="display:none">
+          <div id="shopping_status" class="app-card"></div>
+        </section>
 
-        <label>Archivos de referencia</label>
-        <input type="file" id="cs_files" multiple accept=".jpg,.jpeg,.png,.webp,.pdf,.mp4,.mp3">
-        <p>Imágenes, PDF, vídeo o audio para ayudar al genio.</p>
+        <!-- CREAR SORPRESA REDISEÑADA -->
+        <section
+          id="section-create-surprise"
+          class="section app-section"
+          style="display: none"
+        >
+          <div class="create-surprise-pro">
+            <div class="create-pro-head">
+              <div>
+                <span>Nueva sorpresa</span>
+                <h1>Diseña una experiencia memorable</h1>
+                <p>
+                  Define lo importante de un vistazo. La urgencia se marcará
+                  automáticamente en las últimas 48 horas.
+                </p>
+              </div>
 
-        <div id="create_message" class="owner-detail-message" style="display:none"></div>
-      </aside>
-    </form>
-  </div>
-</section>
-  <!-- =====================================================
+              <button class="creator-main-btn" data-action="create-surprise">
+                Publicar sorpresa
+              </button>
+            </div>
+
+            <form class="create-pro-form">
+              <input id="cs_creator" type="hidden" />
+
+              <div class="create-pro-main">
+                <div class="create-field large">
+                  <label>Título</label>
+                  <input
+                    id="cs_title"
+                    placeholder="Ej: Vídeo sorpresa para cumpleaños"
+                  />
+                </div>
+
+                <div class="create-field large">
+                  <label>Descripción</label>
+                  <textarea
+                    id="cs_desc"
+                    placeholder="Explica qué necesitas, tono, detalles importantes y cualquier idea especial."
+                  ></textarea>
+                </div>
+
+                <div class="create-row">
+                  <div class="create-field">
+                    <label>Skill</label>
+                    <input id="cs_skill" placeholder="ID o selector de skill" />
+                  </div>
+
+                  <div class="create-field">
+                    <label>Deadline</label>
+                    <input id="cs_deadline" type="date" />
+                  </div>
+
+                  <div class="create-field">
+                    <label>Tamaño</label>
+                    <select id="cs_size">
+                      <option value="SMALL">SMALL</option>
+                      <option value="MEDIUM">MEDIUM</option>
+                      <option value="LARGE">LARGE</option>
+                      <option value="PREMIUM">PREMIUM</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="create-row">
+                  <div class="create-field">
+                    <label>Ciudad</label>
+                    <input id="cs_target_city" placeholder="Madrid" />
+                  </div>
+
+                  <div class="create-field">
+                    <label>País</label>
+                    <input id="cs_target_country" placeholder="España" />
+                  </div>
+
+                  <div class="create-field">
+                    <label>Precio orientativo</label>
+                    <input id="cs_price" type="number" min="0" step="0.01" />
+                  </div>
+                </div>
+              </div>
+
+              <aside class="create-media-panel">
+                <label>Imagen principal</label>
+                <input type="file" id="cs_header_file" accept="image/*" />
+                <img
+                  id="preview_header"
+                  class="create-preview-image"
+                  style="display: none"
+                />
+
+                <label>Archivos de referencia</label>
+                <input
+                  type="file"
+                  id="cs_files"
+                  multiple
+                  accept=".jpg,.jpeg,.png,.webp,.pdf,.mp4,.mp3"
+                />
+                <p>Imágenes, PDF, vídeo o audio para ayudar al genio.</p>
+
+                <div
+                  id="create_message"
+                  class="owner-detail-message"
+                  style="display: none"
+                ></div>
+              </aside>
+            </form>
+          </div>
+        </section>
+        <!-- =====================================================
     SECTION: GENIUS
   ===================================================== -->
 
-  <section id="section-genius" class="section app-section genius-section" style="display:none">
+        <section
+          id="section-genius"
+          class="section app-section genius-section"
+          style="display: none"
+        >
+          <div class="section-head">
+            <span>Genio</span>
+            <h1>Oportunidades para ti</h1>
+          </div>
 
-    <div class="section-head">
-      <span>Genio</span>
-      <h1>Oportunidades para ti</h1>
-    </div>
+          <div id="genius_feed_list"></div>
+        </section>
 
-    <div id="genius_feed_list"></div>
-
-  </section>
-
-
-  <!-- =====================================================
+        <!-- =====================================================
     SECTION: SHOPPING (ADS)
   ===================================================== -->
 
-  <section id="section-shopping" class="section app-section" style="display:none">
+        <section
+          id="section-shopping"
+          class="section app-section"
+          style="display: none"
+        >
+          <div class="section-head">
+            <span>Ads y compras</span>
+            <h1>Impulsa tus creaciones</h1>
+          </div>
 
-    <div class="section-head">
-      <span>Ads y compras</span>
-      <h1>Impulsa tus creaciones</h1>
-    </div>
+          <div class="shopping-grid">
+            <button
+              class="purchase-card"
+              data-action="purchase-plan"
+              data-plan="starter"
+            >
+              Starter
+            </button>
 
-    <div class="shopping-grid">
+            <button
+              class="purchase-card"
+              data-action="purchase-plan"
+              data-plan="pro"
+            >
+              Pro
+            </button>
 
-      <button class="purchase-card" data-action="purchase-plan" data-plan="starter">
-        Starter
-      </button>
+            <button
+              class="purchase-card"
+              data-action="purchase-plan"
+              data-plan="premium"
+            >
+              Premium
+            </button>
+          </div>
+        </section>
 
-      <button class="purchase-card" data-action="purchase-plan" data-plan="pro">
-        Pro
-      </button>
-
-      <button class="purchase-card" data-action="purchase-plan" data-plan="premium">
-        Premium
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================================
+        <!-- =====================================================
     SECTION: NOTIFICATIONS
   ===================================================== -->
 
-  <section id="section-notifications" class="section app-section" style="display:none">
+        <section
+          id="section-notifications"
+          class="section app-section"
+          style="display: none"
+        >
+          <div class="section-head">
+            <span>Actividad</span>
+            <h1>Notificaciones</h1>
+          </div>
 
-    <div class="section-head">
-      <span>Actividad</span>
-      <h1>Notificaciones</h1>
-    </div>
+          <div id="notifications_list"></div>
+        </section>
 
-    <div id="notifications_list"></div>
-
-  </section>
-
-
-  <!-- =====================================================
+        <!-- =====================================================
     SECTION: UPDATE SURPRISE
   ===================================================== -->
 
-  <section id="section-update" class="section app-section" style="display:none">
+        <section
+          id="section-update"
+          class="section app-section"
+          style="display: none"
+        >
+          <form class="app-card update-card">
+            <h3>Actualizar sorpresa</h3>
 
-    <form class="app-card update-card">
+            <input id="us_id" readonly />
+            <input id="us_title" />
+            <textarea id="us_desc"></textarea>
 
-      <h3>Actualizar sorpresa</h3>
+            <button type="button" class="btn" data-action="update-surprise">
+              Actualizar
+            </button>
+          </form>
+        </section>
+      </section>
+    </main>
 
-      <input id="us_id" readonly>
-      <input id="us_title">
-      <textarea id="us_desc"></textarea>
-
-      <button type="button" class="btn" data-action="update-surprise">
-        Actualizar
-      </button>
-
-    </form>
-
-  </section>
-
-
-  </section>
-</main>
-
-
-<!-- =====================================================
+    <!-- =====================================================
   DEBUG OUTPUT
 ===================================================== -->
 
-<pre id="output" class="app-output"></pre>
-<!-- OFFER MODAL -->
-<div id="offer_modal" class="offer-modal" style="display:none">
-  <div class="offer-modal-backdrop" data-action="close-offer-modal"></div>
+    <pre id="output" class="app-output"></pre>
+    <!-- OFFER MODAL -->
+    <div id="offer_modal" class="offer-modal" style="display: none">
+      <div class="offer-modal-backdrop" data-action="close-offer-modal"></div>
 
-  <form class="offer-modal-card" id="offer_form">
-    <h2>Hacer oferta</h2>
-    <p class="offer-help">
-      Propón un precio, explica cómo resolverías la sorpresa y estima cuánto tardarías.
-    </p>
+      <form class="offer-modal-card" id="offer_form">
+        <h2>Hacer oferta</h2>
+        <p class="offer-help">
+          Propón un precio, explica cómo resolverías la sorpresa y estima cuánto
+          tardarías.
+        </p>
 
-    <input type="hidden" id="offer_surprise_id">
+        <input type="hidden" id="offer_surprise_id" />
 
-    <label>Precio de tu oferta</label>
-    <small>Indica cuánto cobrarías por realizar esta sorpresa.</small>
-    <input id="offer_price" type="number" min="1" step="0.01" placeholder="Ej: 45">
+        <label>Precio de tu oferta</label>
+        <small>Indica cuánto cobrarías por realizar esta sorpresa.</small>
+        <input
+          id="offer_price"
+          type="number"
+          min="1"
+          step="0.01"
+          placeholder="Ej: 45"
+        />
 
-    <label>Mensaje para la creadora</label>
-    <small>Cuenta brevemente tu idea, experiencia o propuesta.</small>
-    <textarea id="offer_message" placeholder="Puedo hacerlo así..."></textarea>
+        <label>Mensaje para la creadora</label>
+        <small>Cuenta brevemente tu idea, experiencia o propuesta.</small>
+        <textarea
+          id="offer_message"
+          placeholder="Puedo hacerlo así..."
+        ></textarea>
 
-    <label>Horas estimadas</label>
-    <small>Tiempo aproximado que necesitas desde que acepten tu oferta.</small>
-    <input id="offer_eta" type="number" min="1" placeholder="Ej: 24">
-
-    <div class="offer-modal-actions">
-      <button type="button" class="detail-secondary-btn" data-action="close-offer-modal">
-        Cancelar
-      </button>
-
-      <button type="submit" class="detail-offer-btn">
-        Enviar oferta
-      </button>
-    </div>
-  </form>
-</div>
-
-<!-- NOTIFICATION TOAST -->
-<div id="notification_toast" class="notification-toast" style="display:none"></div>
-<div id="owner_cancel_modal" class="surpriser-modal" style="display:none">
-  <div class="surpriser-modal-card cancel-modal-card">
-
-    <div class="modal-head">
-      <span>Cancelar sorpresa</span>
-      <h2>¿Por qué quieres cancelarla?</h2>
-      <p>
-        Selecciona un motivo. Esto ayuda a gestionar penalizaciones,
-        avisos y el historial de la sorpresa.
-      </p>
-    </div>
-
-    <form id="owner_cancel_form">
-      <input type="hidden" id="cancel_surprise_id">
-
-      <label>Motivo</label>
-      <select id="cancel_reason_key" required>
-        <option value="">Selecciona un motivo</option>
-        <option value="illness">Enfermedad</option>
-        <option value="personal_issue">Problema personal</option>
-        <option value="force_majeure">Fuerza mayor</option>
-        <option value="technical_issue">Problema técnico</option>
-        <option value="no_time">No tengo tiempo</option>
-        <option value="uncomfortable">No me siento cómodo/a</option>
-        <option value="cant_now">No puedo ahora</option>
-        <option value="no_reason">Prefiero no decirlo</option>
-      </select>
-
-      <label>Detalles opcionales</label>
-      <textarea
-        id="cancel_reason_text"
-        maxlength="1000"
-        placeholder="Puedes explicar un poco más el motivo si quieres."
-      ></textarea>
-
-      <div id="cancel_modal_message" class="owner-detail-message" style="display:none"></div>
-
-      <div class="modal-actions">
-        <button
-          type="button"
-          class="detail-secondary-btn"
-          data-action="close-owner-cancel-modal"
+        <label>Horas estimadas</label>
+        <small
+          >Tiempo aproximado que necesitas desde que acepten tu oferta.</small
         >
-          Volver
-        </button>
+        <input id="offer_eta" type="number" min="1" placeholder="Ej: 24" />
 
-        <button type="submit" class="action-danger modal-danger-btn">
-          Cancelar sorpresa
-        </button>
+        <div class="offer-modal-actions">
+          <button
+            type="button"
+            class="detail-secondary-btn"
+            data-action="close-offer-modal"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit" class="detail-offer-btn">Enviar oferta</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div
+      id="notification_toast"
+      class="notification-toast"
+      style="display: none"
+    ></div>
+    <div id="owner_cancel_modal" class="surpriser-modal" style="display: none">
+      <div class="surpriser-modal-card cancel-modal-card">
+        <div class="modal-head">
+          <span>Cancelar sorpresa</span>
+          <h2>¿Por qué quieres cancelarla?</h2>
+          <p>
+            Selecciona un motivo. Esto ayuda a gestionar penalizaciones, avisos
+            y el historial de la sorpresa.
+          </p>
+        </div>
+
+        <form id="owner_cancel_form">
+          <input type="hidden" id="cancel_surprise_id" />
+
+          <label>Motivo</label>
+          <select id="cancel_reason_key" required>
+            <option value="">Selecciona un motivo</option>
+            <option value="illness">Enfermedad</option>
+            <option value="personal_issue">Problema personal</option>
+            <option value="force_majeure">Fuerza mayor</option>
+            <option value="technical_issue">Problema técnico</option>
+            <option value="no_time">No tengo tiempo</option>
+            <option value="uncomfortable">No me siento cómodo/a</option>
+            <option value="cant_now">No puedo ahora</option>
+            <option value="no_reason">Prefiero no decirlo</option>
+          </select>
+
+          <label>Detalles opcionales</label>
+          <textarea
+            id="cancel_reason_text"
+            maxlength="1000"
+            placeholder="Puedes explicar un poco más el motivo si quieres."
+          ></textarea>
+
+          <div
+            id="cancel_modal_message"
+            class="owner-detail-message"
+            style="display: none"
+          ></div>
+
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="detail-secondary-btn"
+              data-action="close-owner-cancel-modal"
+            >
+              Volver
+            </button>
+
+            <button type="submit" class="action-danger modal-danger-btn">
+              Cancelar sorpresa
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
-
-  </div>
-</div>
-</body>
+    </div>
+  </body>
 </html>
