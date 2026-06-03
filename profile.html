@@ -1,0 +1,56 @@
+<div class="section-head">
+  <span>Perfil</span>
+  <h1>Tu cuenta</h1>
+</div>
+
+<div class="profile-layout">
+  <div class="app-card profile-card-large">
+    <img
+      id="profile_avatar_preview_large"
+      class="profile-avatar-large"
+      src=""
+      alt="Avatar"
+    />
+
+    <div class="profile-roles" id="profile_roles"></div>
+
+    <h2 id="profile_name">Tu perfil</h2>
+    <p id="profile_username">@usuario</p>
+    <p id="profile_bio">Sin bio todavía.</p>
+  </div>
+
+  <form id="profile_editor" class="app-card profile-editor-large">
+    <h3>Editar perfil</h3>
+
+    <label>Nombre</label>
+    <input id="up_name" />
+
+    <label>Username</label>
+    <input id="up_username" />
+
+    <label>Bio</label>
+    <textarea id="up_bio"></textarea>
+
+    <label>Teléfono</label>
+    <input id="up_phone" />
+
+    <label>Ciudad</label>
+    <input id="up_city" />
+
+    <label>País</label>
+    <input id="up_country" />
+
+    <label>Avatar</label>
+    <input type="file" id="up_avatar_file" accept="image/*" />
+
+    <label>¿Eres genio?</label>
+    <select id="up_is_genius">
+      <option value="0">No</option>
+      <option value="1">Sí</option>
+    </select>
+
+    <button type="button" class="btn" data-action="update-profile">
+      Guardar
+    </button>
+  </form>
+</div>

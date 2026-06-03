@@ -1,0 +1,74 @@
+<div class="discover-hero">
+  <div class="discover-hero-content">
+    <span class="discover-badge"> Tablero de sorpresas general </span>
+
+    <h1>Descubre experiencias increíbles creadas para sorprender</h1>
+
+    <p>
+      Música, arte, mascotas, vídeos, naturaleza y mucho más en un
+      único lugar.
+    </p>
+  </div>
+</div>
+<!-- FILTER BAR COMPACTA -->
+<nav class="surpriser-filter-nav">
+  <!-- CATEGORÍA -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="skill">
+      Categoría ▾
+    </button>
+    <div class="dropdown-menu" id="skill_menu"></div>
+  </div>
+
+  <!-- TAMAÑO -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="size">Tamaño ▾</button>
+    <div class="dropdown-menu">
+      <div class="option" data-size="">Todos</div>
+      <div class="option" data-size="SMALL">Small</div>
+      <div class="option" data-size="MEDIUM">Medium</div>
+      <div class="option" data-size="LARGE">Large</div>
+      <div class="option" data-size="PREMIUM">Premium</div>
+    </div>
+  </div>
+
+  <!-- TIEMPO -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="deadline">
+      Tiempo ▾
+    </button>
+    <div class="dropdown-menu">
+      <div class="option" data-order-deadline="asc">
+        Expiran pronto
+      </div>
+      <div class="option" data-order-deadline="desc">
+        Expiran más tarde
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTRA -->
+  <div class="filter-item toggles">
+    <label>
+      <input type="checkbox" id="filter_urgent" />
+      Urgentes
+    </label>
+
+    <label>
+      <input type="checkbox" id="filter_featured" />
+      Destacadas
+    </label>
+  </div>
+
+  <!-- RESET -->
+  <button id="reset_filters" class="reset-btn">Reset</button>
+</nav>
+<!-- =====================================================
+LISTA DE SURPRISES
+==================================================== -->
+<div class="section-head">
+  <span>Explorar sorpresas</span>
+  <h1>Sorpresas buscando Genio...</h1>
+</div>
+
+<div id="all_surprises_list" class="surprise-grid"></div>

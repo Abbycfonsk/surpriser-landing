@@ -1,180 +1,261 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Surpriser</title>
-    <link rel="stylesheet" href="css/style.css?v=31">
-<script type="module" src="js/login.js"></script>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Surpriser</title>
+    <link rel="icon" type="image/png" href="img/logo-mini.png" />
+    <link rel="stylesheet" href="css/style.css?v=160" />
+    <script type="module" src="js/main.js?v=999999999999"></script>
+  </head>
 
-<body class="auth-page">
+  <body class="app-dashboard">
+    <!-- =====================================================
+  HEADER (SIEMPRE VISIBLE)
+===================================================== -->
 
-<main class="auth-shell">
-    <section class="auth-panel">
-        <a class="auth-brand" href="index.html">
-            <img src="img/logo.png" alt="Surpriser">
-            <span>Surpriser</span>
-        </a>
+    <header class="app-topbar">
+      <div class="logoNavSuperior">
+        <img src="img/logo.png" alt="logo surpriser" />
 
-        <div class="auth-heading">
-            <span>De vuelta por aquí?</span>
-            <h1>Entra en tu mundo de sorpresas.</h1>
-            <p>Accede a tu dashboard para crear, pedir y gestionar experiencias personalizadas.</p>
+        <button class="app-logo" data-section="home">Surpriser</button>
+      </div>
+
+      <nav class="app-menu">
+        <button data-section="home">Inicio</button>
+        <button data-section="creator">Creador</button>
+        <button data-section="genius">Genio</button>
+        <button data-section="shopping">Ads y compras</button>
+        <button data-section="user-dashboard">Dashboard</button>
+        <button data-section="conversations">Conversaciones</button>
+      </nav>
+
+      <div class="app-top-actions">
+        <button class="top-avatar-btn" data-section="profile">
+          <img
+            id="profile_avatar_preview"
+            class="top-avatar"
+            src=""
+            alt="Avatar"
+          />
+        </button>
+
+        <button class="top-pill notif-button" data-section="notifications">
+          Notificaciones
+          <span id="notif_count" class="notif-badge"></span>
+        </button>
+
+        <button class="top-pill" data-action="logout">Salir</button>
+      </div>
+    </header>
+
+    <!-- =====================================================
+  CONTENEDOR PRINCIPAL (DONDE CAMBIAN LAS VISTAS)
+===================================================== -->
+
+    <main class="app-shell full-layout">
+      <section class="app-content full-width-content">
+        <!-- =====================================================
+    SECTION: HOME (INICIO)
+  ===================================================== -->
+
+        <section id="section-home" class="section app-section"></section>
+
+        <!-- =====================================================
+    DETAIL SURPRISE
+  ===================================================== -->
+
+        <section
+          id="section-surprise-detail"
+          class="section app-section"
+          style="display: none"
+        ></section>
+
+        <!-- =====================================================
+    OWNER SURPRISE DETAIL
+  ===================================================== -->
+
+        <section
+          id="section-owner-surprise-detail"
+          class="section app-section"
+          style="display: none"
+        ></section>
+        <!-- =====================================================
+    SECTION: PROFILE (PERFIL)
+  ===================================================== -->
+
+        <section
+          id="section-profile"
+          class="section app-section"
+          style="display: none"
+        ></section>
+
+        <!-- =====================================================
+    SECTION: CREATOR (CREADOR)
+  ===================================================== -->
+
+        <section
+          id="section-creator"
+          class="section app-section creator-dashboard"
+          style="display: none"
+        ></section>
+
+        <!-- =====================================================
+    SECTION: CREATE SURPRISE (FORMULARIO CREAR)
+  ===================================================== -->
+
+        <section
+          id="section-create-surprise"
+          class="section app-section"
+          style="display: none"
+        ></section>
+
+        <!-- USER DASHBOARD -->
+        <section
+          id="section-user-dashboard"
+          class="section app-section"
+          style="display: none"
+        ></section>
+
+        <!-- CONVERSACIONES -->
+        <section
+          id="section-conversations"
+          class="section app-section"
+          style="display: none"
+        ></section>
+
+        <!-- ADS Y PLANES -->
+        <section
+          id="section-shopping"
+          class="section app-section"
+          style="display: none"
+        ></section>
+
+        <!-- GENIUS -->
+        <section
+          id="section-genius"
+          class="section app-section genius-section"
+          style="display: none"
+        ></section>
+      </section>
+    </main>
+
+    <!-- =====================================================
+  DEBUG OUTPUT
+===================================================== -->
+
+    <pre id="output" class="app-output"></pre>
+    <!-- OFFER MODAL -->
+    <div id="offer_modal" class="offer-modal" style="display: none">
+      <div class="offer-modal-backdrop" data-action="close-offer-modal"></div>
+
+      <form class="offer-modal-card" id="offer_form">
+        <h2>Hacer oferta</h2>
+        <p class="offer-help">
+          Propón un precio, explica cómo resolverías la sorpresa y estima cuánto
+          tardarías.
+        </p>
+
+        <input type="hidden" id="offer_surprise_id" />
+
+        <label>Precio de tu oferta</label>
+        <small>Indica cuánto cobrarías por realizar esta sorpresa.</small>
+        <input
+          id="offer_price"
+          type="number"
+          min="1"
+          step="0.01"
+          placeholder="Ej: 45"
+        />
+
+        <label>Mensaje para la creadora</label>
+        <small>Cuenta brevemente tu idea, experiencia o propuesta.</small>
+        <textarea
+          id="offer_message"
+          placeholder="Puedo hacerlo así..."
+        ></textarea>
+
+        <label>Horas estimadas</label>
+        <small
+          >Tiempo aproximado que necesitas desde que acepten tu oferta.</small
+        >
+        <input id="offer_eta" type="number" min="1" placeholder="Ej: 24" />
+
+        <div class="offer-modal-actions">
+          <button
+            type="button"
+            class="detail-secondary-btn"
+            data-action="close-offer-modal"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit" class="detail-offer-btn">Enviar oferta</button>
         </div>
-
-        <div class="auth-form">
-            <label>Email</label>
-            <input id="log_email" type="email" placeholder="tu@email.com">
-
-            <label>Contraseña</label>
-            <input id="log_pass" type="password" placeholder="Tu contraseña">
-
-            <button class="auth-btn" id="loginBtn">Entrar</button>
-            <div class="auth-register-cta">
-    <span>¿Todavía no tienes cuenta?</span>
-    <a href="register.html">Crear cuenta</a>
-</div>
-
-            <div class="auth-links">
-                <a href="reset.html">Resetear contraseña</a>
-                <a href="#" onclick="forgotPasswordController()">¿Olvidaste la contraseña?</a>
-            </div>
-        </div>
-
-       
-    </section>
-<aside class="auth-side">
-    <div class="landing-carousel" id="landing_carousel">
-        <div class="landing-carousel-track" id="landing_carousel_track">
-
-            <article class="landing-slide">
-                <img src="img/problema.png" alt="El problema">
-                <div class="landing-slide-copy">
-                    <span>El problema</span>
-                    <h2>Horas buscando, mucho trabajo, poca emoción.</h2>
-                    <p>Preparar una sorpresa debería ser emocionante, pero hoy es un caos.</p>
-                    <ul>
-                        <li>Horas buscando ideas de sorpresas</li>
-                        <li>Dificultad para encontrar a alguien que la haga</li>
-                        <li>Resultados genéricos, repetidos o poco creativos</li>
-                        <li>Gestión complicada: contactar, pagar, coordinar, enviar</li>
-                    </ul>
-                    <strong>Surpriser nace para que sorprender vuelva a ser fácil, rápido y emocionante.</strong>
-                </div>
-            </article>
-
-            <article class="landing-slide">
-                <img src="img/creadores.png" alt="Creadora">
-                <div class="landing-slide-copy">
-                    <span>Creadores</span>
-                    <h2>Describe tu idea y deja que los genios propongan.</h2>
-                    <p>Publica una sorpresa con presupuesto, fecha, estilo y detalles importantes.</p>
-                    <ul>
-                        <li>Explica qué quieres conseguir</li>
-                        <li>Recibe propuestas creativas</li>
-                        <li>Elige la opción que más te emocione</li>
-                    </ul>
-                    <strong>Tú tienes la intención. Surpriser te ayuda a convertirla en experiencia.</strong>
-                </div>
-            </article>
-
-            <article class="landing-slide">
-                <img src="img/genios.png" alt="Genio">
-                <div class="landing-slide-copy">
-                    <span>Genio</span>
-                    <h2>Convierte tu creatividad en oportunidades reales.</h2>
-                    <p>Encuentra sorpresas que encajan contigo y envía propuestas personalizadas.</p>
-                    <ul>
-                        <li>Ofrece ideas únicas</li>
-                        <li>Trabaja según tus habilidades</li>
-                        <li>Gana dinero creando momentos memorables</li>
-                    </ul>
-                    <strong>Tu talento puede ser justo lo que alguien necesita para sorprender.</strong>
-                </div>
-            </article>
-
-            <article class="landing-slide">
-                <img src="img/eliges.png" alt="Ofertas">
-                <div class="landing-slide-copy">
-                    <span>Ofertas</span>
-                    <h2>Compara propuestas sin perderte en mensajes eternos.</h2>
-                    <p>Cada genio puede enviar una oferta clara con precio, idea y forma de realizarla.</p>
-                    <ul>
-                        <li>Propuestas organizadas</li>
-                        <li>Precios visibles</li>
-                        <li>Decisiones más fáciles</li>
-                    </ul>
-                    <strong>Menos caos, más claridad.</strong>
-                </div>
-            </article>
-
-            <article class="landing-slide">
-                <img src="img/solucion.png" alt="Coordinación">
-                <div class="landing-slide-copy">
-                    <span>Coordinación</span>
-                    <h2>Todo el proceso en un mismo lugar.</h2>
-                    <p>Desde la idea hasta la entrega, Surpriser centraliza la comunicación y el seguimiento.</p>
-                    <ul>
-                        <li>Estados de la sorpresa</li>
-                        <li>Fechas límite</li>
-                        <li>Entrega y validación</li>
-                    </ul>
-                    <strong>Para que sorprender no dependa de mil conversaciones sueltas.</strong>
-                </div>
-            </article>
-
-            <article class="landing-slide">
-                <img src="img/funcionamiento.png" alt="Creaciones estrella">
-                <div class="landing-slide-copy">
-                    <span>Creaciones estrella</span>
-                    <h2>Destaca tus sorpresas cuando quieras más visibilidad.</h2>
-                    <p>Las sorpresas promocionadas ganan presencia dentro de la plataforma.</p>
-                    <ul>
-                        <li>Más visibilidad</li>
-                        <li>Más opciones de recibir propuestas</li>
-                        <li>Mejor posicionamiento</li>
-                    </ul>
-                    <strong>Ideal para sorpresas importantes o urgentes.</strong>
-                </div>
-            </article>
-
-            <article class="landing-slide">
-                <img src="img/beneficios.png" alt="Surpriser">
-                <div class="landing-slide-copy">
-                    <span>Surpriser</span>
-                    <h2>Dos roles, una plataforma.</h2>
-                    <p>Pide una sorpresa o crea una. Surpriser conecta intención, creatividad y emoción.</p>
-                    <ul>
-                        <li>Creadores que quieren sorprender</li>
-                        <li>Genios que saben crear experiencias</li>
-                        <li>Una plataforma para hacerlo posible</li>
-                    </ul>
-                    <strong>La sorpresa empieza aquí.</strong>
-                </div>
-            </article>
-            <template>
-                <article class="landing-slide">
-    <img src="img/tu-imagen.png" alt="Texto descriptivo">
-    <div class="landing-slide-copy">
-        <span>Categoría</span>
-        <h2>Título del apartado.</h2>
-        <p>Texto principal.</p>
-        <ul>
-            <li>Punto uno</li>
-            <li>Punto dos</li>
-            <li>Punto tres</li>
-        </ul>
-        <strong>Frase destacada final.</strong>
+      </form>
     </div>
-</article>
-            </template>
 
+    <!-- NOTIFICATION TOAST -->
+    <div
+      id="notification_toast"
+      class="notification-toast"
+      style="display: none"
+    ></div>
+    <div id="owner_cancel_modal" class="surpriser-modal" style="display: none">
+      <div class="surpriser-modal-card cancel-modal-card">
+        <div class="modal-head">
+          <span>Cancelar sorpresa</span>
+          <h2>¿Por qué quieres cancelarla?</h2>
+          <p>
+            Selecciona un motivo. Esto ayuda a gestionar penalizaciones, avisos
+            y el historial de la sorpresa.
+          </p>
         </div>
-    </div>
-</aside>
-    
-</main>
 
-</body>
+        <form id="owner_cancel_form">
+          <input type="hidden" id="cancel_surprise_id" />
+
+          <label>Motivo</label>
+          <select id="cancel_reason_key" required>
+            <option value="">Selecciona un motivo</option>
+            <option value="illness">Enfermedad</option>
+            <option value="personal_issue">Problema personal</option>
+            <option value="force_majeure">Fuerza mayor</option>
+            <option value="technical_issue">Problema técnico</option>
+            <option value="no_time">No tengo tiempo</option>
+            <option value="uncomfortable">No me siento cómodo/a</option>
+            <option value="cant_now">No puedo ahora</option>
+            <option value="no_reason">Prefiero no decirlo</option>
+          </select>
+
+          <label>Detalles opcionales</label>
+          <textarea
+            id="cancel_reason_text"
+            maxlength="1000"
+            placeholder="Puedes explicar un poco más el motivo si quieres."
+          ></textarea>
+
+          <div
+            id="cancel_modal_message"
+            class="owner-detail-message"
+            style="display: none"
+          ></div>
+
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="detail-secondary-btn"
+              data-action="close-owner-cancel-modal"
+            >
+              Volver
+            </button>
+
+            <button type="submit" class="action-danger modal-danger-btn">
+              Cancelar sorpresa
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
 </html>

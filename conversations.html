@@ -1,0 +1,42 @@
+<div class="section-head">
+  <span>Mensajes</span>
+  <h1>Conversaciones</h1>
+</div>
+
+<div class="conversation-shell">
+  <aside class="conversation-list-panel">
+    <div id="conversation_list" class="conversation-list"></div>
+  </aside>
+
+  <section class="chat-panel">
+    <div id="chat_empty" class="chat-empty">
+      Selecciona una conversación para ver los mensajes.
+    </div>
+
+    <div id="chat_view" class="chat-view" style="display: none">
+      <header class="chat-head">
+        <div>
+          <span id="chat_surprise_title">Sorpresa</span>
+          <strong id="chat_interlocutor_name">Conversación</strong>
+        </div>
+
+        <button
+          class="detail-secondary-btn"
+          data-action="delete-current-conversation"
+        >
+          Eliminar conversación
+        </button>
+      </header>
+
+      <div id="chat_messages" class="chat-messages"></div>
+
+      <form id="chat_form" class="chat-form">
+        <input
+          id="chat_message_input"
+          placeholder="Escribe un mensaje..."
+        />
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </section>
+</div>

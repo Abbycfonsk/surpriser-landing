@@ -1,0 +1,48 @@
+<div class="dash-hero">
+  <div>
+    <span class="creator-badge">Panel personal</span>
+    <h1>Tu actividad en Surpriser</h1>
+    <p>Resumen de creador, genio y perfil en un solo vistazo.</p>
+  </div>
+</div>
+
+<div class="surpriser-dashboard-grid">
+  <article class="dashboard-panel">
+    <h2>Creador</h2>
+    <div id="user_creator_stats" class="stats-grid"></div>
+  </article>
+
+  <article class="dashboard-panel">
+    <h2>Genio</h2>
+    <div id="user_genius_stats" class="stats-grid"></div>
+    <div id="user_skills_stats" class="skill-dashboard-list"></div>
+  </article>
+
+  <article class="dashboard-panel profile-dashboard-panel">
+    <h2>Perfil</h2>
+
+    <div class="profile-mini-head">
+      <img id="dash_avatar_preview" src="" alt="Avatar" />
+      <div>
+        <strong id="dash_user_name">Usuario</strong>
+        <span id="dash_user_roles"></span>
+      </div>
+    </div>
+
+    <label>Nombre</label>
+    <input id="dash_up_name" />
+
+    <label>Username</label>
+    <input id="dash_up_username" />
+
+    <label>Bio</label>
+    <textarea id="dash_up_bio"></textarea>
+
+    <label>Avatar</label>
+    <input type="file" id="dash_up_avatar_file" accept="image/*" />
+
+    <button class="btn" data-action="dashboard-update-profile">
+      Guardar perfil
+    </button>
+  </article>
+</div>

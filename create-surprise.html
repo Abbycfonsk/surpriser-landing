@@ -1,0 +1,35 @@
+<form class="app-card create-card-modern">
+  <div class="create-header">
+    <span>Nueva sorpresa</span>
+    <h2>Diseña una experiencia</h2>
+  </div>
+
+  <input id="cs_creator" type="hidden" />
+
+  <label>Título</label>
+  <input id="cs_title" />
+
+  <label>Descripción</label>
+  <textarea id="cs_desc"></textarea>
+
+  <label>Skill ID</label>
+  <input id="cs_skill" />
+
+  <label>Deadline</label>
+  <input id="cs_deadline" type="date" />
+
+  <label>Tamaño</label>
+  <select id="cs_size">
+    <option value="SMALL">SMALL</option>
+    <option value="MEDIUM">MEDIUM</option>
+    <option value="LARGE">LARGE</option>
+    <option value="PREMIUM">PREMIUM</option>
+  </select>
+
+  <label>Imagen</label>
+  <input type="file" id="cs_header_file" accept="image/*" />
+
+  <button type="button" class="btn" data-action="create-surprise">
+    Publicar sorpresa
+  </button>
+</form>
