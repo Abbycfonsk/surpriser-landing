@@ -1,0 +1,84 @@
+<div class="creator-hero">
+  <div class="creator-hero-content">
+    <span class="creator-badge">Panel del creador</span>
+
+    <h1>Convierte ideas en sorpresas increíbles</h1>
+
+    <p>
+      Gestiona tus publicaciones, crea nuevas experiencias y coordina todo desde
+      un único panel visual.
+    </p>
+  </div>
+
+  <button class="creator-main-btn" data-section="create-surprise">
+    + Crear sorpresa
+  </button>
+</div>
+
+<div class="section-head">
+  <span>Tablero de sorpresas</span>
+  <h1>Mis creaciones</h1>
+</div>
+<nav class="surpriser-filter-nav creator-filters">
+  <!-- Estado -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="owner-status">Estado ▾</button>
+
+    <div class="dropdown-menu">
+      <div class="option" data-owner-status="">Todos</div>
+      <div class="option" data-owner-status="open">Open</div>
+      <div class="option" data-owner-status="in_progress">In_progress</div>
+      <div class="option" data-owner-status="delivered">Delivered</div>
+      <div class="option" data-owner-status="completed">Completed</div>
+      <div class="option" data-owner-status="cancelled">Cancelled</div>
+    </div>
+  </div>
+
+  <!-- Categoría -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="owner-skill">Categoría ▾</button>
+
+    <div class="dropdown-menu" id="owner_skill_menu"></div>
+  </div>
+
+  <!-- Tamaño -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="owner-size">Tamaño ▾</button>
+
+    <div class="dropdown-menu">
+      <div class="option" data-owner-size="">Todos</div>
+      <div class="option" data-owner-size="SMALL">Small</div>
+      <div class="option" data-owner-size="MEDIUM">Medium</div>
+      <div class="option" data-owner-size="LARGE">Large</div>
+      <div class="option" data-owner-size="PREMIUM">Premium</div>
+    </div>
+  </div>
+
+  <!-- Tiempo -->
+  <div class="filter-item dropdown">
+    <button class="filter-btn" data-toggle="owner-deadline">Tiempo ▾</button>
+
+    <div class="dropdown-menu">
+      <div class="option" data-owner-deadline="asc">Expiran pronto</div>
+
+      <div class="option" data-owner-deadline="desc">Expiran más tarde</div>
+    </div>
+  </div>
+
+  <!-- Toggles -->
+  <div class="filter-item toggles">
+    <label>
+      <input type="checkbox" id="owner_filter_urgent" />
+      Urgentes
+    </label>
+
+    <label>
+      <input type="checkbox" id="owner_filter_featured" />
+      Destacadas
+    </label>
+  </div>
+
+  <button id="owner_reset_filters" class="reset-btn">Reset</button>
+</nav>
+
+<div id="created_surprises_list" class="surprise-grid compact-grid"></div>

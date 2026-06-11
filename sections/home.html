@@ -5,8 +5,7 @@
     <h1>Descubre experiencias increíbles creadas para sorprender</h1>
 
     <p>
-      Música, arte, mascotas, vídeos, naturaleza y mucho más en un
-      único lugar.
+      Música, arte, mascotas, vídeos, naturaleza y mucho más en un único lugar.
     </p>
   </div>
 </div>
@@ -14,9 +13,7 @@
 <nav class="surpriser-filter-nav">
   <!-- CATEGORÍA -->
   <div class="filter-item dropdown">
-    <button class="filter-btn" data-toggle="skill">
-      Categoría ▾
-    </button>
+    <button class="filter-btn" data-toggle="skill">Categoría ▾</button>
     <div class="dropdown-menu" id="skill_menu"></div>
   </div>
 
@@ -34,19 +31,21 @@
 
   <!-- TIEMPO -->
   <div class="filter-item dropdown">
-    <button class="filter-btn" data-toggle="deadline">
-      Tiempo ▾
-    </button>
+    <button class="filter-btn" data-toggle="deadline">Tiempo ▾</button>
     <div class="dropdown-menu">
-      <div class="option" data-order-deadline="asc">
-        Expiran pronto
-      </div>
-      <div class="option" data-order-deadline="desc">
-        Expiran más tarde
-      </div>
+      <div class="option" data-order-deadline="asc">Expiran pronto</div>
+      <div class="option" data-order-deadline="desc">Expiran más tarde</div>
     </div>
   </div>
-
+  <!-- PROVINCIA -->
+  <div class="filter-item">
+    <input
+      type="text"
+      id="filter_province"
+      placeholder="Provincia..."
+      class="filter-input"
+    />
+  </div>
   <!-- EXTRA -->
   <div class="filter-item toggles">
     <label>

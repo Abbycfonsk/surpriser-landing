@@ -1,4 +1,5 @@
 import { state } from "./state/appState.js";
+import { loadSection } from "./main.js";
 
 export function initNavigation() {
   document.addEventListener("click", (e) => {
@@ -52,34 +53,34 @@ export function initNavigation() {
       window.closeOfferModal?.();
       return;
     }
-if (action === "close-owner-cancel-modal") {
-  window.closeOwnerCancelModal?.();
-  return;
-}
-if (action === "open-conversation") {
-  window.openConversation?.(actionBtn.dataset.conversationId);
-  return;
-}
+    if (action === "close-owner-cancel-modal") {
+      window.closeOwnerCancelModal?.();
+      return;
+    }
+    if (action === "open-conversation") {
+      window.openConversation?.(actionBtn.dataset.conversationId);
+      return;
+    }
 
-if (action === "delete-current-conversation") {
-  window.deleteCurrentConversation?.();
-  return;
-}
+    if (action === "delete-current-conversation") {
+      window.deleteCurrentConversation?.();
+      return;
+    }
 
-if (action === "dashboard-update-profile") {
-  window.updateDashboardProfile?.();
-  return;
-}
+    if (action === "dashboard-update-profile") {
+      window.updateDashboardProfile?.();
+      return;
+    }
 
-if (action === "purchase-genius-plan") {
-  window.purchaseGeniusPlan?.(actionBtn.dataset.plan);
-  return;
-}
+    if (action === "purchase-genius-plan") {
+      window.purchaseGeniusPlan?.(actionBtn.dataset.plan);
+      return;
+    }
 
-if (action === "purchase-genius-package") {
-  window.purchaseGeniusPackage?.(actionBtn.dataset.package);
-  return;
-}
+    if (action === "purchase-genius-package") {
+      window.purchaseGeniusPackage?.(actionBtn.dataset.package);
+      return;
+    }
     if (action === "offer-from-detail") {
       window.offerFromDetail?.(actionBtn.dataset.surpriseId);
       return;
@@ -126,36 +127,37 @@ export function showSection(sectionName) {
   showAppSection(sectionName);
 }
 
-export function showAppSection(name) {
-  document.querySelectorAll(".app-section").forEach(section => {
+export async function showAppSection(name) {
+  document.querySelectorAll(".app-section").forEach((section) => {
     section.style.display = "none";
   });
 
   const section = document.getElementById(`section-${name}`);
+  if (!section) return;
 
-  if (section) {
-    section.style.display = "block";
+  if (!section.dataset.loaded) {
+    await loadSection(name);
+    section.dataset.loaded = "true";
   }
 
-  if (name === "creator" && state.user) {
-    window.loadOwnerSurprises?.();
-  }
-if (name === "conversations") {
-  window.loadConversations?.();
-}
+  section.style.display = "block";
 
-if (name === "user-dashboard") {
-  window.loadUserDashboard?.();
-}
-  if (name === "genius") {
-    window.loadGeniusDashboardController?.();
-  }
+  // 👇 lógica por sección
+  if (name === "home") window.loadHome?.();
 
-  if (name === "notifications") {
-    window.loadNotificationsSection?.();
-  }
+  if (name === "creator") window.loadOwnerSurprises?.();
 
-  if (name === "shopping") {
-    window.loadShoppingController?.();
-  }
+  if (name === "conversations") window.loadConversations?.();
+
+  if (name === "user-dashboard") window.loadUserDashboard?.();
+
+  if (name === "genius") window.loadGeniusDashboardController?.();
+
+  if (name === "notifications") window.loadNotificationsSection?.();
+
+  if (name === "shopping") window.loadShoppingController?.();
+
+  if (name === "profile") window.loadProfile?.();
+
+  if (name === "owner-surprise-detail") window.openOwnerSurpriseDetail?.();
 }
