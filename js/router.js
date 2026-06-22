@@ -1,5 +1,6 @@
 import { state } from "./state/appState.js";
 import { loadSection } from "./main.js";
+import { initSurpriseCreate } from "./sections/surpriseCreate.js";
 
 export function initNavigation() {
   document.addEventListener("click", (e) => {
@@ -21,11 +22,6 @@ export function initNavigation() {
 
     if (action === "logout") {
       logoutController();
-      return;
-    }
-
-    if (action === "create-surprise") {
-      createSurpriseController();
       return;
     }
 
@@ -95,6 +91,10 @@ export function initNavigation() {
       window.openOwnerSurpriseDetail?.(actionBtn.dataset.surpriseId);
       return;
     }
+    if (action === "owner-offers") {
+      window.openOwnerOffers?.(actionBtn.dataset.surpriseId);
+      return;
+    }
 
     if (action === "owner-cancel-surprise") {
       window.cancelOwnerSurprise?.(actionBtn.dataset.surpriseId);
@@ -133,6 +133,7 @@ export async function showAppSection(name) {
   });
 
   const section = document.getElementById(`section-${name}`);
+
   if (!section) return;
 
   if (!section.dataset.loaded) {
@@ -146,6 +147,10 @@ export async function showAppSection(name) {
   if (name === "home") window.loadHome?.();
 
   if (name === "creator") window.loadOwnerSurprises?.();
+
+  if (name === "create-surprise") {
+    initSurpriseCreate();
+  }
 
   if (name === "conversations") window.loadConversations?.();
 

@@ -1,4 +1,5 @@
-import { initNavigation, showAppSection } from "./router.js";
+import { initNavigation, showAppSection, showSection } from "./router.js";
+import { openOwnerOffers } from "./sections/ownerOffers.js";
 import {
   loadConversations,
   openConversation,
@@ -68,6 +69,8 @@ async function initApp() {
     initCreateSurpriseListeners();
 
     window.openOwnerSurpriseDetail = openOwnerSurpriseDetail;
+    window.openOwnerOffers = openOwnerOffers;
+    window.showSection = showSection;
     window.saveOwnerSurprise = saveOwnerSurprise;
     window.cancelOwnerSurprise = cancelOwnerSurprise;
     window.loadOwnerSurprises = loadOwnerSurprises;
@@ -150,6 +153,11 @@ export async function loadSection(name) {
 
   if (name === "creator") {
     initOwnerCancelModal();
+  }
+
+  if (name === "owner-offers") {
+    const module = await import("./sections/ownerOffers.js");
+    module.initOwnerOffers();
   }
 
   container.dataset.loaded = "true";

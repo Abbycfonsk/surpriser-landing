@@ -1,0 +1,38 @@
+<section id="ownerOffers" class="owner-offers">
+  <header class="owner-offers-header">
+    <h2 id="offers-surprise-title">Ofertas</h2>
+  </header>
+
+  <div id="owner-offers-list" class="offers-list">
+    <!-- renderOffer() inyecta aquí -->
+  </div>
+</section>
+
+<!-- 🧊 MODAL REGATEO (VELO SURPRISER) -->
+<div id="counter-modal" class="surpriser-modal hidden">
+  <div class="surpriser-backdrop"></div>
+
+  <div class="surpriser-card">
+    <h3>Regatear oferta</h3>
+
+    <label>
+      Precio (€)
+      <input id="counter-price" type="number" />
+    </label>
+
+    <label>
+      Horas estimadas
+      <input id="counter-eta" type="number" />
+    </label>
+
+    <label>
+      Mensaje
+      <textarea id="counter-message"></textarea>
+    </label>
+
+    <div class="surpriser-actions">
+      <button id="counter-cancel" class="btn secondary">Cancelar</button>
+      <button id="counter-confirm" class="btn primary">Enviar</button>
+    </div>
+  </div>
+</div>

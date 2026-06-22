@@ -1,33 +1,95 @@
 <form class="app-card create-card-modern">
   <div class="create-header">
     <span>Nueva sorpresa</span>
-    <h2>Diseña una experiencia</h2>
+    <h2>¿Qué experiencia quieres crear?</h2>
+    <p>
+      Describe lo que necesitas y la comunidad de genios encontrará la mejor
+      forma de hacerlo realidad.
+    </p>
   </div>
 
   <input id="cs_creator" type="hidden" />
 
-  <label>Título</label>
-  <input id="cs_title" />
+  <!-- TÍTULO -->
 
-  <label>Descripción</label>
-  <textarea id="cs_desc"></textarea>
+  <label>Título de la sorpresa</label>
+  <input
+    id="cs_title"
+    placeholder="Ej: Quiero una canción personalizada para mi pareja"
+  />
 
-  <label>Skill ID</label>
-  <input id="cs_skill" />
+  <small> Un resumen corto y claro de lo que buscas. </small>
 
-  <label>Deadline</label>
+  <!-- DESCRIPCIÓN -->
+
+  <label>Cuéntanos más</label>
+
+  <textarea
+    id="cs_desc"
+    placeholder="Explica la idea, para quién es, qué te gustaría conseguir y cualquier detalle importante..."
+  ></textarea>
+
+  <!-- SKILL -->
+
+  <label>Categoría</label>
+
+  <select id="cs_skill">
+    <option value="">Cargando categorías...</option>
+  </select>
+  <div id="skill-preview" class="skill-preview">
+    <strong id="skill-category"> Categoría general </strong>
+
+    <p id="skill-description">
+      Selecciona una habilidad para ver la descripción.
+    </p>
+  </div>
+
+  <!-- UBICACIÓN -->
+
+  <label>Ubicación objetivo</label>
+
+  <div class="location-grid">
+    <select id="cs_country">
+      <option value="">País</option>
+      <option value="España">España</option>
+    </select>
+
+    <select id="cs_province">
+      <option value="">Provincia</option>
+    </select>
+
+    <select id="cs_city">
+      <option value="">Ciudad</option>
+    </select>
+  </div>
+
+  <!-- DEADLINE -->
+
+  <label>¿Para cuándo lo necesitas?</label>
+
   <input id="cs_deadline" type="date" />
 
-  <label>Tamaño</label>
+  <!-- TAMAÑO -->
+
+  <label>Importancia de la sorpresa</label>
+
   <select id="cs_size">
-    <option value="SMALL">SMALL</option>
-    <option value="MEDIUM">MEDIUM</option>
-    <option value="LARGE">LARGE</option>
-    <option value="PREMIUM">PREMIUM</option>
+    <option value="SMALL">SMALL · Algo sencillo</option>
+
+    <option value="MEDIUM">MEDIUM · Requiere más dedicación</option>
+
+    <option value="LARGE">LARGE · Proyecto importante</option>
+
+    <option value="PREMIUM">PREMIUM · Máxima dedicación</option>
   </select>
 
-  <label>Imagen</label>
+  <!-- IMAGEN -->
+
+  <label>Imagen de referencia</label>
+
   <input type="file" id="cs_header_file" accept="image/*" />
+
+  <small> Puedes subir una imagen para ayudar a explicar tu idea. </small>
 
   <button type="button" class="btn" data-action="create-surprise">
     Publicar sorpresa
