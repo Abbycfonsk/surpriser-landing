@@ -1,0 +1,46 @@
+/* ============================================================
+   PROFILE ROLES
+============================================================ */
+
+.profile-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.profile-role {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+/* Creator */
+
+.role-creator {
+  background: rgba(247, 200, 91, 0.12);
+  color: #f7c85b;
+  border-color: rgba(247, 200, 91, 0.45);
+}
+
+/* Genius */
+
+.role-genius {
+  background: rgba(192, 132, 252, 0.12);
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.45);
+}
+
+/* Admin */
+
+.role-admin {
+  background: rgba(255, 77, 109, 0.12);
+  color: #ff4d6d;
+  border-color: rgba(255, 77, 109, 0.45);
+}

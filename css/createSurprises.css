@@ -1,0 +1,226 @@
+/*========================================*/
+/* NUEVO FORMULARIO CREAR SORPRESAS */
+/*========================================*/
+/* =====================================================
+   CREATE SURPRISE
+===================================================== */
+
+.create-card-modern {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  max-width: 850px;
+  margin: 0 auto;
+
+  padding: 24px;
+  border-radius: 18px;
+
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.create-header {
+  margin-bottom: 10px;
+}
+
+.create-header span {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #caa74d;
+  margin-bottom: 4px;
+}
+
+.create-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--text-color);
+}
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.create-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.create-full {
+  grid-column: 1 / -1;
+}
+
+/* =====================================================
+   CAMPOS
+===================================================== */
+
+.create-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.create-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.create-field small {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+.create-field input,
+.create-field select,
+.create-field textarea {
+  width: 100%;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+
+  color: var(--text-color);
+
+  border-radius: 12px;
+
+  padding: 12px 14px;
+
+  font-size: 14px;
+
+  transition: 0.2s;
+}
+
+.create-field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.create-field input:focus,
+.create-field select:focus,
+.create-field textarea:focus {
+  outline: none;
+
+  border-color: #f3d27a;
+
+  box-shadow:
+    0 0 0 3px rgba(243, 210, 122, 0.15),
+    0 0 25px rgba(243, 210, 122, 0.15);
+}
+
+/* =====================================================
+   SKILL INFO
+===================================================== */
+
+.skill-preview {
+  padding: 14px;
+  border-radius: 14px;
+
+  background: rgba(243, 210, 122, 0.08);
+  border: 1px solid rgba(243, 210, 122, 0.15);
+}
+
+.skill-preview-category {
+  display: inline-block;
+
+  padding: 4px 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  color: #111;
+  background: #f3d27a;
+
+  margin-bottom: 8px;
+}
+
+.skill-preview-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f3d27a;
+  margin-bottom: 6px;
+}
+
+.skill-preview-description {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+/* =====================================================
+   UBICACIÓN
+===================================================== */
+
+.location-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+/* =====================================================
+   FILE INPUT
+===================================================== */
+
+.create-field input[type="file"] {
+  cursor: pointer;
+  padding: 10px;
+}
+
+.create-field input[type="file"]::-webkit-file-upload-button {
+  border: none;
+  border-radius: 999px;
+
+  padding: 8px 14px;
+  margin-right: 10px;
+
+  cursor: pointer;
+
+  background: #f3d27a;
+  color: #111;
+  font-weight: 700;
+}
+
+/* =====================================================
+   BOTÓN PUBLICAR
+===================================================== */
+
+.create-submit {
+  margin-top: 10px;
+
+  height: 48px;
+
+  border: none;
+  border-radius: 999px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  background: #f3d27a;
+  color: #111;
+
+  transition: 0.25s;
+}
+
+.create-submit:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(243, 210, 122, 0.35),
+    0 0 18px rgba(243, 210, 122, 0.25);
+}

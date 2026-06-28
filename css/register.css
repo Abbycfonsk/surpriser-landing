@@ -1,0 +1,31 @@
+/* ============================================================
+   REGISTER CTA
+============================================================ */
+
+.auth-register-cta {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(247, 200, 91, 0.08);
+  border: 1px solid rgba(247, 200, 91, 0.24);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-register-cta span {
+  color: #d8d2dc;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.auth-register-cta a {
+  color: #f7c85b;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.auth-register-cta a:hover {
+  color: #ffcf67;
+}

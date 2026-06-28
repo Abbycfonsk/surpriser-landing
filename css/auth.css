@@ -1,0 +1,219 @@
+/* ============================================================
+   AUTH PAGE
+============================================================ */
+
+.auth-page {
+  min-height: 100vh;
+}
+
+/* ============================================================
+   LAYOUT
+============================================================ */
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(320px, 520px) 1fr;
+}
+
+/* ============================================================
+   LEFT PANEL
+============================================================ */
+
+.auth-panel {
+  background: #111016;
+  border-right: 1px solid rgba(247, 200, 91, 0.25);
+  padding: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ============================================================
+   BRAND
+============================================================ */
+
+.auth-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 46px;
+  width: fit-content;
+}
+
+.auth-brand img {
+  width: 62px;
+  height: auto;
+}
+
+.auth-brand span {
+  font-size: 24px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #f7c85b, #d39580, #7f42b0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================
+   HEADING
+============================================================ */
+
+.auth-heading span {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #c779bd;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.auth-heading h1 {
+  color: #f7c85b;
+  font-size: 40px;
+  line-height: 1.08;
+  font-weight: 900;
+}
+
+.auth-heading p {
+  margin-top: 18px;
+  color: #d8d2dc;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.auth-form {
+  margin-top: 34px;
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #f7c85b;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.auth-form input,
+.auth-form textarea,
+.auth-form select,
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(247, 200, 91, 0.35);
+  background: #201b24;
+  color: #f5f1f7;
+  font-size: 16px;
+  font-weight: 500;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.auth-form input::placeholder,
+textarea::placeholder {
+  color: #8f879b;
+}
+
+.auth-form input:focus,
+.auth-form textarea:focus,
+.auth-form select:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #f7c85b;
+  background: #241f29;
+  box-shadow:
+    0 0 0 3px rgba(247, 200, 91, 0.1),
+    0 10px 24px rgba(0, 0, 0, 0.22);
+}
+/* ============================================================
+   BUTTON
+============================================================ */
+
+.auth-btn,
+.btn {
+  width: 100%;
+  padding: 15px 20px;
+  margin-top: 6px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #f0bd3f, #b775a8, #7f42b0);
+  color: #111016;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.auth-btn:hover,
+.btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+/* ============================================================
+   LINKS
+============================================================ */
+
+.auth-links {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.auth-links a {
+  color: #d8d2dc;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.auth-links a:hover {
+  color: #f7c85b;
+}
+
+/* ============================================================
+   RIGHT SIDE
+============================================================ */
+
+.auth-side {
+  position: relative;
+  padding: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(8, 7, 15, 0.5), rgba(8, 7, 15, 0.75)),
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(247, 200, 91, 0.16),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(127, 66, 176, 0.2),
+      transparent 35%
+    ),
+    #08070f;
+}
+
+.auth-side::before {
+  content: "";
+  position: absolute;
+  inset: 24px;
+  border-radius: 24px;
+  border: 1px solid rgba(247, 200, 91, 0.28);
+  pointer-events: none;
+}

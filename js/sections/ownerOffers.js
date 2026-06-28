@@ -92,42 +92,42 @@ function renderOffer(offer) {
   return `
   <article class="offer-card">
 
-    <div class="offer-header">
+    <div class="offer-top">
 
- <img
-  class="offer-avatar"
-  src="${offer.genius?.avatar_url || "/assets/avatar-placeholder.jpg"}"
-  alt="${offer.genius?.name || "Genius"}"
-  onerror="this.src='/assets/avatar-placeholder.jpg'"
->
+      <img
+        class="offer-avatar"
+        src="${offer.genius?.avatar_url || "/assets/avatar-placeholder.jpg"}"
+        alt="${offer.genius?.name || "Genius"}"
+        onerror="this.src='/assets/avatar-placeholder.jpg'"
+      >
 
-  <div class="offer-genius">
+      <div class="offer-info">
 
-  <div class="offer-name">
-    ${offer.genius?.name || "Genius"}
-  </div>
+        <div class="offer-name-row">
+          <span class="offer-name">
+            ${offer.genius?.name || "Genius"}
+          </span>
 
-  <div class="offer-level">
-    ${offer.genius?.genius_badge || offer.genius?.genius_level || ""}
-  </div>
+          <span class="offer-badge">
+            ${offer.genius?.genius_badge || offer.genius?.genius_level || "Pro"}
+          </span>
+        </div>
 
-</div>
+        <div class="offer-submeta">
+          <span class="offer-status ${offer.status}">
+            ${offer.status}
+          </span>
+
+          <span class="offer-eta">
+            ⏱ ${offer.eta_hours || "-"}h
+          </span>
+        </div>
+
+      </div>
 
       <div class="offer-price">
         ${offer.price}€
       </div>
-
-    </div>
-
-    <div class="offer-meta">
-
-      <span class="offer-status">
-        ${offer.status}
-      </span>
-
-      <span>
-        ⏱ ${offer.eta_hours || "-"}h
-      </span>
 
     </div>
 
@@ -146,23 +146,11 @@ function renderOffer(offer) {
       ${
         offer.status !== "accepted"
           ? `
-        <button
-          class="btn-small"
-          data-offer-accept="${offer.id}"
-        >
+        <button class="btn primary" data-offer-accept="${offer.id}">
           Aceptar
         </button>
-      `
-          : ""
-      }
 
-      ${
-        offer.status !== "accepted"
-          ? `
-        <button
-          class="btn-small secondary"
-          data-offer-counter="${offer.id}"
-        >
+        <button class="btn ghost" data-offer-counter="${offer.id}">
           Regatear
         </button>
       `
@@ -176,9 +164,7 @@ function renderOffer(offer) {
         ? `
       <div class="offer-history">
 
-        <div class="offer-history-title">
-          Historial de negociación
-        </div>
+        <div class="history-title">Historial</div>
 
         ${offer.bids.map(renderBid).join("")}
 
@@ -193,30 +179,24 @@ function renderOffer(offer) {
 
 function renderBid(bid) {
   return `
-    <div
-      class="offer-bid ${bid.role}"
-    >
+    <div class="bid ${bid.role}">
 
-      <strong>
-        ${bid.role.toUpperCase()}
-      </strong>
-
-      <div>
-        ${bid.price}€
+      <div class="bid-header">
+        <span class="bid-role">${bid.role}</span>
+        <span class="bid-price">${bid.price}€</span>
       </div>
 
-      <div>
-        ${bid.eta_hours || "-"} horas
+      <div class="bid-meta">
+        ⏱ ${bid.eta_hours || "-"}h
       </div>
 
-      <p>
+      <div class="bid-message">
         ${bid.message || ""}
-      </p>
+      </div>
 
     </div>
   `;
 }
-
 document.addEventListener("click", async (e) => {
   const acceptBtn = e.target.closest("[data-offer-accept]");
 
