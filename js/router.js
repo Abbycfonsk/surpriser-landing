@@ -1,6 +1,7 @@
 import { state } from "./state/appState.js";
 import { loadSection } from "./main.js";
 import { initSurpriseCreate } from "./sections/surpriseCreate.js";
+import { loadNotificationsView } from "./sections/notifications.js";
 
 export function initNavigation() {
   document.addEventListener("click", (e) => {
@@ -151,14 +152,14 @@ export async function showAppSection(name) {
   if (name === "create-surprise") {
     initSurpriseCreate();
   }
-
+  if (name === "notifications") {
+    await loadNotificationsView(state.user, state.token);
+  }
   if (name === "conversations") window.loadConversations?.();
 
   if (name === "user-dashboard") window.loadUserDashboard?.();
 
   if (name === "genius") window.loadGeniusDashboardController?.();
-
-  if (name === "notifications") window.loadNotificationsSection?.();
 
   if (name === "shopping") window.loadShoppingController?.();
 

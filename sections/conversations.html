@@ -18,6 +18,13 @@
         <div>
           <span id="chat_surprise_title">Sorpresa</span>
           <strong id="chat_interlocutor_name">Conversación</strong>
+
+          <div class="chat-status-line">
+            <span id="chat_surprise_status" class="chat-status-badge">
+              Estado
+            </span>
+            <small id="chat_status_hint"></small>
+          </div>
         </div>
 
         <button
@@ -31,10 +38,7 @@
       <div id="chat_messages" class="chat-messages"></div>
 
       <form id="chat_form" class="chat-form">
-        <input
-          id="chat_message_input"
-          placeholder="Escribe un mensaje..."
-        />
+        <input id="chat_message_input" placeholder="Escribe un mensaje..." />
         <button type="submit">Enviar</button>
       </form>
     </div>
