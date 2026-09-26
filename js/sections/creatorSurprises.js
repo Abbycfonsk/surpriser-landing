@@ -25,6 +25,7 @@ let ownerFilters = {
 let ownerSurprises = [];
 
 let ownerFiltersInitialized = false;
+let pendingOwnerFiles = [];
 
 export async function loadOwnerSurprises() {
   const token = localStorage.getItem("token");
@@ -404,35 +405,38 @@ function renderOwnerSurpriseDetail(surprise) {
                 <option value="1" ${isTruthy(surprise.is_urgent) ? "selected" : ""}>Sí</option>
               </select>
             </div>
+<div>
+  <label>Precio acordado</label>
+  <div class="owner-readonly-value">
+    ${
+      surprise.final_price
+        ? `${Number(surprise.final_price).toFixed(2)} €`
+        : "Pendiente de oferta"
+    }
+  </div>
+</div>
+           
 
             <div>
-              <label>Precio</label>
-              <input
-                id="owner_price"
-                type="number"
-                step="0.01"
-                value="${surprise.price || ""}"
-                placeholder="Opcional"
-              >
-            </div>
+  <label>País</label>
+  <select id="owner_target_country">
+    <option value="">Selecciona un país</option>
+  </select>
+</div>
 
-            <div>
-              <label>Ciudad</label>
-              <input
-                id="owner_target_city"
-                value="${escapeAttr(surprise.target_city || "")}"
-                placeholder="Ciudad"
-              >
-            </div>
+<div>
+  <label>Provincia</label>
+  <select id="owner_target_province">
+    <option value="">Selecciona una provincia</option>
+  </select>
+</div>
 
-            <div>
-              <label>País</label>
-              <input
-                id="owner_target_country"
-                value="${escapeAttr(surprise.target_country || "")}"
-                placeholder="País"
-              >
-            </div>
+<div>
+  <label>Ciudad</label>
+  <select id="owner_target_city">
+    <option value="">Selecciona una ciudad</option>
+  </select>
+</div>
           </div>
 
         </div>
@@ -456,6 +460,7 @@ function renderOwnerSurpriseDetail(surprise) {
         <div class="detail-files-grid">
           ${renderOwnerFiles(surprise.files || [])}
         </div>
+        <div id="pending_owner_files" class="detail-files-grid"></div>
       </div>
 
       <div class="owner-detail-actions">
@@ -481,8 +486,152 @@ function renderOwnerSurpriseDetail(surprise) {
   `;
 
   bindOwnerImagePreview();
+  bindOwnerFilesPreview();
+  initOwnerLocationSelects(surprise);
+}
+function initOwnerLocationSelects(surprise) {
+  const countrySelect = document.getElementById("owner_target_country");
+  const provinceSelect = document.getElementById("owner_target_province");
+  const citySelect = document.getElementById("owner_target_city");
+
+  if (!countrySelect || !provinceSelect || !citySelect) return;
+
+  const countries = [
+    {
+      name: "España",
+      provinces: {
+        Madrid: ["Madrid", "Alcalá de Henares", "Móstoles"],
+        Barcelona: ["Barcelona", "Badalona", "Hospitalet de Llobregat"],
+        Valencia: ["Valencia", "Gandía", "Torrent"],
+      },
+    },
+  ];
+
+  countrySelect.innerHTML = `
+    <option value="">Selecciona un país</option>
+    ${countries
+      .map(
+        (country) => `
+          <option value="${country.name}">
+            ${country.name}
+          </option>
+        `,
+      )
+      .join("")}
+  `;
+
+  countrySelect.value = surprise.target_country || "";
+
+  function loadProvinces() {
+    const country = countries.find((item) => item.name === countrySelect.value);
+
+    const provinces = country ? Object.keys(country.provinces) : [];
+
+    provinceSelect.innerHTML = `
+      <option value="">Selecciona una provincia</option>
+      ${provinces
+        .map(
+          (province) => `
+            <option value="${province}">
+              ${province}
+            </option>
+          `,
+        )
+        .join("")}
+    `;
+
+    provinceSelect.value = surprise.target_province || "";
+    loadCities();
+  }
+
+  function loadCities() {
+    const country = countries.find((item) => item.name === countrySelect.value);
+
+    const cities = country?.provinces[provinceSelect.value] || [];
+
+    citySelect.innerHTML = `
+      <option value="">Selecciona una ciudad</option>
+      ${cities
+        .map(
+          (city) => `
+            <option value="${city}">
+              ${city}
+            </option>
+          `,
+        )
+        .join("")}
+    `;
+
+    citySelect.value = surprise.target_city || "";
+  }
+
+  countrySelect.addEventListener("change", loadProvinces);
+  provinceSelect.addEventListener("change", loadCities);
+
+  loadProvinces();
+}
+function bindOwnerFilesPreview() {
+  const input = document.getElementById("owner_files");
+  const box = document.getElementById("pending_owner_files");
+
+  if (!input || !box) return;
+
+  input.addEventListener("change", () => {
+    const selectedFiles = Array.from(input.files);
+
+    pendingOwnerFiles.push(...selectedFiles);
+
+    renderPendingOwnerFiles();
+
+    // Permite volver a seleccionar el mismo archivo
+    input.value = "";
+  });
 }
 
+function renderPendingOwnerFiles() {
+  const box = document.getElementById("pending_owner_files");
+
+  if (!box) return;
+
+  if (!pendingOwnerFiles.length) {
+    box.innerHTML = "";
+    return;
+  }
+
+  box.innerHTML = `
+    <div class="pending-files-panel">
+      <div class="pending-files-heading">
+        Pendientes de guardar
+      </div>
+
+      <div class="pending-files-list">
+        ${pendingOwnerFiles
+          .map((file) => {
+            const previewUrl = file.type.startsWith("image/")
+              ? URL.createObjectURL(file)
+              : "";
+
+            return `
+              <div class="pending-file-row">
+                <div class="pending-file-preview">
+                  ${
+                    previewUrl
+                      ? `<img src="${previewUrl}" alt="${file.name}">`
+                      : `<span>Archivo</span>`
+                  }
+                </div>
+
+                <span class="pending-file-name" title="${file.name}">
+                  ${file.name}
+                </span>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    </div>
+  `;
+}
 function bindOwnerImagePreview() {
   const input = document.getElementById("owner_header_file");
   const preview = document.getElementById("owner_header_preview");
@@ -518,12 +667,13 @@ export async function saveOwnerSurprise(surpriseId) {
     if (isUrgent !== "") formData.append("is_urgent", isUrgent);
     if (deadline) formData.append("deadline", deadline);
 
-    const city = getOwnerFieldValue("owner_city");
-    const country = getOwnerFieldValue("owner_country");
-    const price = getOwnerFieldValue("owner_price");
+    const city = getOwnerFieldValue("owner_target_city");
+    const province = getOwnerFieldValue("owner_target_province");
+    const country = getOwnerFieldValue("owner_target_country");
+
     if (city) formData.append("target_city", city);
+    if (province) formData.append("target_province", province);
     if (country) formData.append("target_country", country);
-    if (price) formData.append("price", price);
 
     const headerInput = document.getElementById("owner_header_file");
 
@@ -558,6 +708,11 @@ export async function saveOwnerSurprise(surpriseId) {
     }
 
     await uploadOwnerFiles(surpriseId, token);
+
+    const updatedResponse = await getSurprise(surpriseId, token);
+    const updatedSurprise = updatedResponse.json?.data || updatedResponse.json;
+
+    renderOwnerSurpriseDetail(updatedSurprise);
 
     showOwnerDetailMessage("Sorpresa modificada con éxito.", "success");
 
@@ -726,17 +881,17 @@ function escapeAttr(value) {
 }
 
 async function uploadOwnerFiles(surpriseId, token) {
-  const input = document.getElementById("owner_files");
+  if (!pendingOwnerFiles.length) return;
 
-  if (!input || !input.files.length) return;
-
-  for (const file of input.files) {
+  for (const file of pendingOwnerFiles) {
     const res = await uploadSurpriseFile(surpriseId, file, token);
 
     if (!res.ok) {
       throw new Error(getLaravelErrorMessage(res.json));
     }
   }
+
+  pendingOwnerFiles = [];
 }
 function getOwnerFieldValue(id, fallback = "") {
   const field = document.getElementById(id);

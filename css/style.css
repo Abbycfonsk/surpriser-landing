@@ -5497,3 +5497,113 @@ CONVERSATIONS
   cursor: not-allowed;
   opacity: 0.6;
 }
+/*-----------------------------------------------------------*/
+/* archivos pendientes de guardar en detalle sorpresa creador*/
+/*-----------------------------------------------------------*/
+.pending-file-card {
+  position: relative;
+  border: 1px dashed #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.pending-file-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  padding: 4px 8px;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.16);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: center;
+}
+.pending-file {
+  position: relative;
+}
+
+.pending-file-card {
+  position: relative;
+  padding-top: 42px;
+  border: 1px dashed #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.pending-file-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 42px;
+  display: block;
+  overflow: hidden;
+  color: #fbbf24;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pending-file .owner-file-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+}
+.pending-files-panel {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px dashed #f59e0b;
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.pending-files-heading {
+  margin-bottom: 12px;
+  color: #fbbf24;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: normal;
+}
+
+.pending-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pending-file-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.pending-file-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fbbf24;
+  font-size: 0.7rem;
+}
+
+.pending-file-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pending-file-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #f3f4f6;
+  font-size: 0.85rem;
+}

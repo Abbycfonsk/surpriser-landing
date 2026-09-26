@@ -278,16 +278,30 @@ function initOfferModal() {
     e.preventDefault();
 
     const token = localStorage.getItem("token");
-    const surpriseId = document.getElementById("offer_surprise_id").value;
+    const surpriseId = document.getElementById("offer_surprise_id")?.value;
 
-    const price = document.getElementById("offer_price").value.trim();
-    const message = document.getElementById("offer_message").value.trim();
-    const eta = document.getElementById("offer_eta").value.trim();
+    const priceValue = document.getElementById("offer_price")?.value.trim();
 
-    if (!price || !eta) {
+    const etaValue = document.getElementById("offer_eta")?.value.trim();
+
+    const message =
+      document.getElementById("offer_message")?.value.trim() || null;
+
+    const price = Number(priceValue);
+    const etaHours = Number(etaValue);
+
+    if (!Number.isFinite(price) || price < 1) {
       showNotificationToast({
-        title: "Faltan datos",
-        message: "Indica precio y horas estimadas.",
+        title: "Precio inválido",
+        message: "Introduce un precio mayor que 0.",
+      });
+      return;
+    }
+
+    if (!Number.isInteger(etaHours) || etaHours < 1) {
+      showNotificationToast({
+        title: "Tiempo inválido",
+        message: "Introduce un número entero de horas.",
       });
       return;
     }
@@ -297,10 +311,31 @@ function initOfferModal() {
       {
         price,
         message,
-        eta_hours: eta,
+        eta_hours: etaHours,
       },
       token,
     );
+
+    console.log("Respuesta de createOffer:", res);
+
+    if (!res.ok) {
+      const validationError = res.json?.errors
+        ? Object.values(res.json.errors).flat()[0]
+        : null;
+
+      const errorMessage =
+        res.json?.error ||
+        res.json?.message ||
+        validationError ||
+        "No se pudo enviar la oferta.";
+
+      showNotificationToast({
+        title: "Oferta no enviada",
+        message: errorMessage,
+      });
+
+      return;
+    }
 
     closeOfferModal();
 
