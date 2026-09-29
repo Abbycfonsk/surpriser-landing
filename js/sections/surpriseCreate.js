@@ -33,21 +33,70 @@ function initLocationSelects() {
   const provinceSelect = document.getElementById("cs_province");
   const citySelect = document.getElementById("cs_city");
 
-  if (!countrySelect || !provinceSelect || !citySelect) return;
+  if (!countrySelect || !provinceSelect || !citySelect) {
+    console.error("No se encontraron los selectores de ubicación");
+    return;
+  }
+
+  const countries = Object.keys(locations);
+
+  countrySelect.innerHTML = `
+    <option value="" selected disabled>
+      País
+    </option>
+    ${countries
+      .map(
+        (country) => `
+          <option value="${country}">
+            ${country}
+          </option>
+        `,
+      )
+      .join("")}
+  `;
+
+  provinceSelect.innerHTML = `
+    <option value="" selected disabled>
+      Provincia
+    </option>
+  `;
+
+  citySelect.innerHTML = `
+    <option value="" selected disabled>
+      Ciudad
+    </option>
+  `;
+
+  provinceSelect.disabled = true;
+  citySelect.disabled = true;
 
   countrySelect.onchange = () => {
     const country = countrySelect.value;
     const provinces = Object.keys(locations[country] || {});
 
-    provinceSelect.innerHTML = '<option value="">Provincia</option>';
-    citySelect.innerHTML = '<option value="">Ciudad</option>';
+    provinceSelect.innerHTML = `
+      <option value="" selected disabled>
+        Provincia
+      </option>
+      ${provinces
+        .map(
+          (province) => `
+            <option value="${province}">
+              ${province}
+            </option>
+          `,
+        )
+        .join("")}
+    `;
 
-    provinces.forEach((province) => {
-      provinceSelect.insertAdjacentHTML(
-        "beforeend",
-        `<option value="${province}">${province}</option>`,
-      );
-    });
+    citySelect.innerHTML = `
+      <option value="" selected disabled>
+        Ciudad
+      </option>
+    `;
+
+    provinceSelect.disabled = provinces.length === 0;
+    citySelect.disabled = true;
   };
 
   provinceSelect.onchange = () => {
@@ -55,17 +104,24 @@ function initLocationSelects() {
     const province = provinceSelect.value;
     const cities = locations[country]?.[province] || [];
 
-    citySelect.innerHTML = '<option value="">Ciudad</option>';
+    citySelect.innerHTML = `
+      <option value="" selected disabled>
+        Ciudad
+      </option>
+      ${cities
+        .map(
+          (city) => `
+            <option value="${city}">
+              ${city}
+            </option>
+          `,
+        )
+        .join("")}
+    `;
 
-    cities.forEach((city) => {
-      citySelect.insertAdjacentHTML(
-        "beforeend",
-        `<option value="${city}">${city}</option>`,
-      );
-    });
+    citySelect.disabled = cities.length === 0;
   };
 }
-
 function initDeadlinePicker() {
   const input = document.getElementById("cs_deadline");
   if (!input) return;
@@ -191,6 +247,14 @@ async function submitSurprise() {
     const province = document.getElementById("cs_province")?.value;
     const city = document.getElementById("cs_city")?.value;
 
+    if (!country || !province || !city) {
+      window.showNotificationToast?.({
+        title: "Ubicación incompleta",
+        message: "Selecciona país, provincia y ciudad.",
+      });
+
+      return;
+    }
     if (country) {
       formData.append("target_country", country);
     }

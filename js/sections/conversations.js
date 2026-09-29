@@ -1,11 +1,16 @@
 import { state } from "../state/appState.js";
+import { showAppSection } from "../router.js";
 
 const API = "https://api.surpriser.app";
 let currentConversationId = null;
 let currentConversations = [];
 
 export async function loadConversations() {
+  resetChatPanel();
   const token = localStorage.getItem("token");
+
+  window.loadConversations = loadConversations;
+  window.openConversationForSurprise = openConversationForSurprise;
 
   const res = await fetch(`${API}/api/conversations`, {
     headers: {
@@ -303,4 +308,98 @@ function formatSurpriseStatus(status) {
   };
 
   return labels[status] || status;
+}
+export async function openConversationForSurprise(surpriseId) {
+  const token = localStorage.getItem("token");
+
+  if (!surpriseId || !token) return;
+
+  try {
+    const res = await fetch(`${API}/api/conversations`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        surprise_id: surpriseId,
+      }),
+    });
+
+    const text = await res.text();
+
+    let json = null;
+
+    try {
+      json = JSON.parse(text);
+    } catch {
+      json = text;
+    }
+
+    if (!res.ok) {
+      throw new Error(
+        json?.error || json?.message || "No se pudo abrir la conversación.",
+      );
+    }
+
+    // El endpoint puede devolver directamente la conversación
+    // o dentro de data.
+    const conversation = json?.data || json;
+
+    await showAppSection("conversations");
+    await loadConversations();
+
+    if (conversation?.id) {
+      await openConversation(conversation.id);
+    }
+  } catch (error) {
+    console.error("Error creando conversación:", error);
+
+    window.showNotificationToast?.({
+      title: "No se pudo abrir el chat",
+      message: error.message,
+    });
+  }
+}
+/*-------------------------------------------------------------------------------------*/
+/* para limpiar el panel del chat cada vez que se entra a la seccion de conversaciones*/
+/*-------------------------------------------------------------------------------------*/
+function resetChatPanel() {
+  currentConversationId = null;
+
+  const empty = document.getElementById("chat_empty");
+  const view = document.getElementById("chat_view");
+  const messages = document.getElementById("chat_messages");
+  const input = document.getElementById("chat_message_input");
+  const form = document.getElementById("chat_form");
+
+  if (empty) {
+    empty.style.display = "block";
+    empty.textContent = "Selecciona una conversación para ver los mensajes.";
+  }
+
+  if (view) {
+    view.style.display = "none";
+  }
+
+  if (messages) {
+    messages.innerHTML = "";
+    messages.dataset.allMessages = "[]";
+    messages.dataset.visibleCount = "0";
+  }
+
+  if (input) {
+    input.value = "";
+    input.disabled = false;
+    input.placeholder = "Escribe un mensaje...";
+  }
+
+  if (form) {
+    form.classList.remove("is-disabled");
+  }
+
+  document.querySelectorAll(".conversation-item").forEach((item) => {
+    item.classList.remove("is-active");
+  });
 }

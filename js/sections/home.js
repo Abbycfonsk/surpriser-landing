@@ -83,9 +83,13 @@ export function renderSimpleSurprise(surprise) {
   // -----------------------------
   // UBICACIÓN (API REAL)
   // -----------------------------
-  const city = surprise.target_city || "Sin ciudad";
-  const province = surprise.target_province || "";
-  const country = surprise.target_country || "";
+  const location = surprise.location || {};
+
+  const city = location.city || surprise.target_city || "Sin ciudad";
+
+  const province = location.province || surprise.target_province || "";
+
+  const country = location.country || surprise.target_country || "";
 
   // -----------------------------
   // DEADLINE

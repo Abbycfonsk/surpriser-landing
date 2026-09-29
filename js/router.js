@@ -2,47 +2,57 @@ import { state } from "./state/appState.js";
 import { loadSection } from "./main.js";
 import { initSurpriseCreate } from "./sections/surpriseCreate.js";
 import { loadNotificationsView } from "./sections/notifications.js";
+import { loadGeniusDashboardController } from "./sections/genius.js";
 
 export function initNavigation() {
-  document.addEventListener("click", (e) => {
-    const sectionBtn = e.target.closest("[data-section]");
+  document.addEventListener("click", async (event) => {
+    const sectionButton = event.target.closest("[data-section]");
 
-    if (sectionBtn) {
-      e.preventDefault();
-      showAppSection(sectionBtn.dataset.section);
+    if (sectionButton) {
+      event.preventDefault();
+
+      await showAppSection(sectionButton.dataset.section);
+
       return;
     }
 
-    const actionBtn = e.target.closest("[data-action]");
+    const actionButton = event.target.closest("[data-action]");
 
-    if (!actionBtn) return;
+    if (!actionButton) return;
 
-    e.preventDefault();
+    event.preventDefault();
 
-    const action = actionBtn.dataset.action;
+    const action = actionButton.dataset.action;
+
+    if (action === "owner-chat") {
+      await window.openConversationForSurprise?.(
+        actionButton.dataset.surpriseId,
+      );
+      return;
+    }
 
     if (action === "logout") {
-      logoutController();
+      await window.logoutController?.();
       return;
     }
 
     if (action === "purchase-plan") {
-      purchaseCreatorPlan(actionBtn.dataset.plan);
+      await window.purchaseCreatorPlan?.(actionButton.dataset.plan);
       return;
     }
 
     if (action === "purchase-package") {
-      purchaseCreatorPackage(actionBtn.dataset.package);
+      await window.purchaseCreatorPackage?.(actionButton.dataset.package);
       return;
     }
 
     if (action === "surprise-detail") {
-      window.openSurpriseDetail?.(actionBtn.dataset.surpriseId);
+      await window.openSurpriseDetail?.(actionButton.dataset.surpriseId);
       return;
     }
 
     if (action === "open-offer-modal") {
-      window.openOfferModal?.(actionBtn.dataset.surpriseId);
+      window.openOfferModal?.(actionButton.dataset.surpriseId);
       return;
     }
 
@@ -50,65 +60,69 @@ export function initNavigation() {
       window.closeOfferModal?.();
       return;
     }
+
     if (action === "close-owner-cancel-modal") {
       window.closeOwnerCancelModal?.();
       return;
     }
+
     if (action === "open-conversation") {
-      window.openConversation?.(actionBtn.dataset.conversationId);
+      await window.openConversation?.(actionButton.dataset.conversationId);
       return;
     }
 
     if (action === "delete-current-conversation") {
-      window.deleteCurrentConversation?.();
+      await window.deleteCurrentConversation?.();
       return;
     }
 
     if (action === "dashboard-update-profile") {
-      window.updateDashboardProfile?.();
+      await window.updateDashboardProfile?.();
       return;
     }
 
     if (action === "purchase-genius-plan") {
-      window.purchaseGeniusPlan?.(actionBtn.dataset.plan);
+      await window.purchaseGeniusPlan?.(actionButton.dataset.plan);
       return;
     }
 
     if (action === "purchase-genius-package") {
-      window.purchaseGeniusPackage?.(actionBtn.dataset.package);
+      await window.purchaseGeniusPackage?.(actionButton.dataset.package);
       return;
     }
+
     if (action === "offer-from-detail") {
-      window.offerFromDetail?.(actionBtn.dataset.surpriseId);
+      await window.offerFromDetail?.(actionButton.dataset.surpriseId);
       return;
     }
 
     if (action === "creator-detail") {
-      window.openCreatorDetail?.(actionBtn.dataset.creatorId);
+      await window.openCreatorDetail?.(actionButton.dataset.creatorId);
       return;
     }
 
     if (action === "owner-surprise-detail") {
-      window.openOwnerSurpriseDetail?.(actionBtn.dataset.surpriseId);
+      await window.openOwnerSurpriseDetail?.(actionButton.dataset.surpriseId);
       return;
     }
+
     if (action === "owner-offers") {
-      window.openOwnerOffers?.(actionBtn.dataset.surpriseId);
+      await window.openOwnerOffers?.(actionButton.dataset.surpriseId);
       return;
     }
 
     if (action === "owner-cancel-surprise") {
-      window.cancelOwnerSurprise?.(actionBtn.dataset.surpriseId);
+      await window.cancelOwnerSurprise?.(actionButton.dataset.surpriseId);
       return;
     }
 
     if (action === "owner-save-surprise") {
-      window.saveOwnerSurprise?.(actionBtn.dataset.surpriseId);
+      await window.saveOwnerSurprise?.(actionButton.dataset.surpriseId);
       return;
     }
 
     if (action === "owner-delete-file") {
-      window.deleteOwnerFile?.(actionBtn.dataset.fileId);
+      await window.deleteOwnerFile?.(actionButton.dataset.fileId);
       return;
     }
 
@@ -118,14 +132,13 @@ export function initNavigation() {
     }
 
     if (action === "update-surprise") {
-      updateSurpriseController();
-      return;
+      await window.updateSurpriseController?.();
     }
   });
 }
 
-export function showSection(sectionName) {
-  showAppSection(sectionName);
+export async function showSection(sectionName) {
+  await showAppSection(sectionName);
 }
 
 export async function showAppSection(name) {
@@ -135,7 +148,10 @@ export async function showAppSection(name) {
 
   const section = document.getElementById(`section-${name}`);
 
-  if (!section) return;
+  if (!section) {
+    console.warn(`No existe la sección: section-${name}`);
+    return;
+  }
 
   if (!section.dataset.loaded) {
     await loadSection(name);
@@ -144,26 +160,42 @@ export async function showAppSection(name) {
 
   section.style.display = "block";
 
-  // 👇 lógica por sección
-  if (name === "home") window.loadHome?.();
+  if (name === "home") {
+    await window.loadHome?.();
+  }
 
-  if (name === "creator") window.loadOwnerSurprises?.();
+  if (name === "creator") {
+    await window.loadOwnerSurprises?.();
+  }
 
   if (name === "create-surprise") {
-    initSurpriseCreate();
+    await initSurpriseCreate();
   }
+
   if (name === "notifications") {
-    await loadNotificationsView(state.user, state.token);
+    await loadNotificationsView(
+      state.user,
+      state.token || localStorage.getItem("token"),
+    );
   }
-  if (name === "conversations") window.loadConversations?.();
 
-  if (name === "user-dashboard") window.loadUserDashboard?.();
+  if (name === "conversations") {
+    await window.loadConversations?.();
+  }
 
-  if (name === "genius") window.loadGeniusDashboardController?.();
+  if (name === "user-dashboard") {
+    await window.loadUserDashboard?.();
+  }
 
-  if (name === "shopping") window.loadShoppingController?.();
+  if (name === "genius") {
+    await loadGeniusDashboardController();
+  }
 
-  if (name === "profile") window.loadProfile?.();
+  if (name === "shopping") {
+    await window.loadShoppingController?.();
+  }
 
-  if (name === "owner-surprise-detail") window.openOwnerSurpriseDetail?.();
+  if (name === "profile") {
+    await window.loadProfile?.();
+  }
 }

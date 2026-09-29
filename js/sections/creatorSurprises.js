@@ -203,13 +203,13 @@ function renderOwnerActions(surprise) {
   if (actions.chat) {
     buttons.push(`
       <a
-        class="action-chat-mini"
-        href="#"
-        data-action="owner-chat"
-        data-surprise-id="${surprise.id}"
-      >
-        CHAT
-      </a>
+  href="#"
+  class="action-chat-mini"
+  data-action="owner-chat"
+  data-surprise-id="${surprise.id}"
+>
+  CHAT
+</a>
     `);
   }
 
@@ -330,161 +330,239 @@ function renderOwnerSurpriseDetail(surprise) {
   if (!container) return;
 
   const status = surprise.status || "open";
+  const isInProgress = status === "in_progress";
+
+  const statusLabels = {
+    open: "Abierta",
+    in_progress: "En progreso",
+    delivered: "Entregada",
+    completed: "Completada",
+    cancelled: "Cancelada",
+  };
+
+  const statusLabel = statusLabels[status] || status;
   const skill = surprise.skill?.name || "Sin categoría";
 
   const imageUrl = surprise.header_image
     ? getImageUrl(surprise.header_image)
     : "img/eliges.png";
-
+  const agreedPrice = surprise.final_price ?? surprise.price;
   container.innerHTML = `
-  <div id="owner_detail_message" class="owner-detail-message" style="display:none"></div>
-    <form class="owner-detail-card" id="owner_surprise_form">
+  <div
+    id="owner_detail_message"
+    class="owner-detail-message"
+    style="display: none"
+  ></div>
 
-      <div class="owner-detail-head">
-        <div>
-          <span class="detail-kicker">${skill}</span>
+  <form
+    class="owner-detail-card"
+    id="owner_surprise_form"
+  >
+
+    <div class="owner-detail-head">
+
+  <div>
+    <span class="detail-kicker">
+      ${skill}
+    </span>
+
+   <textarea
+  id="owner_title"
+  class="owner-title-input"
+  rows="2"
+  ${isInProgress ? "readonly" : ""}
+>${escapeAttr(surprise.title || "")}</textarea>
+  </div>
+
+  <div class="owner-price-display">
+    <span>Precio acordado</span>
+    <strong>
+      ${agreedPrice ? `${Number(agreedPrice).toFixed(2)} €` : "Pendiente"}
+    </strong>
+  </div>
+
+  <div class="owner-status-display status-${status}">
+    <span>Estado</span>
+    <strong>${statusLabel}</strong>
+  </div>
+
+</div>
+
+    <div class="owner-detail-grid">
+
+      <div class="owner-image-panel">
+
+        <img
+          id="owner_header_preview"
+          src="${imageUrl}"
+          alt="${escapeAttr(surprise.title || "Sorpresa")}"
+        >
+
+        <label class="owner-upload-btn">
+          Cambiar imagen
+
           <input
-            id="owner_title"
-            class="owner-title-input"
-            value="${escapeAttr(surprise.title || "")}"
-            placeholder="Título de la sorpresa"
+            type="file"
+            id="owner_header_file"
+            accept="image/*"
+            hidden
           >
-        </div>
+        </label>
 
-        <span class="surprise-status-v2 surprise-status-${status}">
-          ${status}
-        </span>
       </div>
 
-      <div class="owner-detail-grid">
+      <div class="owner-edit-panel">
 
-        <div class="owner-image-panel">
-          <img
-            id="owner_header_preview"
-            src="${imageUrl}"
-            alt="${surprise.title || "Sorpresa"}"
-          >
+        <div class="owner-location-readonly">
 
-          <label class="owner-upload-btn">
-            Cambiar imagen
-            <input
-              type="file"
-              id="owner_header_file"
-              accept="image/*"
-              hidden
-            >
-          </label>
-        </div>
+          <div class="owner-location-title">
+            Ubicación objetivo
+          </div>
 
-        <div class="owner-edit-panel">
+          <div class="owner-location-grid">
 
-          <label>Descripción</label>
-          <textarea id="owner_description">${surprise.description || ""}</textarea>
-
-          <div class="owner-form-grid">
             <div>
-              <label>Tamaño</label>
-              <select id="owner_size">
-                ${renderSizeOptions(surprise.size)}
-              </select>
+              <span>País</span>
+              <strong>
+                ${surprise.target_country || "No indicado"}
+              </strong>
             </div>
 
             <div>
-              <label>Deadline</label>
-              <input
-                id="owner_deadline"
-                type="date"
-                value="${formatDateForInput(surprise.deadline)}"
-              >
+              <span>Provincia</span>
+              <strong>
+                ${surprise.target_province || "No indicada"}
+              </strong>
             </div>
 
-            <div>
-              <label>Urgente</label>
-              <select id="owner_is_urgent">
-                <option value="0" ${!isTruthy(surprise.is_urgent) ? "selected" : ""}>No</option>
-                <option value="1" ${isTruthy(surprise.is_urgent) ? "selected" : ""}>Sí</option>
-              </select>
+            <div class="owner-location-city">
+              <span>Ciudad</span>
+              <strong>
+                ${surprise.target_city || "No indicada"}
+              </strong>
             </div>
-<div>
-  <label>Precio acordado</label>
-  <div class="owner-readonly-value">
-    ${
-      surprise.final_price
-        ? `${Number(surprise.final_price).toFixed(2)} €`
-        : "Pendiente de oferta"
-    }
-  </div>
-</div>
-           
 
-            <div>
-  <label>País</label>
-  <select id="owner_target_country">
-    <option value="">Selecciona un país</option>
-  </select>
-</div>
-
-<div>
-  <label>Provincia</label>
-  <select id="owner_target_province">
-    <option value="">Selecciona una provincia</option>
-  </select>
-</div>
-
-<div>
-  <label>Ciudad</label>
-  <select id="owner_target_city">
-    <option value="">Selecciona una ciudad</option>
-  </select>
-</div>
           </div>
 
         </div>
-      </div>
 
-      <div class="owner-files-block">
-        <div class="owner-files-head">
-          <h3>Archivos vinculados</h3>
+        <label for="owner_description">
+          Descripción
+        </label>
 
-          <label class="owner-file-add">
-            Añadir archivos
+        <textarea id="owner_description">${surprise.description || ""}</textarea>
+
+        <div class="owner-form-grid">
+
+          <div>
+            <label for="owner_size">
+              Tamaño
+            </label>
+
+           <select
+  id="owner_size"
+  ${isInProgress ? "disabled" : ""}
+>
+  ${renderSizeOptions(surprise.size)}
+</select>
+          </div>
+
+          <div>
+            <label for="owner_deadline">
+              Deadline
+            </label>
+
             <input
-              type="file"
-              id="owner_files"
-              multiple
-              hidden
+              id="owner_deadline"
+              type="date"
+              value="${formatDateForInput(surprise.deadline)}"
             >
-          </label>
+          </div>
+
+          <div>
+            <label for="owner_is_urgent">
+              Urgente
+            </label>
+
+            <select
+  id="owner_is_urgent"
+  ${isInProgress ? "disabled" : ""}
+>
+  <option
+    value="0"
+    ${!isTruthy(surprise.is_urgent) ? "selected" : ""}
+  >
+    No
+  </option>
+
+  <option
+    value="1"
+    ${isTruthy(surprise.is_urgent) ? "selected" : ""}
+  >
+    Sí
+  </option>
+</select>
+          </div>
+
         </div>
 
-        <div class="detail-files-grid">
-          ${renderOwnerFiles(surprise.files || [])}
-        </div>
-        <div id="pending_owner_files" class="detail-files-grid"></div>
       </div>
 
-      <div class="owner-detail-actions">
-        <button
-          type="button"
-          class="detail-offer-btn"
-          data-action="owner-save-surprise"
-          data-surprise-id="${surprise.id}"
-        >
-          Guardar cambios
-        </button>
+    </div>
 
-        <button
-          type="button"
-          class="detail-secondary-btn"
-          data-section="creator"
-        >
-          Volver al creador
-        </button>
+    <div class="owner-files-block">
+
+      <div class="owner-files-head">
+        <h3>
+          Archivos vinculados
+        </h3>
+
+        <label class="owner-file-add">
+          Añadir archivos
+
+          <input
+            type="file"
+            id="owner_files"
+            multiple
+            hidden
+          >
+        </label>
       </div>
 
-    </form>
-  `;
+      <div class="detail-files-grid">
+        ${renderOwnerFiles(surprise.files || [])}
+      </div>
 
+      <div
+        id="pending_owner_files"
+        class="detail-files-grid"
+      ></div>
+
+    </div>
+
+    <div class="owner-detail-actions">
+
+      <button
+        type="button"
+        class="detail-offer-btn"
+        data-action="owner-save-surprise"
+        data-surprise-id="${surprise.id}"
+      >
+        Guardar cambios
+      </button>
+
+      <button
+        type="button"
+        class="detail-secondary-btn"
+        data-section="creator"
+      >
+        Volver al creador
+      </button>
+
+    </div>
+
+  </form>
+`;
   bindOwnerImagePreview();
   bindOwnerFilesPreview();
   initOwnerLocationSelects(surprise);
@@ -680,7 +758,7 @@ export async function saveOwnerSurprise(surpriseId) {
     if (headerInput?.files?.length) {
       formData.append("header_image", headerInput.files[0]);
     }
-
+    console.log("Datos enviados:", [...formData.entries()]);
     const res = await fetch(
       `https://api.surpriser.app/api/surprises/${surpriseId}`,
       {
@@ -704,6 +782,11 @@ export async function saveOwnerSurprise(surpriseId) {
     }
 
     if (!res.ok) {
+      console.error("Respuesta update:", {
+        status: res.status,
+        body: json,
+      });
+
       throw new Error(getLaravelErrorMessage(json));
     }
 
