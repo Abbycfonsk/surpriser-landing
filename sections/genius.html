@@ -1,19 +1,134 @@
-<section id="section-genius" class="app-section">
-  <!-- Aquí va el contenido completo de genius.html -->
+<section class="genius-dashboard">
+  <header class="genius-overview">
+    <section class="genius-welcome">
+      <div class="genius-welcome-content">
+        <span class="genius-eyebrow">PANEL DEL GENIO</span>
 
-  <div class="section-head">
-    <span>Genio</span>
-    <h1>Oportunidades para ti</h1>
+        <h1>Tu espacio de oportunidades</h1>
+
+        <p>
+          Explora nuevas sorpresas, revisa tus ofertas y sigue tus proyectos
+          activos desde un único panel.
+        </p>
+      </div>
+      <div class="genius-welcome-stats">
+        <div class="genius-stat">
+          <span>Nivel actual</span>
+          <strong id="genius_level_label">SPARK</strong>
+        </div>
+
+        <div class="genius-stat">
+          <span>Puntuación</span>
+          <strong id="genius_points_label">0 puntos</strong>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <section class="genius-skills-panel">
+    <button
+      id="toggle_genius_skills"
+      class="genius-collapse-btn"
+      type="button"
+      aria-expanded="false"
+      aria-controls="genius_skills_content"
+    >
+      <span>
+        <small>Especialización</small>
+        <strong>Habilidades</strong>
+      </span>
+
+      <span class="genius-collapse-icon">⌄</span>
+    </button>
+
+    <div id="genius_skills_content" class="genius-skills-content" hidden>
+      <div class="skills-group">
+        <h3>Skills activas</h3>
+        <p>Se utilizan para mostrarte oportunidades compatibles.</p>
+
+        <div id="genius_active_skills_list" class="skills-list"></div>
+      </div>
+
+      <div class="skills-group">
+        <h3>Skills propuestas</h3>
+        <p>Puedes añadirlas o eliminarlas antes de que sean activadas.</p>
+
+        <div id="genius_proposed_skills_list" class="skills-list"></div>
+
+        <div class="proposed-skills-editor">
+          <select id="available_skills_select">
+            <option value="">Selecciona una skill</option>
+          </select>
+
+          <button id="add_proposed_skill" class="btn btn-primary" type="button">
+            Añadir skill
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="genius-ranking-section">
+    <div class="ranking-head">
+      <div>
+        <span>Comunidad</span>
+        <h2>Ranking de genios</h2>
+        <p>Descubre quién destaca en cada habilidad.</p>
+      </div>
+
+      <select id="ranking_skill_select">
+        <option value="">Selecciona una skill</option>
+      </select>
+    </div>
+
+    <div id="genius_ranking_list" class="genius-ranking-list">
+      <div class="skills-empty">
+        Selecciona una habilidad para ver el ranking.
+      </div>
+    </div>
+  </section>
+
+  <div class="genius-content-grid">
+    <main class="genius-feed-panel">
+      <div class="genius-section-title">
+        <div>
+          <span>Explora</span>
+          <h2>Sorpresas disponibles</h2>
+        </div>
+
+        <span class="genius-section-counter"> Nuevas oportunidades </span>
+      </div>
+
+      <div id="genius_feed_list" class="genius-feed-list">
+        <div class="genius-empty-state">Cargando oportunidades...</div>
+      </div>
+    </main>
+
+    <aside class="genius-side-column">
+      <section class="genius-mini-panel">
+        <div class="genius-section-title">
+          <div>
+            <span>Seguimiento</span>
+            <h2>Mis ofertas</h2>
+          </div>
+        </div>
+
+        <div id="genius_offers_list" class="genius-mini-list">
+          <div class="genius-empty-state">Cargando ofertas...</div>
+        </div>
+      </section>
+
+      <section class="genius-mini-panel">
+        <div class="genius-section-title">
+          <div>
+            <span>Trabajo actual</span>
+            <h2>Sorpresas activas</h2>
+          </div>
+        </div>
+
+        <div id="genius_active_list" class="genius-mini-list">
+          <div class="genius-empty-state">Cargando proyectos...</div>
+        </div>
+      </section>
+    </aside>
   </div>
-
-  <div id="genius_level_label">SPARK</div>
-  <div id="genius_points_label">0 puntos</div>
-
-  <div id="genius_skills_list"></div>
-
-  <div id="genius_feed_list"></div>
-
-  <div id="genius_offers_list"></div>
-
-  <div id="genius_active_list"></div>
 </section>

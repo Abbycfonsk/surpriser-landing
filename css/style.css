@@ -5890,3 +5890,839 @@ CONVERSATIONS
   text-align: center;
   text-transform: uppercase;
 }
+
+/* ============================================================
+   GENIUS DASHBOARD
+============================================================ */
+
+.genius-section-head {
+  margin-bottom: 26px;
+}
+
+.genius-section-head p {
+  max-width: 620px;
+  margin-top: 8px;
+  color: #aaa1ad;
+  line-height: 1.55;
+}
+
+.genius-dashboard {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.genius-eyebrow,
+.genius-section-title span {
+  color: #c779bd;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.genius-welcome h2 {
+  margin-top: 8px;
+  color: #f0dbac;
+  font-family: "Manrope", Arial, sans-serif;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.1;
+}
+
+.genius-welcome p {
+  margin-top: 10px;
+  color: #aaa1ad;
+  line-height: 1.5;
+}
+
+.genius-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 10px;
+  align-self: center;
+}
+
+.genius-stat {
+  min-width: 125px;
+  padding: 14px;
+  border: 1px solid rgba(247, 200, 91, 0.25);
+  border-radius: 12px;
+  background: #1a1720;
+}
+
+.genius-stat span {
+  display: block;
+  margin-bottom: 6px;
+  color: #aaa1ad;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.genius-stat strong {
+  color: #f7c85b;
+  font-size: 18px;
+}
+
+/* Skills */
+
+.genius-skills-section {
+  margin-top: 18px;
+  padding: 20px;
+  border: 1px solid rgba(199, 121, 189, 0.25);
+  border-radius: 18px;
+  background: #15131b;
+}
+
+.genius-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.genius-section-title h2 {
+  margin-top: 5px;
+  color: #f5f1f7;
+  font-size: 19px;
+}
+
+.genius-skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 11px;
+  border: 1px solid rgba(247, 200, 91, 0.3);
+  border-radius: 999px;
+  background: rgba(247, 200, 91, 0.08);
+  color: #f7c85b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* Main layout */
+
+.genius-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.genius-feed-panel,
+.genius-mini-panel {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid rgba(247, 200, 91, 0.22);
+  border-radius: 18px;
+  background: #111016;
+}
+
+.genius-side-column {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+}
+
+.genius-section-counter {
+  color: #8f879b !important;
+  font-size: 11px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.genius-feed-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px;
+}
+
+/* Tarjetas del feed */
+
+.genius-feed-list .surprise-card-v2 {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(247, 200, 91, 0.22);
+  border-radius: 15px;
+  background: #17141d;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.genius-feed-list .surprise-card-v2:hover {
+  transform: translateY(-3px);
+  border-color: rgba(247, 200, 91, 0.6);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.3);
+}
+
+.genius-feed-list .surprise-card-v2-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 12px 14px;
+  background: #201b24;
+}
+
+.genius-feed-list .surprise-card-v2-body {
+  padding: 15px;
+}
+
+.genius-feed-list .surprise-card-v2-city {
+  color: #f7c85b;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.genius-feed-list .comunidad {
+  margin-top: 3px;
+  color: #aaa1ad;
+  font-size: 11px;
+}
+
+.genius-feed-list h4 {
+  margin-top: 10px;
+  color: #f5f1f7;
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.genius-feed-list .surprise-card-v2-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.genius-feed-list .surprise-card-v2-meta p {
+  color: #c779bd;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.genius-feed-list .surprise-card-v2-meta strong {
+  display: block;
+  margin-top: 3px;
+  color: #d8d2dc;
+  font-size: 11px;
+}
+
+.genius-feed-list .surprise-countdown-v2 {
+  color: #aaa1ad;
+  font-size: 11px;
+  text-align: right;
+}
+
+.genius-feed-list .surprise-card-v2-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.genius-feed-list .surprise-card-v2-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.genius-feed-list .action-primary {
+  flex: 1;
+  background: #f7c85b;
+  color: #111016;
+}
+
+.genius-feed-list .action-more {
+  border: 1px solid rgba(247, 200, 91, 0.32);
+  color: #f7c85b;
+}
+
+/* Paneles laterales */
+
+.genius-mini-list {
+  display: grid;
+  gap: 8px;
+}
+
+.genius-mini-list .mini-item {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: #1a1720;
+}
+
+.genius-mini-list .mini-item strong {
+  overflow-wrap: anywhere;
+  color: #f5f1f7;
+  font-size: 13px;
+}
+
+.genius-mini-list .mini-item span {
+  color: #aaa1ad;
+  font-size: 11px;
+}
+
+.genius-mini-list .mini-item button {
+  width: fit-content;
+  min-height: 30px;
+  margin-top: 4px;
+  padding: 0 10px;
+  border: 1px solid rgba(247, 200, 91, 0.32);
+  border-radius: 7px;
+  background: transparent;
+  color: #f7c85b;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.genius-mini-list .mini-item button:hover {
+  background: #f7c85b;
+  color: #111016;
+}
+
+.genius-empty-state {
+  padding: 24px 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #8f879b;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .genius-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .genius-side-column {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .genius-overview {
+    display: grid;
+    padding: 18px;
+  }
+
+  .genius-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .genius-content-grid {
+    display: block;
+  }
+
+  .genius-side-column {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 18px;
+  }
+
+  .genius-feed-panel,
+  .genius-mini-panel,
+  .genius-skills-section {
+    padding: 16px;
+  }
+
+  .genius-feed-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .genius-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .genius-stat {
+    min-width: 0;
+  }
+
+  .genius-section-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+/* =========================================================
+   SKILLS DEL PANEL GENIUS
+========================================================= */
+
+.genius-skills-section {
+  width: 100%;
+  margin-top: 28px;
+  color: #f5f1f7;
+}
+
+.genius-skills-section .section-head {
+  margin-bottom: 22px;
+}
+
+.genius-skills-section .section-head span {
+  display: block;
+  margin-bottom: 6px;
+  color: #f7c85b;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.genius-skills-section .section-head h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 25px;
+  line-height: 1.2;
+}
+
+/* Separación entre activas y propuestas */
+
+.skills-group {
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: #14111b;
+}
+
+.skills-group h3 {
+  margin: 0 0 6px;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.skills-help {
+  margin: 0 0 16px;
+  color: #a7a1b0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Contenedor de las etiquetas */
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: stretch;
+  min-height: 44px;
+}
+
+/* Etiquetas */
+
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 38px;
+  padding: 9px 13px;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Skills activas */
+
+.skill-pill-active {
+  border: 1px solid rgba(79, 209, 139, 0.45);
+  background: rgba(79, 209, 139, 0.12);
+  color: #baf5d0;
+}
+
+.skill-pill-active small {
+  padding-left: 9px;
+  border-left: 1px solid rgba(186, 245, 208, 0.3);
+  color: #6de39d;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* Skills propuestas */
+
+.skill-pill-proposed {
+  border: 1px solid rgba(247, 200, 91, 0.42);
+  background: rgba(247, 200, 91, 0.1);
+  color: #f9df9a;
+}
+
+.skill-pill-proposed small {
+  padding-left: 9px;
+  border-left: 1px solid rgba(249, 223, 154, 0.3);
+  color: #f7c85b;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* Estados vacíos */
+
+.skills-empty {
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 10px 13px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  color: #8e8898;
+  font-size: 13px;
+}
+
+/* Diferenciador visual de cada bloque */
+
+.skills-group:first-of-type {
+  border-left: 3px solid #4fd18b;
+}
+
+.skills-group:last-of-type {
+  border-left: 3px solid #f7c85b;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+  .skills-group {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .skills-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .skill-pill {
+    width: 100%;
+    justify-content: space-between;
+    white-space: normal;
+  }
+
+  .skill-pill small {
+    margin-left: auto;
+  }
+}
+/* =========================================================
+   HERO PANEL GENIUS cabecera panel genius
+========================================================= */
+
+.genius-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  width: 100%;
+  min-height: 330px;
+  margin: 0 0 36px;
+  padding: 24px 32px;
+  overflow: hidden;
+  border: 1px solid rgba(247, 200, 91, 0.42);
+  border-radius: 32px;
+  background: #17131e;
+  color: #ffffff;
+  position: relative;
+}
+
+.genius-welcome::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(247, 200, 91, 0.035);
+}
+
+.genius-welcome-content {
+  -position: relative;
+  -z-index: 1;
+  width: 100%;
+  -max-width: 980px;
+}
+
+.genius-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  margin-bottom: 30px;
+  padding: 0 15px;
+  border-radius: 999px;
+  background: rgba(247, 200, 91, 0.16);
+  color: #f7c85b;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.genius-welcome h1 {
+  max-width: 850px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(42px, 5vw, 76px);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.genius-welcome p {
+  max-width: 760px;
+  margin: 30px 0 0;
+  color: #cbc5d0;
+  font-size: 21px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   NIVEL Y PUNTUACIÓN cabecera panel genius
+========================================================= */
+
+.genius-welcome-stats {
+  -display: flex;
+  -flex-wrap: wrap;
+  -gap: 14px;
+  -margin-top: 14px;
+}
+
+.genius-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 145px;
+  margin: 1rem 0rem;
+}
+
+.genius-stat span {
+  color: #9f98aa;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.genius-stat strong {
+  color: #f7c85b;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   ELEMENTO DECORATIVO cabecera panel genius
+========================================================= */
+
+.genius-welcome-mark {
+  display: grid;
+  flex: 0 0 150px;
+  place-items: center;
+  width: 150px;
+  height: 150px;
+  border: 1px solid rgba(247, 200, 91, 0.35);
+  border-radius: 50%;
+  background: #241b2d;
+  color: #f7c85b;
+  font-size: 78px;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   RESPONSIVEcabecera panel genius
+========================================================= */
+
+@media (max-width: 850px) {
+  .genius-welcome {
+    display: block;
+    min-height: auto;
+    padding: 42px 30px;
+    border-radius: 24px;
+  }
+
+  .genius-welcome h1 {
+    font-size: clamp(40px, 10vw, 62px);
+  }
+
+  .genius-welcome p {
+    font-size: 17px;
+  }
+
+  .genius-welcome-stats {
+    gap: 22px;
+    margin-top: 30px;
+  }
+
+  .genius-welcome-mark {
+    width: 82px;
+    height: 82px;
+    margin-top: 36px;
+    font-size: 43px;
+  }
+}
+/* =========================================================
+   HABILIDADES DESPLEGABLES panel genius
+========================================================= */
+
+.genius-skills-panel {
+  width: 100%;
+  margin: 28px 0;
+  border: 1px solid rgba(247, 200, 91, 0.28);
+  border-radius: 18px;
+  background: #14111b;
+  overflow: hidden;
+}
+
+.genius-collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 22px 24px;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.genius-collapse-btn small {
+  display: block;
+  margin-bottom: 5px;
+  color: #f7c85b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.genius-collapse-btn strong {
+  display: block;
+  font-size: 21px;
+}
+
+.genius-collapse-icon {
+  color: #f7c85b;
+  font-size: 28px;
+  transition: transform 0.2s ease;
+}
+
+.genius-skills-panel.is-open .genius-collapse-icon {
+  transform: rotate(180deg);
+}
+
+.genius-skills-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  padding: 0 24px 24px;
+}
+
+.skills-group {
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background: #1a1622;
+}
+
+.skills-group h3 {
+  margin: 0 0 6px;
+  color: #ffffff;
+  font-size: 17px;
+}
+
+.skills-group p {
+  margin: 0 0 18px;
+  color: #9f98aa;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  min-height: 40px;
+}
+
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.skill-pill-active {
+  border: 1px solid rgba(79, 209, 139, 0.4);
+  background: rgba(79, 209, 139, 0.12);
+  color: #aef0c5;
+}
+
+.skill-pill-proposed {
+  border: 1px solid rgba(247, 200, 91, 0.4);
+  background: rgba(247, 200, 91, 0.1);
+  color: #f9dc91;
+  cursor: pointer;
+}
+
+.skill-pill-proposed:hover {
+  border-color: #f7c85b;
+}
+
+.skill-remove {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.proposed-skills-editor {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.proposed-skills-editor select {
+  margin: 0;
+}
+
+.skills-empty {
+  color: #8e8798;
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  .genius-skills-content {
+    grid-template-columns: 1fr;
+  }
+
+  .proposed-skills-editor {
+    flex-direction: column;
+  }
+}
