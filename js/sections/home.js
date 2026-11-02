@@ -119,7 +119,8 @@ export function renderSimpleSurprise(surprise) {
           <img src="${avatar}" alt="Avatar creador" />
         </div>
 <div class="surprise-xp">
-  ${surprise.xp_value} <span class="xp-suffix">XP</span>
+  ${surprise.xp_value ?? surprise.xp ?? 0}
+<span class="xp-suffix">XP</span>
 </div>
         ${
           isFeatured

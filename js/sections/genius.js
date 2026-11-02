@@ -21,6 +21,7 @@ window.loadGeniusDashboardController = loadGeniusDashboardController;
 
 window.openChatController = openChatController;
 window.openNegotiationController = openNegotiationController;
+window.openGeniusActiveDetail = openGeniusActiveDetail;
 
 /* =====================================================
    CARGA PRINCIPAL
@@ -89,6 +90,7 @@ export async function loadGeniusDashboardController() {
     }
 
     geniusFeed = extractArray(feedResponse.json);
+    console.log("Datos reales de las cards:", geniusFeed);
     geniusOffers = extractArray(offersResponse?.json);
     geniusCompletedSurprises = extractArray(dashboardResponse?.json);
     geniusActiveSurprises = extractArray(activeResponse?.json);
@@ -101,7 +103,7 @@ export async function loadGeniusDashboardController() {
     initGeniusSkillsToggle();
     renderGeniusFeed(sortGeniusFeed(geniusFeed));
     renderMiniOffers();
-
+    initGeniusOffersToggle();
     renderMiniActiveSurprises();
   } catch (error) {
     console.error("Error cargando el panel genius:", error);
@@ -232,7 +234,6 @@ function renderMiniOffers() {
         Aún no has enviado ninguna oferta.
       </div>
     `;
-
     return;
   }
 
@@ -241,32 +242,21 @@ function renderMiniOffers() {
       const title = offer.surprise?.title || offer.title || "Sorpresa";
 
       return `
-        <div class="mini-item">
+        <article class="genius-offer-item">
+          <strong>${escapeHtml(title)}</strong>
 
-          <strong>
-            ${escapeHtml(title)}
-          </strong>
-
-          <span>
+          <span class="genius-offer-price">
             ${offer.price || 0} €
-            ·
-            ${formatStatus(offer.status || "pending")}
           </span>
 
-          <button
-            type="button"
-            class="btn btn-ghost"
-            onclick="openNegotiationController(${offer.id})"
-          >
-            Regateo
-          </button>
-
-        </div>
+          <span class="genius-offer-status">
+            ${formatStatus(offer.status || "pending")}
+          </span>
+        </article>
       `;
     })
     .join("");
 }
-
 /* =====================================================
    SORPRESAS ACTIVAS
 ===================================================== */
@@ -286,32 +276,26 @@ function renderMiniActiveSurprises() {
         No tienes sorpresas en marcha.
       </div>
     `;
-
     return;
   }
 
   box.innerHTML = active
     .map(
       (surprise) => `
-        <div class="mini-item">
-
-          <strong>
+        <button
+          type="button"
+          class="genius-active-card"
+          data-action="genius-active-detail"
+          data-surprise-id="${surprise.id}"
+        >
+          <h3>
             ${escapeHtml(surprise.title || "Sorpresa")}
-          </strong>
+          </h3>
 
           <span>
             ${formatStatus(surprise.status)}
           </span>
-
-          <button
-            type="button"
-            class="btn btn-ghost"
-            onclick="openChatController(${surprise.id})"
-          >
-            Chat
-          </button>
-
-        </div>
+        </button>
       `,
     )
     .join("");
@@ -718,4 +702,35 @@ async function loadSkillsSelects(token) {
   if (rankingSelect) {
     rankingSelect.innerHTML = optionHtml;
   }
+}
+//desplegable para ofertas genius
+export function initGeniusOffersToggle() {
+  const button = document.getElementById("toggle_genius_offers");
+  const content = document.getElementById("genius_offers_content");
+  const panel = document.querySelector(".genius-offers-panel");
+
+  if (!button || !content || !panel) return;
+
+  button.onclick = () => {
+    const isOpen = button.getAttribute("aria-expanded") === "true";
+
+    button.setAttribute("aria-expanded", String(!isOpen));
+    content.hidden = isOpen;
+    panel.classList.toggle("is-open", !isOpen);
+  };
+}
+export async function openGeniusActiveDetail(id) {
+  const token = state.token || localStorage.getItem("token");
+
+  if (!id || !token) return;
+
+  if (window.openGeniusReadonlyDetail) {
+    await window.openGeniusReadonlyDetail(id, token);
+    return;
+  }
+
+  showGeniusMessage(
+    "Detalle no disponible",
+    "No se ha podido abrir el detalle de la sorpresa.",
+  );
 }

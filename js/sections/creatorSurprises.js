@@ -354,10 +354,11 @@ function renderOwnerSurpriseDetail(surprise) {
     style="display: none"
   ></div>
 
-  <form
-    class="owner-detail-card"
-    id="owner_surprise_form"
-  >
+ <form
+  class="owner-detail-card"
+  id="owner_surprise_form"
+  data-surprise-status="${status}"
+>
 
     <div class="owner-detail-head">
 
@@ -728,81 +729,139 @@ export async function saveOwnerSurprise(surpriseId) {
   const token = localStorage.getItem("token");
 
   try {
-    showOwnerDetailMessage("Guardando cambios...", "info");
+    const form = document.getElementById("owner_surprise_form");
+    const surpriseStatus = form?.dataset.surpriseStatus || "open";
 
-    const formData = new FormData();
+    const canUpdateSurprise = surpriseStatus === "open";
+    const hasPendingFiles = pendingOwnerFiles.length > 0;
 
-    formData.append("_method", "PUT");
-    const title = getOwnerFieldValue("owner_title");
-    const description = getOwnerFieldValue("owner_description");
-    const size = getOwnerFieldRawValue("owner_size");
-    const isUrgent = getOwnerFieldRawValue("owner_is_urgent");
-    const deadline = getOwnerFieldRawValue("owner_deadline");
-
-    if (title) formData.append("title", title);
-    if (description) formData.append("description", description);
-    if (size) formData.append("size", size);
-    if (isUrgent !== "") formData.append("is_urgent", isUrgent);
-    if (deadline) formData.append("deadline", deadline);
-
-    const city = getOwnerFieldValue("owner_target_city");
-    const province = getOwnerFieldValue("owner_target_province");
-    const country = getOwnerFieldValue("owner_target_country");
-
-    if (city) formData.append("target_city", city);
-    if (province) formData.append("target_province", province);
-    if (country) formData.append("target_country", country);
-
-    const headerInput = document.getElementById("owner_header_file");
-
-    if (headerInput?.files?.length) {
-      formData.append("header_image", headerInput.files[0]);
-    }
-    console.log("Datos enviados:", [...formData.entries()]);
-    const res = await fetch(
-      `https://api.surpriser.app/api/surprises/${surpriseId}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-          Accept: "application/json",
-        },
-        body: formData,
-      },
+    showOwnerDetailMessage(
+      hasPendingFiles && !canUpdateSurprise
+        ? "Subiendo archivos..."
+        : "Guardando cambios...",
+      "info",
     );
 
-    const text = await res.text();
+    /*
+     * Solo actualizamos los datos de la sorpresa si está abierta.
+     * En in_progress o delivered únicamente subimos archivos.
+     */
+    if (canUpdateSurprise) {
+      const formData = new FormData();
 
-    let json = null;
+      formData.append("_method", "PUT");
 
-    try {
-      json = JSON.parse(text);
-    } catch {
-      json = text;
+      const title = getOwnerFieldValue("owner_title");
+      const description = getOwnerFieldValue("owner_description");
+      const size = getOwnerFieldRawValue("owner_size");
+      const isUrgent = getOwnerFieldRawValue("owner_is_urgent");
+      const deadline = getOwnerFieldRawValue("owner_deadline");
+
+      if (title) {
+        formData.append("title", title);
+      }
+
+      if (description) {
+        formData.append("description", description);
+      }
+
+      if (size) {
+        formData.append("size", size);
+      }
+
+      if (isUrgent !== "") {
+        formData.append("is_urgent", isUrgent);
+      }
+
+      if (deadline) {
+        formData.append("deadline", deadline);
+      }
+
+      const city = getOwnerFieldValue("owner_target_city");
+      const province = getOwnerFieldValue("owner_target_province");
+      const country = getOwnerFieldValue("owner_target_country");
+
+      if (city) {
+        formData.append("target_city", city);
+      }
+
+      if (province) {
+        formData.append("target_province", province);
+      }
+
+      if (country) {
+        formData.append("target_country", country);
+      }
+
+      const headerInput = document.getElementById("owner_header_file");
+
+      if (headerInput?.files?.length) {
+        formData.append("header_image", headerInput.files[0]);
+      }
+
+      console.log("Datos enviados:", [...formData.entries()]);
+
+      const response = await fetch(
+        `https://api.surpriser.app/api/surprises/${surpriseId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            Accept: "application/json",
+          },
+          body: formData,
+        },
+      );
+
+      const text = await response.text();
+
+      let json = null;
+
+      try {
+        json = JSON.parse(text);
+      } catch {
+        json = text;
+      }
+
+      if (!response.ok) {
+        console.error("Respuesta update:", {
+          status: response.status,
+          body: json,
+        });
+
+        throw new Error(getLaravelErrorMessage(json));
+      }
     }
 
-    if (!res.ok) {
-      console.error("Respuesta update:", {
-        status: res.status,
-        body: json,
-      });
-
-      throw new Error(getLaravelErrorMessage(json));
+    /*
+     * La subida de archivos funciona tanto para open
+     * como para in_progress y delivered.
+     */
+    if (hasPendingFiles) {
+      await uploadOwnerFiles(surpriseId, token);
     }
-
-    await uploadOwnerFiles(surpriseId, token);
 
     const updatedResponse = await getSurprise(surpriseId, token);
+
     const updatedSurprise = updatedResponse.json?.data || updatedResponse.json;
 
     renderOwnerSurpriseDetail(updatedSurprise);
 
-    showOwnerDetailMessage("Sorpresa modificada con éxito.", "success");
+    showOwnerDetailMessage(
+      hasPendingFiles && !canUpdateSurprise
+        ? "Archivos subidos correctamente."
+        : "Sorpresa modificada con éxito.",
+      "success",
+    );
 
     await loadOwnerSurprises();
   } catch (error) {
     console.error("Error guardando sorpresa:", error);
-    showOwnerDetailMessage(error.message, "error");
+
+    showOwnerDetailMessage(
+      error.message || "No se pudo guardar la sorpresa.",
+      "error",
+    );
   }
 }
 
@@ -821,44 +880,74 @@ function showOwnerDetailMessage(message, type = "success") {
 
 function renderOwnerFiles(files = []) {
   if (!files.length) {
-    return `<p class="detail-empty-files">No hay archivos vinculados.</p>`;
+    return `<p class="detail-empty-files">
+      No hay archivos vinculados.
+    </p>`;
   }
+
+  const currentUserId = Number(state.user?.id);
 
   return files
     .map((file) => {
-      const rawPath = file.path || file.file_url || file.url || "";
+      const rawPath = file.file_url || file.path || file.url || "";
+
       const url = getFileUrl(rawPath);
-      const isImage = /\.(png|jpe?g|webp|gif)$/i.test(rawPath);
       const fileName = file.filename || rawPath.split("/").pop() || "Archivo";
-      const fileId = file.id;
+
+      const isImage = /\.(png|jpe?g|webp|gif)$/i.test(rawPath);
+
+      const canDelete = Number(file.uploader_id) === currentUserId;
 
       return `
-            <div class="owner-file-thumb-wrap">
-                <a class="owner-file-card" href="${url}" target="_blank" rel="noopener">
-                    <div class="owner-file-preview">
-                        ${
-                          isImage
-                            ? `<img src="${url}" alt="${fileName}">`
-                            : `<div class="file-generic-icon">${getFileLabel(file)}</div>`
-                        }
-                    </div>
-
-                    <span class="owner-file-name" title="${fileName}">
-                        ${fileName}
-                    </span>
-                </a>
-
-                <button
-                    type="button"
-                    class="owner-file-delete"
-                    data-action="owner-delete-file"
-                    data-file-id="${fileId}"
-                    aria-label="Eliminar archivo"
-                >
-                    ×
-                </button>
+        <div class="owner-file-thumb-wrap">
+          <a
+            class="owner-file-card"
+            href="${url}"
+            target="_blank"
+            rel="noopener"
+          >
+            <div class="owner-file-preview">
+              ${
+                isImage
+                  ? `<img
+                       src="${url}"
+                       alt="${escapeAttr(fileName)}"
+                     >`
+                  : `<div class="file-generic-icon">
+                       ${getFileLabel(file)}
+                     </div>`
+              }
             </div>
-        `;
+
+            <span
+              class="owner-file-name"
+              title="${escapeAttr(fileName)}"
+            >
+              ${escapeHtml(fileName)}
+            </span>
+          </a>
+
+          ${
+            canDelete
+              ? `
+                <button
+                  type="button"
+                  class="owner-file-delete"
+                  data-action="owner-delete-file"
+                  data-file-id="${file.id}"
+                  aria-label="Eliminar archivo"
+                >
+                  ×
+                </button>
+              `
+              : `
+                <span class="file-readonly-label">
+                  Solo lectura
+                </span>
+              `
+          }
+        </div>
+      `;
     })
     .join("");
 }
@@ -1288,4 +1377,12 @@ function sortByStatusPriority(surprises) {
     // Dentro del mismo estado, las más recientes primero
     return (b.id || 0) - (a.id || 0);
   });
+}
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }

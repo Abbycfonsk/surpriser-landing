@@ -23,7 +23,11 @@ export function initNavigation() {
     event.preventDefault();
 
     const action = actionButton.dataset.action;
+    if (action === "genius-active-detail") {
+      await window.openGeniusActiveDetail?.(actionButton.dataset.surpriseId);
 
+      return;
+    }
     if (action === "owner-chat") {
       await window.openConversationForSurprise?.(
         actionButton.dataset.surpriseId,

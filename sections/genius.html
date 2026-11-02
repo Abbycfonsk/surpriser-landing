@@ -86,7 +86,43 @@
       </div>
     </div>
   </section>
+  <section class="genius-offers-panel">
+    <button
+      id="toggle_genius_offers"
+      class="genius-collapse-btn"
+      type="button"
+      aria-expanded="false"
+      aria-controls="genius_offers_content"
+    >
+      <span>
+        <small>Seguimiento</small>
+        <strong>Mis ofertas</strong>
+      </span>
 
+      <span class="genius-collapse-icon">⌄</span>
+    </button>
+
+    <div id="genius_offers_content" class="genius-collapse-content" hidden>
+      <div id="genius_offers_list" class="genius-offers-list">
+        <div class="genius-empty-state">Cargando ofertas...</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="genius-active-panel">
+    <div class="genius-section-title">
+      <div>
+        <span>Trabajo actual</span>
+        <h2>Sorpresas activas</h2>
+      </div>
+
+      <span class="genius-section-counter"> Proyectos en curso </span>
+    </div>
+
+    <div id="genius_active_list" class="genius-active-list">
+      <div class="genius-empty-state">Cargando proyectos...</div>
+    </div>
+  </section>
   <div class="genius-content-grid">
     <main class="genius-feed-panel">
       <div class="genius-section-title">
@@ -102,33 +138,5 @@
         <div class="genius-empty-state">Cargando oportunidades...</div>
       </div>
     </main>
-
-    <aside class="genius-side-column">
-      <section class="genius-mini-panel">
-        <div class="genius-section-title">
-          <div>
-            <span>Seguimiento</span>
-            <h2>Mis ofertas</h2>
-          </div>
-        </div>
-
-        <div id="genius_offers_list" class="genius-mini-list">
-          <div class="genius-empty-state">Cargando ofertas...</div>
-        </div>
-      </section>
-
-      <section class="genius-mini-panel">
-        <div class="genius-section-title">
-          <div>
-            <span>Trabajo actual</span>
-            <h2>Sorpresas activas</h2>
-          </div>
-        </div>
-
-        <div id="genius_active_list" class="genius-mini-list">
-          <div class="genius-empty-state">Cargando proyectos...</div>
-        </div>
-      </section>
-    </aside>
   </div>
 </section>

@@ -2,6 +2,11 @@ import { showAppSection } from "../router.js";
 import { getSurprise } from "../services/surpriseService.js";
 import { createOffer } from "../services/offerService.js";
 import { getTimeLeft } from "./home.js";
+import { state } from "../state/appState.js";
+import {
+  uploadSurpriseFile,
+  deleteSurpriseFile,
+} from "../services/fileService.js";
 
 const API = "https://api.surpriser.app";
 
@@ -14,6 +19,7 @@ export function initSurpriseDetail() {
   window.offerFromDetail = openOfferModal;
   window.openCreatorDetail = openCreatorDetail;
   window.showNotificationToast = showNotificationToast;
+  window.openGeniusReadonlyDetail = openGeniusReadonlyDetail;
 
   initOfferModal();
 }
@@ -449,4 +455,290 @@ function formatDate(date) {
     month: "short",
     year: "numeric",
   });
+}
+export async function openGeniusReadonlyDetail(surpriseId) {
+  const token = localStorage.getItem("token");
+
+  if (!surpriseId || !token) return;
+
+  await showAppSection("surprise-detail");
+
+  const container = document.getElementById("surprise_detail_container");
+
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="app-card">
+      Cargando detalle...
+    </div>
+  `;
+
+  const response = await getSurprise(surpriseId, token);
+
+  if (!response.ok) {
+    container.innerHTML = `
+      <div class="app-card">
+        No se pudo cargar la sorpresa.
+      </div>
+    `;
+    return;
+  }
+
+  const surprise = response.json?.data || response.json;
+
+  renderGeniusReadonlyDetail(surprise);
+}
+function renderGeniusReadonlyDetail(surprise) {
+  const container = document.getElementById("surprise_detail_container");
+
+  if (!container) return;
+
+  const files = surprise.files || [];
+  const skill = surprise.skill?.name || "Sin categoría";
+  const status = surprise.status || "open";
+  const currentUserId = Number(state.user?.id);
+
+  const location = [
+    surprise.target_city,
+    surprise.target_province,
+    surprise.target_country,
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  const imageUrl = surprise.header_image
+    ? getImageUrl(surprise.header_image)
+    : "img/eliges.png";
+
+  container.innerHTML = `
+    <article class="surprise-detail-compact genius-readonly-detail">
+      <div class="detail-main-card">
+
+        <div class="detail-header-row">
+          <div>
+            <span class="detail-kicker">
+              ${escapeHtml(skill)}
+            </span>
+
+            <h1>
+              ${escapeHtml(surprise.title || "Sin título")}
+            </h1>
+
+            <span class="detail-status-pill detail-status-${status}">
+              ${escapeHtml(status)}
+            </span>
+          </div>
+        </div>
+
+        <div class="detail-content-grid">
+          <div class="detail-image-compact">
+            <img
+              src="${imageUrl}"
+              alt="${escapeHtml(surprise.title || "Sorpresa")}"
+            >
+          </div>
+
+          <div class="detail-summary">
+            <p>
+              ${escapeHtml(surprise.description || "Sin descripción.")}
+            </p>
+
+            <div class="detail-summary-info">
+              <div class="detail-info-row">
+                <span>Ubicación</span>
+                <strong>
+                  ${escapeHtml(location || "No especificada")}
+                </strong>
+              </div>
+
+              <div class="detail-info-row">
+                <span>Fecha límite</span>
+                <strong>
+                  ${formatDate(surprise.deadline)}
+                </strong>
+              </div>
+
+              <div class="detail-info-row">
+                <span>Precio acordado</span>
+                <strong>
+                  ${
+                    surprise.final_price
+                      ? `${Number(surprise.final_price).toFixed(2)} €`
+                      : "Pendiente"
+                  }
+                </strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-files-block">
+  <div class="detail-files-heading">
+    <h3>Archivos del proyecto</h3>
+
+    <label
+      for="genius_file_input"
+      class="genius-file-upload-btn"
+    >
+      Añadir archivo
+
+      <input
+        id="genius_file_input"
+        type="file"
+        hidden
+      >
+    </label>
+  </div>
+
+  <div
+    id="genius_files_grid"
+    class="detail-files-grid genius-files-grid"
+  >
+    ${renderGeniusFiles(files, currentUserId)}
+  </div>
+</div>
+
+        <div class="detail-actions">
+          <button
+            class="detail-secondary-btn"
+            type="button"
+            data-section="conversations"
+          >
+            Ir a conversación
+          </button>
+
+          <button
+            class="detail-secondary-btn"
+            type="button"
+            data-section="genius"
+          >
+            Volver al panel
+          </button>
+        </div>
+
+      </div>
+    </article>
+  `;
+
+  bindGeniusFileUpload(surprise.id);
+  bindGeniusFileDelete();
+}
+function renderGeniusFiles(files = [], currentUserId) {
+  if (!files.length) {
+    return `
+      <p class="detail-empty-files">
+        Todavía no hay archivos vinculados.
+      </p>
+    `;
+  }
+
+  return files
+    .map((file) => {
+      const path = file.file_url || file.path || "";
+      const url = getFileUrl(path);
+      const name = file.filename || "Archivo";
+      const isImage = /\.(png|jpe?g|webp|gif)$/i.test(path);
+      const canDelete = Number(file.uploader_id) === Number(currentUserId);
+
+      return `
+        <div class="genius-file-item">
+          <a
+            class="detail-file-thumb"
+            href="${url}"
+            target="_blank"
+            rel="noopener"
+          >
+            ${
+              isImage
+                ? `<img src="${url}" alt="${escapeHtml(name)}">`
+                : `<div class="file-generic-icon">Archivo</div>`
+            }
+
+            <span>${escapeHtml(name)}</span>
+          </a>
+
+          ${
+            canDelete
+              ? `
+                <button
+                  type="button"
+                  class="owner-file-delete"
+                  data-genius-file-id="${file.id}"
+                >
+                  ×
+                </button>
+              `
+              : `
+                <span class="file-readonly-label">
+                  Del creador
+                </span>
+              `
+          }
+        </div>
+      `;
+    })
+    .join("");
+}
+function bindGeniusFileUpload(surpriseId) {
+  const input = document.getElementById("genius_file_input");
+
+  if (!input) return;
+
+  input.onchange = async () => {
+    const file = input.files?.[0];
+
+    if (!file) return;
+
+    const token = localStorage.getItem("token");
+
+    const response = await uploadSurpriseFile(surpriseId, file, token);
+
+    if (!response.ok) {
+      showNotificationToast({
+        title: "Error",
+        message: response.json?.error || "No se pudo subir el archivo.",
+      });
+      return;
+    }
+
+    showNotificationToast({
+      title: "Archivo subido",
+      message: "El archivo ya está disponible para el creador.",
+    });
+
+    await openGeniusReadonlyDetail(surpriseId);
+  };
+}
+function bindGeniusFileDelete() {
+  document.querySelectorAll("[data-genius-file-id]").forEach((button) => {
+    button.onclick = async () => {
+      const fileId = button.dataset.geniusFileId;
+      const token = localStorage.getItem("token");
+
+      const response = await deleteSurpriseFile(fileId, token);
+
+      if (!response.ok) {
+        showNotificationToast({
+          title: "No permitido",
+          message: response.json?.error || "No puedes eliminar este archivo.",
+        });
+        return;
+      }
+
+      button.closest(".genius-file-item")?.remove();
+
+      showNotificationToast({
+        title: "Archivo eliminado",
+        message: "El archivo se ha eliminado correctamente.",
+      });
+    };
+  });
+}
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
