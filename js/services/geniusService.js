@@ -25,3 +25,9 @@ export function updateProposedSkills(userId, skills, token) {
 export function getTopSkill(skillId, token) {
   return api("GET", `/api/skills/${skillId}/top`, null, token);
 }
+export function getMyOffers(token) {
+  return api("GET", "/api/genius/offers", null, token);
+}
+export function getGeniusHistory(token) {
+  return api("GET", "/api/genius/history", null, token);
+}

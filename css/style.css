@@ -7111,3 +7111,385 @@ CONVERSATIONS
   color: #8e8798;
   font-size: 11px;
 }
+/*css seccion ofertas y regateos genius*/
+.genius-offer-link {
+  display: flex;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  text-align: left;
+}
+
+.genius-offers-page-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.genius-offer-page-card {
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: #17131e;
+}
+
+.genius-offer-page-head,
+.genius-offer-page-data,
+.genius-offer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.genius-offer-page-data {
+  justify-content: flex-start;
+  margin: 22px 0;
+}
+
+.genius-offer-page-data div {
+  display: grid;
+  gap: 5px;
+}
+
+.genius-offer-page-data span {
+  color: #9f98aa;
+  font-size: 12px;
+}
+
+.genius-offer-page-data strong {
+  color: #f7c85b;
+}
+
+.genius-offer-history {
+  margin-top: 20px;
+}
+
+.genius-bid-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.genius-bid-row span {
+  display: block;
+  margin-top: 4px;
+  color: #aaa2b2;
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  .genius-offers-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .genius-offer-page-head,
+  .genius-offer-page-data,
+  .genius-offer-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+/* =========================================================
+   ESTADOS DE SORPRESAS ACTIVAS
+========================================================= */
+
+.genius-active-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 150px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: #18151f;
+  color: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.genius-active-card:hover {
+  transform: translateY(-3px);
+}
+
+.genius-active-card-content {
+  min-width: 0;
+}
+
+.genius-active-kicker {
+  display: block;
+  margin-bottom: 10px;
+  color: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: none;
+}
+
+.genius-active-card h3 {
+  margin: 0 0 9px;
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.genius-active-location {
+  color: #aaa2b2;
+  font-size: 13px;
+}
+
+.genius-active-arrow {
+  flex: 0 0 auto;
+  margin-left: 20px;
+  font-size: 25px;
+}
+
+/* En progreso: naranja */
+
+.genius-active-status-in_progress {
+  border-color: rgba(242, 139, 56, 0.65);
+  box-shadow:
+    0 0 0 1px rgba(242, 139, 56, 0.12),
+    0 0 26px rgba(242, 139, 56, 0.2);
+}
+
+.genius-active-status-in_progress .genius-active-kicker {
+  color: #f28b38;
+}
+
+/* Entregada: azul */
+
+.genius-active-status-delivered {
+  border-color: rgba(85, 166, 255, 0.65);
+  box-shadow:
+    0 0 0 1px rgba(85, 166, 255, 0.12),
+    0 0 26px rgba(85, 166, 255, 0.2);
+}
+
+.genius-active-status-delivered .genius-active-kicker {
+  color: #55a6ff;
+}
+
+/* Completada: dorado */
+
+.genius-active-status-completed {
+  border-color: rgba(247, 200, 91, 0.65);
+  box-shadow:
+    0 0 0 1px rgba(247, 200, 91, 0.12),
+    0 0 26px rgba(247, 200, 91, 0.2);
+}
+
+.genius-active-status-completed .genius-active-kicker {
+  color: #f7c85b;
+}
+.genius-active-status-disputed {
+  border-color: rgba(218, 94, 116, 0.7);
+  box-shadow:
+    0 0 0 1px rgba(218, 94, 116, 0.12),
+    0 0 26px rgba(218, 94, 116, 0.22);
+}
+
+.genius-active-status-disputed .genius-active-kicker {
+  color: #da5e74;
+}
+.genius-history-content[hidden],
+.genius-history-panel [hidden] {
+  display: none !important;
+}
+/*history de pannerl genius*/
+/* =========================================================
+   HISTORIAL GENIUS
+========================================================= */
+
+.genius-history-panel {
+  width: 100%;
+  margin: 26px 0;
+  overflow: hidden;
+  border: 1px solid rgba(247, 200, 91, 0.28);
+  border-radius: 18px;
+  background: #14111b;
+  color: #f5f1f7;
+}
+
+.genius-history-panel .genius-collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 82px;
+  padding: 20px 24px;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: #14111b !important;
+  color: #ffffff !important;
+  cursor: pointer;
+  text-align: left;
+  appearance: none;
+}
+
+.genius-history-panel .genius-collapse-btn:hover {
+  background: #1b1724 !important;
+}
+
+.genius-history-panel .genius-collapse-btn small {
+  display: block;
+  margin-bottom: 5px;
+  color: #f7c85b !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.genius-history-panel .genius-collapse-btn strong {
+  display: block;
+  color: #ffffff !important;
+  font-size: 21px;
+}
+
+.genius-history-panel .genius-collapse-icon {
+  color: #f7c85b !important;
+  font-size: 28px;
+  transition: transform 0.2s ease;
+}
+
+.genius-history-panel.is-open .genius-collapse-icon {
+  transform: rotate(180deg);
+}
+
+.genius-history-content[hidden],
+.genius-history-panel [hidden] {
+  display: none !important;
+}
+
+.genius-history-panel .genius-collapse-content {
+  padding: 0 24px 24px;
+  background: #14111b;
+}
+
+.genius-history-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+/* Tarjeta de historial */
+
+.genius-history-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 140px;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  outline: none;
+  background: #1b1724 !important;
+  color: #ffffff !important;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.genius-history-card:hover {
+  transform: translateY(-3px);
+}
+
+.genius-history-card h3 {
+  margin: 10px 0 8px;
+  color: #ffffff !important;
+  font-size: 18px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.genius-history-card > div > span:last-child {
+  color: #aaa2b2 !important;
+  font-size: 13px;
+}
+
+.genius-history-status {
+  color: #aaa2b2;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.genius-history-card .genius-active-arrow {
+  flex: 0 0 auto;
+  margin-left: 18px;
+  color: #aaa2b2;
+  font-size: 24px;
+}
+
+/* Completada: dorado */
+
+.genius-history-status-completed {
+  border-color: rgba(247, 200, 91, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(247, 200, 91, 0.1),
+    0 0 24px rgba(247, 200, 91, 0.16);
+}
+
+.genius-history-status-completed .genius-history-status {
+  color: #f7c85b !important;
+}
+
+/* Cancelada: rojo */
+
+.genius-history-status-cancelled,
+.genius-history-status-canceled {
+  border-color: rgba(218, 94, 116, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(218, 94, 116, 0.1),
+    0 0 24px rgba(218, 94, 116, 0.14);
+}
+
+.genius-history-status-cancelled .genius-history-status,
+.genius-history-status-canceled .genius-history-status {
+  color: #da5e74 !important;
+}
+
+/* Estado vacío */
+
+.genius-history-list .genius-empty-state {
+  grid-column: 1 / -1;
+  padding: 28px;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  background: #1b1724;
+  color: #aaa2b2;
+}
+
+/* Responsive */
+
+@media (max-width: 800px) {
+  .genius-history-list {
+    grid-template-columns: 1fr;
+  }
+
+  .genius-history-panel .genius-collapse-content {
+    padding: 0 16px 16px;
+  }
+
+  .genius-history-card {
+    min-height: 120px;
+    padding: 18px;
+  }
+}

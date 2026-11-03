@@ -3,6 +3,7 @@ import { loadSection } from "./main.js";
 import { initSurpriseCreate } from "./sections/surpriseCreate.js";
 import { loadNotificationsView } from "./sections/notifications.js";
 import { loadGeniusDashboardController } from "./sections/genius.js";
+import { loadGeniusOffersSection } from "./sections/geniusOffers.js";
 
 export function initNavigation() {
   document.addEventListener("click", async (event) => {
@@ -23,6 +24,22 @@ export function initNavigation() {
     event.preventDefault();
 
     const action = actionButton.dataset.action;
+    if (action === "open-genius-offers") {
+      await showAppSection("genius-offers");
+
+      await window.loadGeniusOffersSection?.();
+
+      const offerId = actionButton.dataset.offerId;
+
+      if (offerId) {
+        document.getElementById(`genius-offer-${offerId}`)?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+
+      return;
+    }
     if (action === "genius-active-detail") {
       await window.openGeniusActiveDetail?.(actionButton.dataset.surpriseId);
 
@@ -201,5 +218,8 @@ export async function showAppSection(name) {
 
   if (name === "profile") {
     await window.loadProfile?.();
+  }
+  if (name === "genius-offers") {
+    await loadGeniusOffersSection();
   }
 }

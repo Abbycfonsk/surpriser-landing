@@ -1,0 +1,50 @@
+<section id="geniusOffers" class="genius-offers-page">
+  <button class="detail-back-btn" data-section="genius">
+    Volver al panel Genius
+  </button>
+
+  <header class="genius-section-title">
+    <div>
+      <span>Seguimiento</span>
+      <h1>Mis ofertas</h1>
+      <p>Consulta tus propuestas y continúa las negociaciones activas.</p>
+    </div>
+  </header>
+
+  <div id="genius_offers_page_list" class="genius-offers-page-grid">
+    <div class="genius-empty-state">Cargando ofertas...</div>
+  </div>
+
+  <div id="genius-counter-modal" class="surpriser-modal hidden">
+    <div class="surpriser-backdrop"></div>
+
+    <div class="surpriser-card">
+      <h3>Regatear oferta</h3>
+
+      <label>
+        Precio
+        <input id="genius-counter-price" type="number" step="0.01" />
+      </label>
+
+      <label>
+        Horas estimadas
+        <input id="genius-counter-eta" type="number" min="1" />
+      </label>
+
+      <label>
+        Mensaje
+        <textarea id="genius-counter-message"></textarea>
+      </label>
+
+      <div class="surpriser-actions">
+        <button id="genius-counter-cancel" class="btn secondary" type="button">
+          Cancelar
+        </button>
+
+        <button id="genius-counter-confirm" class="btn primary" type="button">
+          Enviar contraoferta
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

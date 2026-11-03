@@ -8,7 +8,9 @@ import {
   getGeniusOffers,
   getAllSkills,
   getTopSkill,
+  getGeniusHistory,
 } from "../services/geniusService.js";
+import { getMyOffers } from "../services/offerService.js";
 
 let geniusFeed = [];
 let geniusOffers = [];
@@ -16,6 +18,7 @@ let geniusActiveSurprises = [];
 let geniusCompletedSurprises = [];
 let allSkills = [];
 let proposedSkills = [];
+let geniusHistory = [];
 
 window.loadGeniusDashboardController = loadGeniusDashboardController;
 
@@ -105,6 +108,8 @@ export async function loadGeniusDashboardController() {
     renderMiniOffers();
     initGeniusOffersToggle();
     renderMiniActiveSurprises();
+    await loadGeniusHistory(token);
+    initGeniusHistoryToggle();
   } catch (error) {
     console.error("Error cargando el panel genius:", error);
 
@@ -239,21 +244,26 @@ function renderMiniOffers() {
 
   box.innerHTML = geniusOffers
     .map((offer) => {
-      const title = offer.surprise?.title || offer.title || "Sorpresa";
+      const title = offer.surprise?.title || "Sorpresa";
 
       return `
-        <article class="genius-offer-item">
-          <strong>${escapeHtml(title)}</strong>
+      <button
+        type="button"
+        class="mini-item genius-offer-link"
+        data-action="open-genius-offers"
+        data-offer-id="${offer.id}"
+      >
+        <strong>
+          ${escapeHtml(title)}
+        </strong>
 
-          <span class="genius-offer-price">
-            ${offer.price || 0} €
-          </span>
-
-          <span class="genius-offer-status">
-            ${formatStatus(offer.status || "pending")}
-          </span>
-        </article>
-      `;
+        <span>
+          ${offer.price || 0} €
+          ·
+          ${formatStatus(offer.status)}
+        </span>
+      </button>
+    `;
     })
     .join("");
 }
@@ -266,41 +276,75 @@ function renderMiniActiveSurprises() {
 
   if (!box) return;
 
-  const active = geniusActiveSurprises.filter((surprise) =>
-    ["in_progress", "delivered"].includes(surprise.status),
-  );
+  const statusOrder = {
+    in_progress: 1,
+    disputed: 2,
+    delivered: 3,
+    completed: 4,
+  };
+
+  const active = geniusActiveSurprises
+    .map((surprise) => ({
+      ...surprise,
+      normalizedStatus: String(surprise.status || "").toLowerCase(),
+    }))
+    .filter((surprise) =>
+      ["in_progress", "disputed", "delivered"].includes(
+        surprise.normalizedStatus,
+      ),
+    )
+    .sort((a, b) => {
+      return (
+        (statusOrder[a.normalizedStatus] || 99) -
+        (statusOrder[b.normalizedStatus] || 99)
+      );
+    });
 
   if (!active.length) {
     box.innerHTML = `
       <div class="genius-empty-state">
-        No tienes sorpresas en marcha.
+        No tienes sorpresas activas.
       </div>
     `;
     return;
   }
 
   box.innerHTML = active
-    .map(
-      (surprise) => `
+    .map((surprise) => {
+      const status = surprise.normalizedStatus;
+
+      return `
         <button
           type="button"
-          class="genius-active-card"
+          class="
+            genius-active-card
+            genius-active-status-${status}
+          "
           data-action="genius-active-detail"
           data-surprise-id="${surprise.id}"
         >
-          <h3>
-            ${escapeHtml(surprise.title || "Sorpresa")}
-          </h3>
+          <div class="genius-active-card-content">
+            <span class="genius-active-kicker">
+              ${formatStatus(status)}
+            </span>
 
-          <span>
-            ${formatStatus(surprise.status)}
-          </span>
+            <h3>
+              ${escapeHtml(surprise.title || "Sorpresa")}
+            </h3>
+
+            <span class="genius-active-location">
+              ${escapeHtml(
+                surprise.target_city || surprise.location?.city || "Sin ciudad",
+              )}
+            </span>
+          </div>
+
+          <span class="genius-active-arrow">→</span>
         </button>
-      `,
-    )
+      `;
+    })
     .join("");
 }
-
 /* =====================================================
    ORDENACIÓN DEL FEED
 ===================================================== */
@@ -426,6 +470,7 @@ function formatStatus(status) {
     accepted: "Aceptada",
     rejected: "Rechazada",
     negotiating: "Negociando",
+    disputed: "En disputa",
   };
 
   return labels[status] || status;
@@ -733,4 +778,103 @@ export async function openGeniusActiveDetail(id) {
     "Detalle no disponible",
     "No se ha podido abrir el detalle de la sorpresa.",
   );
+}
+async function loadGeniusHistory(token) {
+  const box = document.getElementById("genius_history_list");
+
+  if (!box) {
+    console.warn("No existe #genius_history_list");
+    return;
+  }
+
+  try {
+    const response = await getGeniusHistory(token);
+
+    console.log("Sorpresas recibidas para el historial:", response);
+
+    geniusHistory = extractArray(response?.json);
+
+    console.log("Historial normalizado:", geniusHistory);
+
+    renderGeniusHistory(geniusHistory);
+  } catch (error) {
+    console.error("Error cargando el historial:", error);
+
+    box.innerHTML = `
+      <div class="genius-empty-state">
+        No se pudo cargar el historial.
+      </div>
+    `;
+  }
+}
+function renderGeniusHistory(surprises = []) {
+  const box = document.getElementById("genius_history_list");
+
+  if (!box) return;
+
+  if (!surprises.length) {
+    box.innerHTML = `
+      <div class="genius-empty-state">
+        Todavía no tienes sorpresas en el historial.
+      </div>
+    `;
+    return;
+  }
+
+  box.innerHTML = surprises
+    .map((surprise) => {
+      const status = String(surprise.status || "").toLowerCase();
+
+      return `
+        <button
+          type="button"
+          class="
+            genius-history-card
+            genius-history-status-${status}
+          "
+          data-action="genius-active-detail"
+          data-surprise-id="${surprise.id}"
+        >
+          <div>
+            <span class="genius-history-status">
+              ${formatStatus(status)}
+            </span>
+
+            <h3>
+              ${escapeHtml(surprise.title || "Sorpresa")}
+            </h3>
+
+            <span>
+              ${escapeHtml(
+                surprise.target_city || surprise.location?.city || "Sin ciudad",
+              )}
+            </span>
+          </div>
+
+          <span class="genius-active-arrow">→</span>
+        </button>
+      `;
+    })
+    .join("");
+}
+function initGeniusHistoryToggle() {
+  const button = document.getElementById("toggle_genius_history");
+
+  const content = document.getElementById("genius_history_content");
+
+  const panel = document.querySelector(".genius-history-panel");
+
+  if (!button || !content || !panel) {
+    console.warn("No se encontró el desplegable del historial.");
+    return;
+  }
+
+  button.onclick = () => {
+    const isOpen = button.getAttribute("aria-expanded") === "true";
+
+    button.setAttribute("aria-expanded", String(!isOpen));
+
+    content.hidden = isOpen;
+    panel.classList.toggle("is-open", !isOpen);
+  };
 }

@@ -67,23 +67,25 @@
       </div>
     </div>
   </section>
-  <section class="genius-ranking-section">
-    <div class="ranking-head">
-      <div>
-        <span>Comunidad</span>
-        <h2>Ranking de genios</h2>
-        <p>Descubre quién destaca en cada habilidad.</p>
-      </div>
 
-      <select id="ranking_skill_select">
-        <option value="">Selecciona una skill</option>
-      </select>
-    </div>
+  <section class="genius-history-panel">
+    <button
+      id="toggle_genius_history"
+      class="genius-collapse-btn"
+      type="button"
+      aria-expanded="false"
+      aria-controls="genius_history_content"
+    >
+      <span>
+        <small>Actividad</small>
+        <strong>Historial</strong>
+      </span>
 
-    <div id="genius_ranking_list" class="genius-ranking-list">
-      <div class="skills-empty">
-        Selecciona una habilidad para ver el ranking.
-      </div>
+      <span class="genius-collapse-icon">⌄</span>
+    </button>
+
+    <div id="genius_history_content" class="genius-collapse-content" hidden>
+      <div id="genius_history_list" class="genius-history-list"></div>
     </div>
   </section>
   <section class="genius-offers-panel">
@@ -105,6 +107,26 @@
     <div id="genius_offers_content" class="genius-collapse-content" hidden>
       <div id="genius_offers_list" class="genius-offers-list">
         <div class="genius-empty-state">Cargando ofertas...</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="genius-ranking-section">
+    <div class="ranking-head">
+      <div>
+        <span>Comunidad</span>
+        <h2>Ranking de genios</h2>
+        <p>Descubre quién destaca en cada habilidad.</p>
+      </div>
+
+      <select id="ranking_skill_select">
+        <option value="">Selecciona una skill</option>
+      </select>
+    </div>
+
+    <div id="genius_ranking_list" class="genius-ranking-list">
+      <div class="skills-empty">
+        Selecciona una habilidad para ver el ranking.
       </div>
     </div>
   </section>
