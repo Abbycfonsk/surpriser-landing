@@ -1,0 +1,19 @@
+/* Fallback temporal para estilos todavía no clasificados */
+/*@import url("./legacy.css");*/
+
+@import url("./theme.css");
+@import url("./base.css");
+@import url("./layout.css");
+@import url("./components.css");
+
+@import url("./sections/home.css");
+@import url("./sections/creator.css");
+@import url("./sections/create-surprise.css");
+@import url("./sections/genius.css");
+@import url("./sections/genius-offers.css");
+@import url("./sections/conversations.css");
+@import url("./sections/details.css");
+@import url("./sections/profile.css");
+@import url("./sections/shopping.css");
+@import url("./sections/auth.css");
+@import url("./sections/landing.css");

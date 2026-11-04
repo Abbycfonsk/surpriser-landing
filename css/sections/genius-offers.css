@@ -1,0 +1,385 @@
+/* =========================================================
+   GENIUS OFFERS
+========================================================= */
+
+/* Panel desplegable de ofertas */
+
+.genius-offers-panel {
+  width: 100%;
+  margin: 24px 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.genius-collapse-content[hidden] {
+  display: none !important;
+}
+
+.genius-offers-list {
+  display: grid;
+  gap: 10px;
+  padding: 0 24px 24px;
+}
+
+.genius-offer-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.genius-offer-item strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.genius-offer-price {
+  color: var(--gold);
+  font-weight: 800;
+}
+
+.genius-offer-status {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Enlace de cada oferta */
+
+.genius-offer-link {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--border-soft);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.genius-offer-link:hover {
+  border-color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 7%, var(--surface-2));
+  transform: translateY(-1px);
+}
+
+/* Página completa de ofertas */
+
+.genius-offers-page {
+  width: 100%;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.genius-offers-page-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  align-items: start;
+  gap: 18px;
+}
+
+.genius-offer-page-card {
+  width: 100%;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--bg) 55%, transparent);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.genius-offer-page-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--bg) 70%, transparent);
+  transform: translateY(-2px);
+}
+
+.genius-offer-page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.genius-offer-page-head h3 {
+  min-width: 0;
+  margin: 0;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.genius-offer-page-head .status-badge,
+.genius-offer-status {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.genius-offer-page-data {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.genius-offer-page-data div {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+  padding: 11px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-3) 62%, transparent);
+}
+
+.genius-offer-page-data span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.genius-offer-page-data strong {
+  color: var(--gold);
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.genius-offer-page-card p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.genius-offer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.genius-offer-actions button {
+  flex: 1 1 130px;
+}
+
+/* Historial de contraofertas */
+
+.genius-offer-history {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.genius-offer-history h4 {
+  margin: 0 0 8px;
+  color: var(--gold);
+  font-size: 13px;
+}
+
+.genius-bid-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.genius-bid-row:last-child {
+  border-bottom: 0;
+}
+
+.genius-bid-row strong {
+  color: var(--gold);
+}
+
+.genius-bid-row span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Archivos dentro del detalle del genio */
+
+.detail-files-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.genius-file-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.genius-file-upload-btn:hover {
+  border-color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 22%, transparent);
+}
+
+.genius-files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.genius-file-item {
+  position: relative;
+  min-width: 0;
+}
+
+.genius-file-item .detail-file-thumb {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 130px;
+  padding: 10px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.genius-file-item .detail-file-thumb:hover {
+  border-color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 6%, var(--surface-2));
+}
+
+.genius-file-item .detail-file-thumb img {
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.genius-file-item .detail-file-thumb span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.genius-file-item .owner-file-delete {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.genius-file-item .owner-file-delete:hover {
+  background: color-mix(in srgb, var(--red) 78%, #000);
+  transform: scale(1.05);
+}
+
+.file-readonly-label {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* Responsive */
+
+@media (max-width: 800px) {
+  .genius-offer-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .genius-offers-page {
+    padding: 18px;
+  }
+
+  .genius-offer-page-head,
+  .genius-offer-page-data,
+  .genius-offer-actions {
+    align-items: flex-start;
+  }
+
+  .genius-offer-page-head,
+  .genius-offer-actions {
+    flex-direction: column;
+  }
+
+  .genius-bid-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .genius-offers-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .genius-offer-page-data {
+    grid-template-columns: 1fr;
+  }
+
+  .genius-files-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-files-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

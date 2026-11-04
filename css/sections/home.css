@@ -1,0 +1,523 @@
+/* =========================================================
+   HOME: DESCUBRIR SORPRESAS
+========================================================= */
+
+.discover-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 330px;
+  overflow: hidden;
+  margin-bottom: 34px;
+  padding: clamp(28px, 5vw, 64px);
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  border-radius: 30px;
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--gold) 18%, transparent),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      color-mix(in srgb, var(--purple) 24%, transparent),
+      transparent 38%
+    ),
+    var(--hero-bg);
+  box-shadow: var(--shadow);
+}
+
+.discover-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+}
+
+.discover-badge {
+  display: inline-flex;
+  margin-bottom: 18px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.discover-hero-content h1 {
+  margin: 0 0 18px;
+  color: var(--text);
+  font-size: clamp(38px, 6vw, 68px);
+  line-height: 1;
+  font-weight: 900;
+}
+
+.discover-hero-content p {
+  max-width: 700px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   LISTA PRINCIPAL
+========================================================= */
+
+#all_surprises_list,
+.surprise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 8px 38px;
+}
+
+/* =========================================================
+   TARJETA DE SORPRESA
+========================================================= */
+
+.surprise-card-v2 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 340px;
+  overflow: visible;
+  border: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface-3) 70%, var(--surface)),
+    var(--surface)
+  );
+  box-shadow: 0 15px 35px color-mix(in srgb, var(--bg) 75%, transparent);
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.surprise-card-v2:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--gold) 65%, transparent);
+  box-shadow: 0 20px 50px color-mix(in srgb, var(--bg) 88%, transparent);
+}
+
+.surprise-card-v2-featured {
+  border-color: color-mix(in srgb, var(--gold) 75%, transparent);
+}
+
+/* Imagen del creador */
+
+.surprise-creator-img {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  border: 2px solid color-mix(in srgb, var(--gold) 65%, transparent);
+  border-radius: 50%;
+  background: var(--surface-2);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--text) 4%, transparent),
+    0 0 20px color-mix(in srgb, var(--gold) 20%, transparent);
+}
+
+.surprise-creator-img img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Estados */
+
+.surprise-status-v2 {
+  position: absolute;
+  top: 28px;
+  left: 78px;
+  z-index: 10;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.surprise-status-open {
+  border-color: color-mix(in srgb, var(--green) 50%, transparent);
+  background: color-mix(in srgb, var(--green) 14%, transparent);
+  color: var(--green);
+}
+
+.surprise-status-in_progress {
+  border-color: color-mix(in srgb, var(--orange) 55%, transparent);
+  background: color-mix(in srgb, var(--orange) 14%, transparent);
+  color: var(--orange);
+}
+
+.surprise-status-delivered {
+  border-color: color-mix(in srgb, var(--blue) 55%, transparent);
+  background: color-mix(in srgb, var(--blue) 14%, transparent);
+  color: var(--blue);
+}
+
+.surprise-status-completed {
+  border-color: color-mix(in srgb, var(--gold) 55%, transparent);
+  background: color-mix(in srgb, var(--gold) 14%, transparent);
+  color: var(--gold);
+}
+
+.surprise-status-cancelled,
+.surprise-status-canceled,
+.surprise-status-disputed {
+  border-color: color-mix(in srgb, var(--red) 55%, transparent);
+  background: color-mix(in srgb, var(--red) 14%, transparent);
+  color: var(--red);
+}
+
+/* Destacadas */
+
+.surprise-featured-stack {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  z-index: 20;
+  width: 115px;
+  height: 90px;
+}
+
+.surprise-featured-stack img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Contenido */
+
+.surprise-card-v2-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  padding: 100px 20px 20px;
+}
+
+.surprise-card-v2 h4 {
+  min-height: 56px;
+  margin: 0 0 20px;
+  color: transparent;
+  background: linear-gradient(90deg, var(--gold), var(--pink));
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.surprise-card-v2-city {
+  margin-top: 10px;
+  padding-bottom: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.surprise-card-v2-city::before {
+  content: "📍 ";
+  opacity: 0.8;
+}
+
+.comunidad {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Metadatos */
+
+.surprise-card-v2-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.surprise-card-v2-meta p {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.surprise-card-v2-meta strong {
+  color: var(--purple);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+
+.surprise-card-v2-meta img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.surprise-countdown-v2 {
+  width: auto;
+  margin-left: auto;
+  color: var(--gold);
+  font-size: 18px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.urgent-icon-v2,
+.urgent-icon-placeholder {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* Acciones */
+
+.surprise-card-v2-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.surprise-card-v2-actions a,
+.surprise-card-v2-actions button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.surprise-card-v2-actions a:hover,
+.surprise-card-v2-actions button:hover,
+.action-chat-mini:hover,
+.action-offer-mini:hover {
+  color: var(--gold);
+  box-shadow: 0 10px 25px color-mix(in srgb, var(--gold) 20%, transparent);
+}
+
+.action-primary {
+  color: var(--pink) !important;
+}
+
+.action-complete-mini,
+.action-review-mini {
+  color: var(--green) !important;
+}
+
+.action-danger,
+.action-dispute-mini {
+  color: var(--muted) !important;
+}
+
+.surprise-card-v2-actions-offer,
+.action-chat-mini,
+.action-offer-mini {
+  color: var(--gold) !important;
+}
+
+/* =========================================================
+   CABECERA Y LOGO
+========================================================= */
+
+.app-dashboard {
+  background: var(--bg);
+  color: var(--text);
+  text-align: left;
+}
+
+.app-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.app-logo {
+  border: 0;
+  background: linear-gradient(90deg, var(--gold), var(--pink), var(--purple));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 28px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.app-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.app-menu button,
+.top-pill {
+  padding: 10px 13px;
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.app-menu button:hover,
+.top-pill:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.app-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logoNavSuperior {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 15rem;
+}
+
+.logoNavSuperior img,
+header img {
+  width: 3rem;
+  margin-right: 1rem;
+}
+
+.top-avatar-btn {
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.top-avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 3px solid var(--gold);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+  #all_surprises_list,
+  .surprise-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-topbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .app-menu {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 620px) {
+  .discover-hero {
+    min-height: 280px;
+    padding: 26px 22px;
+  }
+
+  .discover-hero-content h1 {
+    font-size: 38px;
+  }
+
+  .discover-hero-content p {
+    font-size: 15px;
+  }
+
+  #all_surprises_list,
+  .surprise-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 22px 0 30px;
+  }
+
+  .surprise-card-v2 {
+    min-height: 320px;
+  }
+
+  .app-topbar {
+    padding: 12px 14px;
+  }
+
+  .app-logo {
+    font-size: 23px;
+  }
+
+  .app-menu {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .app-menu button,
+  .top-pill {
+    flex: 0 0 auto;
+    font-size: 12px;
+  }
+
+  .logoNavSuperior {
+    width: auto;
+  }
+}

@@ -1,0 +1,944 @@
+/* =========================================================
+   DETAILS
+   Detalle público, genio, creador y modales
+========================================================= */
+
+/* Navegación */
+
+.detail-back-btn {
+  margin-bottom: 22px;
+  padding: 11px 16px;
+  border: 1px solid color-mix(in srgb, var(--gold) 42%, transparent);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--gold);
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.detail-back-btn:hover {
+  transform: translateY(-1px);
+  background: var(--gold);
+  color: var(--bg);
+}
+
+/* Detalle público */
+
+.surprise-detail-shell,
+#owner_surprise_detail_container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.surprise-detail-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.surprise-detail-main {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  border-radius: 28px;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--gold) 8%, transparent),
+      transparent 42%
+    ),
+    var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.surprise-detail-image {
+  height: 360px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.surprise-detail-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.surprise-detail-content {
+  padding: 30px;
+}
+
+.detail-kicker {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 14px;
+  padding: 8px 13px;
+  border: 1px solid color-mix(in srgb, var(--pink) 38%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pink) 14%, transparent);
+  color: var(--pink);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.surprise-detail-content h1,
+.detail-header-row h1 {
+  max-width: 850px;
+  color: var(--gold);
+  font-family: "Manrope", Arial, sans-serif;
+  font-size: 42px;
+  line-height: 1.05;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
+}
+
+.detail-description {
+  max-width: 850px;
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.detail-info-grid div,
+.creator-mini-info div,
+.detail-info-grid.compact div {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.detail-info-grid span,
+.creator-mini-info span,
+.detail-info-grid.compact span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--pink);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.detail-info-grid strong,
+.creator-mini-info strong,
+.detail-info-grid.compact strong {
+  color: var(--text);
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+/* Acciones */
+
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.detail-offer-btn,
+.detail-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.detail-offer-btn {
+  border: 1px solid transparent;
+  background: var(--gold);
+  color: var(--bg);
+}
+
+.detail-offer-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  background: transparent;
+  color: var(--gold);
+}
+
+.detail-secondary-btn {
+  border: 1px solid color-mix(in srgb, var(--gold) 42%, transparent);
+  background: var(--surface-2);
+  color: var(--gold);
+}
+
+.detail-secondary-btn:hover {
+  transform: translateY(-1px);
+  background: var(--gold);
+  color: var(--bg);
+}
+
+/* Panel del creador */
+
+.creator-detail-panel {
+  padding: 24px;
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  border-radius: 28px;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--pink) 10%, transparent),
+      transparent 42%
+    ),
+    var(--surface);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.creator-detail-avatar {
+  display: block;
+  width: 132px;
+  height: 132px;
+  margin: 0 auto 18px;
+  border: 4px solid var(--gold);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.creator-name-btn {
+  border: 0;
+  background: transparent;
+  color: var(--gold);
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.creator-name-btn:hover {
+  color: var(--pink);
+}
+
+.creator-role-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.creator-role-list span {
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), var(--pink));
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.creator-mini-info {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+  text-align: left;
+}
+
+/* Archivos */
+
+.detail-files-block {
+  width: 100%;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--gold) 16%, transparent);
+}
+
+.detail-files-block h3,
+.detail-files-heading {
+  margin-bottom: 12px;
+  color: var(--gold);
+  font-size: 16px;
+}
+
+.detail-files-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.detail-files-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.detail-file-thumb {
+  display: block;
+  width: 74px;
+  height: 74px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  border-radius: 14px;
+  background: var(--surface-2);
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.detail-file-thumb:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  box-shadow: var(--shadow);
+}
+
+.detail-file-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.file-generic-icon {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.detail-empty-files {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Detalle del genio */
+
+.genius-file-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.genius-file-upload-btn:hover {
+  background: color-mix(in srgb, var(--gold) 22%, transparent);
+}
+
+.genius-files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.genius-file-item {
+  position: relative;
+  min-width: 0;
+}
+
+.genius-file-item .detail-file-thumb {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-height: 130px;
+  height: auto;
+  padding: 10px;
+  border-color: var(--border-soft);
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.genius-file-item .detail-file-thumb img {
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.genius-file-item .detail-file-thumb span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-readonly-label {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* Detalle editable del creador */
+
+.owner-detail-card {
+  width: 100%;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.owner-detail-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.owner-title-input {
+  display: block;
+  width: 100%;
+  min-height: 68px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--gold);
+  font-family: "Manrope", Arial, sans-serif;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.08;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  resize: none;
+  text-transform: uppercase;
+}
+
+.owner-title-input:focus {
+  color: var(--gold);
+}
+
+.owner-title-input[readonly],
+.owner-edit-panel select:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  filter: saturate(0.65);
+}
+
+.owner-price-display {
+  min-width: 125px;
+  padding: 9px 12px;
+  border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  text-align: right;
+}
+
+.owner-price-display span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.owner-price-display strong {
+  color: var(--gold);
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.owner-detail-grid {
+  display: grid;
+  grid-template-columns: 285px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.owner-image-panel {
+  display: grid;
+  gap: 11px;
+}
+
+.owner-image-panel img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
+  border-radius: 16px;
+  background: var(--bg);
+  object-fit: contain;
+}
+
+.owner-upload-btn,
+.owner-file-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, var(--gold) 32%, transparent);
+  border-radius: 9px;
+  background: var(--surface-2);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.owner-upload-btn:hover,
+.owner-file-add:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+.owner-location-readonly {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--gold) 18%, transparent);
+  border-radius: 11px;
+  background: var(--surface-2);
+}
+
+.owner-location-title {
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.owner-location-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.owner-location-grid span {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.owner-location-grid strong {
+  display: block;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.owner-location-city {
+  grid-column: span 2;
+}
+
+.owner-detail-card label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.owner-edit-panel textarea,
+.owner-edit-panel input,
+.owner-edit-panel select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 11px;
+  border: 1px solid color-mix(in srgb, var(--gold) 18%, transparent);
+  border-radius: 9px;
+  outline: 0;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.owner-edit-panel textarea {
+  min-height: 86px;
+  margin-bottom: 14px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.owner-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.owner-files-block {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in srgb, var(--gold) 16%, transparent);
+}
+
+.owner-files-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.owner-files-head h3 {
+  margin: 0;
+  color: var(--gold);
+  font-size: 15px;
+}
+
+.owner-files-head .owner-file-add {
+  width: auto;
+}
+
+.owner-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in srgb, var(--gold) 16%, transparent);
+}
+
+.owner-detail-message {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.owner-detail-message.success {
+  border-color: color-mix(in srgb, var(--green) 42%, transparent);
+  background: color-mix(in srgb, var(--green) 14%, transparent);
+  color: var(--green);
+}
+
+.owner-detail-message.error {
+  border-color: color-mix(in srgb, var(--red) 45%, transparent);
+  background: color-mix(in srgb, var(--red) 14%, transparent);
+  color: var(--red);
+}
+
+.owner-detail-message.info {
+  border-color: color-mix(in srgb, var(--gold) 36%, transparent);
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  color: var(--gold);
+}
+
+/* Detalle compacto */
+
+.surprise-detail-compact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 22px;
+  align-items: start;
+  width: 100%;
+}
+
+.detail-main-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--gold) 8%, transparent),
+      transparent 42%
+    ),
+    var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.detail-header-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.detail-header-row h1 {
+  max-width: 760px;
+  margin: 0;
+  font-size: 30px;
+}
+
+.detail-content-grid {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.detail-image-compact {
+  width: 100%;
+  height: 210px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+  border-radius: 18px;
+  background: var(--bg);
+}
+
+.detail-image-compact img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-summary {
+  min-width: 0;
+}
+
+.detail-summary p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.detail-info-grid.compact {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.surprise-detail-compact .detail-files-block {
+  grid-column: 1 / -1;
+}
+
+.detail-header-row .surprise-status-v2 {
+  position: static;
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.detail-price {
+  padding: 10px 14px;
+  border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  color: var(--gold);
+  font-size: 18px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* Modal de oferta */
+
+.hidden {
+  display: none !important;
+}
+
+.offer-modal,
+.surpriser-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.offer-modal.hidden,
+.surpriser-modal.hidden {
+  display: none !important;
+}
+
+.offer-modal-backdrop,
+.surpriser-backdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.offer-modal-card,
+.surpriser-card {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 460px);
+  padding: 26px;
+  border: 1px solid color-mix(in srgb, var(--gold) 42%, transparent);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--gold) 10%, transparent),
+      transparent 44%
+    ),
+    var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.offer-modal-card h2,
+.surpriser-card h3 {
+  margin: 0 0 8px;
+  color: var(--gold);
+  font-size: 28px;
+}
+
+.offer-modal-card label,
+.surpriser-card label {
+  display: block;
+  margin-top: 14px;
+  color: var(--gold);
+  font-weight: 900;
+}
+
+.offer-modal-card input,
+.offer-modal-card textarea,
+.surpriser-card input,
+.surpriser-card textarea {
+  width: 100%;
+  margin-top: 7px;
+}
+
+.offer-modal-card textarea,
+.surpriser-card textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.offer-help,
+.offer-modal-card small {
+  display: block;
+  margin: 8px 0 14px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.offer-modal-actions,
+.surpriser-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Responsive */
+
+@media (max-width: 980px) {
+  .surprise-detail-card {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .owner-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .surprise-detail-compact {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-content-grid {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .owner-detail-head {
+    display: block;
+  }
+
+  .owner-price-display {
+    width: fit-content;
+    margin-top: 14px;
+    text-align: left;
+  }
+
+  .owner-form-grid,
+  .owner-location-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-location-city {
+    grid-column: auto;
+  }
+
+  .owner-detail-actions {
+    flex-direction: column;
+  }
+
+  .owner-detail-actions button {
+    width: 100%;
+  }
+
+  .detail-header-row {
+    display: block;
+  }
+
+  .detail-header-row .surprise-status-v2,
+  .detail-price {
+    margin-top: 12px;
+  }
+
+  .detail-content-grid,
+  .detail-info-grid,
+  .detail-info-grid.compact {
+    grid-template-columns: 1fr;
+  }
+
+  .surprise-detail-image {
+    height: 240px;
+  }
+
+  .surprise-detail-content,
+  .detail-main-card {
+    padding: 22px;
+  }
+
+  .surprise-detail-content h1,
+  .detail-header-row h1 {
+    font-size: 28px;
+  }
+
+  .detail-image-compact {
+    height: 230px;
+  }
+}

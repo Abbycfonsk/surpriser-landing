@@ -1,0 +1,245 @@
+/* =========================================================
+   CREATE SURPRISE
+========================================================= */
+
+.create-card-modern {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.create-header {
+  margin-bottom: 10px;
+}
+
+.create-header span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.create-header h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.create-header p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* Campos */
+
+.create-card-modern > label,
+.create-field label {
+  margin: 8px 0 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.create-card-modern > small,
+.create-field small {
+  margin-top: -8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.create-card-modern > input:not([type="hidden"]),
+.create-card-modern > select,
+.create-card-modern > textarea,
+.create-field input,
+.create-field select,
+.create-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  outline: none;
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+  color: var(--text);
+  font-size: 14px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.create-card-modern > textarea,
+.create-field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.create-card-modern > input:not([type="hidden"]):focus,
+.create-card-modern > select:focus,
+.create-card-modern > textarea:focus,
+.create-field input:focus,
+.create-field select:focus,
+.create-field textarea:focus {
+  border-color: var(--gold);
+  background: color-mix(in srgb, var(--text) 7%, transparent);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--gold) 15%, transparent),
+    0 0 25px color-mix(in srgb, var(--gold) 12%, transparent);
+}
+
+.create-card-modern > input::placeholder,
+.create-card-modern > textarea::placeholder,
+.create-field input::placeholder,
+.create-field textarea::placeholder {
+  color: var(--muted);
+}
+
+/* Fecha */
+
+#cs_deadline {
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+:root[data-theme="light"] #cs_deadline {
+  color-scheme: light;
+}
+
+/* Ubicación */
+
+.location-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.location-grid select:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+/* Vista previa de categoría */
+
+.skill-preview {
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--gold) 18%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+}
+
+.skill-preview strong {
+  display: inline-block;
+  color: var(--gold);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.skill-preview p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.skill-preview-category {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.skill-preview-name {
+  margin-bottom: 6px;
+  color: var(--gold);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.skill-preview-description {
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Archivo */
+
+#cs_header_file,
+.create-field input[type="file"] {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#cs_header_file::file-selector-button,
+.create-field input[type="file"]::-webkit-file-upload-button {
+  margin-right: 10px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--bg);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Botón publicar */
+
+.create-card-modern [data-action="create-surprise"],
+.create-submit {
+  width: 100%;
+  margin-top: 16px;
+}
+
+/* Formato alternativo */
+
+.create-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.create-full {
+  grid-column: 1 / -1;
+}
+
+.create-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .create-card-modern {
+    padding: 18px;
+  }
+
+  .create-grid,
+  .location-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .create-full {
+    grid-column: auto;
+  }
+
+  .create-header h2 {
+    font-size: 20px;
+  }
+}
