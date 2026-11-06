@@ -53,6 +53,9 @@ document.addEventListener("DOMContentLoaded", initApp);
 function getData(res) {
   return res.json?.data ?? res.json ?? [];
 }
+const savedTheme = localStorage.getItem("theme") || "dark";
+
+document.documentElement.setAttribute("data-theme", savedTheme);
 
 async function initApp() {
   const token = localStorage.getItem("token");

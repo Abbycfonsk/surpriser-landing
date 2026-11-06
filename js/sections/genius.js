@@ -1,13 +1,15 @@
 import { state } from "../state/appState.js";
 import { api } from "../api.js";
 import { restartCountdowns, renderSimpleSurprise } from "./home.js";
-
+import {
+  getSkills,
+  getTopSkill,
+  updateProposedSkills,
+} from "../services/skillService.js";
 import {
   getGeniusFeed,
   getGeniusDashboard,
   getGeniusOffers,
-  getAllSkills,
-  getTopSkill,
   getGeniusHistory,
 } from "../services/geniusService.js";
 import { getMyOffers } from "../services/offerService.js";
@@ -101,7 +103,11 @@ export async function loadGeniusDashboardController() {
     const skillsData = skillsResponse?.json?.data || {};
 
     renderGeniusHeader(user, skillsData);
-    await loadSkillsSelects(token);
+    renderProposedSkills(skillsData.proposed || []);
+
+    bindRemoveProposedSkills(user.id, token, skillsData.proposed || []);
+
+    await loadAvailableSkills(user.id, skillsData, token);
     await loadSkillRanking(token);
     initGeniusSkillsToggle();
     renderGeniusFeed(sortGeniusFeed(geniusFeed));
@@ -182,18 +188,27 @@ export function renderSkillCloud(skillsData = {}) {
       ? proposedSkills
           .map(
             (skill) => `
-              <span class="skill-pill skill-pill-proposed">
-                ${escapeHtml(skill.name || "Skill")}
-                <small>Pendiente</small>
-              </span>
-            `,
+            <span class="skill-pill skill-pill-proposed">
+              ${escapeHtml(skill.name || "Skill")}
+              <small>Pendiente</small>
+
+              <button
+                type="button"
+                class="skill-remove"
+                data-remove-proposed-skill="${skill.id}"
+                aria-label="Eliminar ${escapeHtml(skill.name || "skill")}"
+              >
+                ×
+              </button>
+            </span>
+          `,
           )
           .join("")
       : `
-          <div class="skills-empty">
-            No tienes skills propuestas.
-          </div>
-        `;
+        <div class="skills-empty">
+          No tienes skills propuestas.
+        </div>
+      `;
   }
 }
 /* =====================================================
@@ -233,39 +248,75 @@ function renderMiniOffers() {
 
   if (!box) return;
 
-  if (!geniusOffers.length) {
-    box.innerHTML = `
-      <div class="genius-empty-state">
-        Aún no has enviado ninguna oferta.
-      </div>
-    `;
-    return;
-  }
+  const activeOffers = [...geniusOffers]
+    .filter((offer) => {
+      const offerStatus = String(offer.status || "").toLowerCase();
 
-  box.innerHTML = geniusOffers
-    .map((offer) => {
-      const title = offer.surprise?.title || "Sorpresa";
+      const surpriseStatus = String(offer.surprise?.status || "").toLowerCase();
 
-      return `
-      <button
-        type="button"
-        class="mini-item genius-offer-link"
-        data-action="open-genius-offers"
-        data-offer-id="${offer.id}"
-      >
-        <strong>
-          ${escapeHtml(title)}
-        </strong>
-
-        <span>
-          ${offer.price || 0} €
-          ·
-          ${formatStatus(offer.status)}
-        </span>
-      </button>
-    `;
+      return (
+        ["pending", "negotiating"].includes(offerStatus) &&
+        !["completed", "cancelled", "canceled"].includes(surpriseStatus)
+      );
     })
-    .join("");
+    .sort((a, b) => {
+      return (
+        new Date(b.updated_at || b.created_at || 0) -
+        new Date(a.updated_at || a.created_at || 0)
+      );
+    })
+    .slice(0, 5);
+
+  box.innerHTML = `
+    <div class="genius-offers-mini-intro">
+      Se muestran tus 5 últimas ofertas pendientes o en negociación.
+    </div>
+
+    ${
+      activeOffers.length
+        ? activeOffers
+            .map((offer) => {
+              const status = String(offer.status || "pending").toLowerCase();
+
+              const title = offer.surprise?.title || "Sorpresa";
+
+              return `
+                <button
+                  type="button"
+                  class="genius-offer-link genius-offer-status-${status}"
+                  data-action="open-genius-offers"
+                  data-offer-id="${offer.id}"
+                >
+                  <strong>
+                    ${escapeHtml(title)}
+                  </strong>
+
+                  <span class="genius-offer-price">
+                    ${Number(offer.price || 0).toFixed(2)} €
+                  </span>
+
+                  <span class="genius-offer-status-label">
+                    ${formatStatus(status)}
+                  </span>
+                </button>
+              `;
+            })
+            .join("")
+        : `
+          <div class="genius-empty-state">
+            No tienes ofertas pendientes o en negociación.
+          </div>
+        `
+    }
+
+    <button
+      type="button"
+      class="btn secondary genius-see-all-offers"
+      data-action="open-genius-offers"
+    >
+      Ver todas las ofertas
+    </button>
+  `;
 }
 /* =====================================================
    SORPRESAS ACTIVAS
@@ -518,7 +569,7 @@ export function initGeniusSkillsToggle() {
   };
 }
 async function loadAvailableSkills(userId, skillsData, token) {
-  const response = await getAllSkills(token);
+  const response = await getSkills(token);
 
   allSkills = response?.json?.data || [];
   proposedSkills = skillsData.proposed || [];
@@ -650,7 +701,7 @@ async function loadSkillRanking(token) {
 
   if (!select || !box) return;
 
-  const skillsResponse = await getAllSkills(token);
+  const skillsResponse = await getSkills(token);
   const skills = skillsResponse?.json?.data || [];
 
   select.innerHTML = `
@@ -717,7 +768,7 @@ async function loadSkillRanking(token) {
   };
 }
 async function loadSkillsSelects(token) {
-  const response = await getAllSkills(token);
+  const response = await getSkills(token);
 
   console.log("Respuesta de skills:", response);
 
@@ -770,7 +821,7 @@ export async function openGeniusActiveDetail(id) {
   if (!id || !token) return;
 
   if (window.openGeniusReadonlyDetail) {
-    await window.openGeniusReadonlyDetail(id, token);
+    await window.openGeniusReadonlyDetail(id, "genius");
     return;
   }
 
@@ -812,7 +863,9 @@ function renderGeniusHistory(surprises = []) {
 
   if (!box) return;
 
-  if (!surprises.length) {
+  const recentSurprises = surprises.slice(0, 5);
+
+  if (!recentSurprises.length) {
     box.innerHTML = `
       <div class="genius-empty-state">
         Todavía no tienes sorpresas en el historial.
@@ -821,41 +874,50 @@ function renderGeniusHistory(surprises = []) {
     return;
   }
 
-  box.innerHTML = surprises
-    .map((surprise) => {
-      const status = String(surprise.status || "").toLowerCase();
+  box.innerHTML = `
+    <p class="genius-history-mini-intro">
+      Estas son tus 5 últimas sorpresas finalizadas como genio.
+      Para consultar el historial completo, pulsa el botón inferior.
+    </p>
 
-      return `
-        <button
-          type="button"
-          class="
-            genius-history-card
-            genius-history-status-${status}
-          "
-          data-action="genius-active-detail"
-          data-surprise-id="${surprise.id}"
-        >
-          <div>
-            <span class="genius-history-status">
-              ${formatStatus(status)}
-            </span>
+    <div class="genius-history-mini-list">
+      ${recentSurprises
+        .map((surprise) => {
+          const status = String(surprise.status || "").toLowerCase();
 
-            <h3>
-              ${escapeHtml(surprise.title || "Sorpresa")}
-            </h3>
+          const location = [surprise.target_city, surprise.target_province]
+            .filter(Boolean)
+            .join(", ");
 
-            <span>
-              ${escapeHtml(
-                surprise.target_city || surprise.location?.city || "Sin ciudad",
-              )}
-            </span>
-          </div>
+          return `
+            <div
+              class="genius-history-mini-row status-${status}"
+            >
+              <span class="genius-history-mini-number">
+                ${surprise.id}
+              </span>
 
-          <span class="genius-active-arrow">→</span>
-        </button>
-      `;
-    })
-    .join("");
+              <strong>
+                ${escapeHtml(surprise.title || "Sorpresa")}
+              </strong>
+
+              <span>
+                ${escapeHtml(surprise.skill?.name || "Sin categoría")}
+              </span>
+
+              <span>
+                ${escapeHtml(location || "Sin ubicación")}
+              </span>
+
+              <span class="genius-history-status status-${status}">
+                ${formatStatus(status)}
+              </span>
+            </div>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
 }
 function initGeniusHistoryToggle() {
   const button = document.getElementById("toggle_genius_history");

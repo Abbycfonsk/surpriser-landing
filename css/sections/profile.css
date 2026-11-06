@@ -404,3 +404,214 @@
     border-radius: 14px;
   }
 }
+/* =========================================================
+   SELECTOR DE TEMA DEL PERFIL
+========================================================= */
+
+.profile-theme-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  margin: 24px 0 22px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-theme-copy {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.profile-theme-copy strong {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.profile-theme-copy span {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Sobrescribe las reglas generales del formulario */
+
+.profile-editor-large .theme-switch {
+  position: relative;
+  display: block;
+  flex: 0 0 54px;
+  width: 54px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.profile-editor-large .theme-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.theme-switch-track {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 54px;
+  height: 30px;
+  margin: 0;
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  border-radius: 999px;
+  background: var(--surface-3);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.theme-switch-track::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--bg) 40%, transparent);
+  content: "";
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.theme-switch input:checked + .theme-switch-track {
+  border-color: var(--purple);
+  background: color-mix(in srgb, var(--purple) 20%, var(--surface-3));
+}
+
+.theme-switch input:checked + .theme-switch-track::after {
+  background: var(--purple);
+  transform: translateX(24px);
+}
+
+.theme-switch input:focus-visible + .theme-switch-track {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* El botón queda separado del selector */
+
+.profile-editor-large > .btn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  clear: both;
+  margin-top: 6px;
+}
+
+/* Móvil */
+
+@media (max-width: 520px) {
+  .profile-theme-setting {
+    align-items: flex-start;
+  }
+
+  .profile-theme-copy {
+    max-width: calc(100% - 74px);
+  }
+}
+.profile-theme-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 24px 0 22px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-theme-copy {
+  display: grid;
+  gap: 5px;
+}
+
+.profile-theme-copy strong {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.profile-theme-copy span {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.theme-switch {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: var(--muted) !important;
+  cursor: pointer;
+}
+
+.theme-option-label {
+  margin: 0 !important;
+  color: var(--muted) !important;
+  font-size: 16px !important;
+  line-height: 1;
+}
+
+.theme-switch input {
+  position: absolute;
+  width: 1px !important;
+  height: 1px;
+  margin: -1px !important;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.theme-switch-track {
+  position: relative;
+  display: block;
+  width: 54px;
+  height: 30px;
+  border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent);
+  border-radius: 999px;
+  background: var(--surface-3);
+  cursor: pointer;
+}
+
+.theme-switch-track::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  content: "";
+  transition: transform 0.2s ease;
+}
+
+.theme-switch input:checked + .theme-switch-track {
+  border-color: var(--purple);
+  background: color-mix(in srgb, var(--purple) 22%, var(--surface-3));
+}
+
+.theme-switch input:checked + .theme-switch-track::after {
+  background: var(--purple);
+  transform: translateX(24px);
+}

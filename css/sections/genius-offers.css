@@ -383,3 +383,41 @@
     flex-direction: column;
   }
 }
+/* Ofertas aceptadas */
+
+.genius-offer-page-card.offer-card-accepted {
+  border-color: color-mix(in srgb, var(--green) 65%, transparent);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--green) 12%, transparent),
+      transparent 45%
+    ),
+    var(--surface-2);
+}
+
+.genius-offer-page-card.offer-card-accepted:hover {
+  border-color: var(--green);
+}
+
+.genius-offer-page-card.offer-card-accepted .offer-status {
+  border-color: color-mix(in srgb, var(--green) 60%, transparent);
+  background: color-mix(in srgb, var(--green) 16%, transparent);
+  color: var(--green);
+}
+/* Elementos verdes dentro de ofertas aceptadas */
+
+.genius-offer-page-card.offer-card-accepted
+  .genius-offer-actions
+  .btn.secondary {
+  border-color: color-mix(in srgb, var(--green) 65%, transparent);
+  background: color-mix(in srgb, var(--green) 14%, transparent);
+  color: var(--green);
+}
+
+.genius-offer-page-card.offer-card-accepted
+  .genius-offer-actions
+  .btn.secondary:hover {
+  border-color: var(--green);
+  background: var(--green);
+}

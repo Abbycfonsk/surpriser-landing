@@ -1,4 +1,9 @@
 import { state } from "./state/appState.js";
+import { loadGeniusHistorySection } from "./sections/geniusHistory.js";
+import {
+  loadUserControllerV2,
+  updateProfileController,
+} from "./sections/profile.js";
 import { loadSection } from "./main.js";
 import { initSurpriseCreate } from "./sections/surpriseCreate.js";
 import { loadNotificationsView } from "./sections/notifications.js";
@@ -24,13 +29,24 @@ export function initNavigation() {
     event.preventDefault();
 
     const action = actionButton.dataset.action;
+    if (action === "open-genius-surprise-detail") {
+      await window.openGeniusReadonlyDetail?.(
+        actionButton.dataset.surpriseId,
+        "genius-offers",
+      );
+
+      return;
+    }
     if (action === "open-genius-offers") {
       await showAppSection("genius-offers");
 
       await window.loadGeniusOffersSection?.();
 
       const offerId = actionButton.dataset.offerId;
-
+      if (action === "update-profile") {
+        await updateProfileController();
+        return;
+      }
       if (offerId) {
         document.getElementById(`genius-offer-${offerId}`)?.scrollIntoView({
           behavior: "smooth",
@@ -42,6 +58,14 @@ export function initNavigation() {
     }
     if (action === "genius-active-detail") {
       await window.openGeniusActiveDetail?.(actionButton.dataset.surpriseId);
+
+      return;
+    }
+    if (action === "genius-history-detail") {
+      await window.openGeniusReadonlyDetail?.(
+        actionButton.dataset.surpriseId,
+        "genius-history",
+      );
 
       return;
     }
@@ -217,9 +241,15 @@ export async function showAppSection(name) {
   }
 
   if (name === "profile") {
-    await window.loadProfile?.();
+    await loadUserControllerV2();
   }
   if (name === "genius-offers") {
     await loadGeniusOffersSection();
+  }
+  if (name === "profile") {
+    await loadUserControllerV2();
+  }
+  if (name === "genius-history") {
+    await loadGeniusHistorySection();
   }
 }

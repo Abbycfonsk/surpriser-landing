@@ -24,23 +24,29 @@ export async function loadGeniusOffersSection() {
 
   if (!response.ok) {
     box.innerHTML = `
-      <div class="genius-empty-state">
-        No se pudieron cargar tus ofertas.
-      </div>
-    `;
+    <div class="genius-empty-state">
+      No se pudieron cargar tus ofertas.
+    </div>
+  `;
+
     return;
   }
 
-  if (!offers.length) {
+  const sortedOffers = [...offers].sort((a, b) => {
+    return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+  });
+
+  if (!sortedOffers.length) {
     box.innerHTML = `
-      <div class="genius-empty-state">
-        Todavía no tienes ofertas activas.
-      </div>
-    `;
+    <div class="genius-empty-state">
+      Todavía no tienes ofertas.
+    </div>
+  `;
+
     return;
   }
 
-  box.innerHTML = offers.map(renderGeniusOffer).join("");
+  box.innerHTML = sortedOffers.map(renderGeniusOffer).join("");
 
   bindGeniusOfferEvents();
 }
@@ -52,10 +58,10 @@ function renderGeniusOffer(offer) {
     ["pending", "negotiating"].includes(status) && surprise.status === "open";
 
   return `
-    <article
-      class="genius-offer-page-card"
-      id="genius-offer-${offer.id}"
-    >
+  <article
+  class="genius-offer-page-card offer-card-${status}"
+  id="genius-offer-${offer.id}"
+>
       <div class="genius-offer-page-head">
         <div>
           <span class="detail-kicker">
@@ -132,14 +138,14 @@ function renderGeniusOffer(offer) {
             : ""
         }
 
-        <button
-          type="button"
-          class="btn secondary"
-          data-section="surprise-detail"
-          data-surprise-id="${surprise.id}"
-        >
-          Ver sorpresa
-        </button>
+      <button
+  type="button"
+  class="btn secondary"
+  data-action="open-genius-surprise-detail"
+  data-surprise-id="${surprise.id}"
+>
+  Ver sorpresa
+</button>
       </div>
     </article>
   `;

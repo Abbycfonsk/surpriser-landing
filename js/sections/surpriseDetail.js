@@ -456,12 +456,24 @@ function formatDate(date) {
     year: "numeric",
   });
 }
-export async function openGeniusReadonlyDetail(surpriseId) {
+export async function openGeniusReadonlyDetail(
+  surpriseId,
+  returnSection = "genius",
+) {
   const token = localStorage.getItem("token");
 
   if (!surpriseId || !token) return;
 
   await showAppSection("surprise-detail");
+  const backButton = document.getElementById("surprise_detail_back_btn");
+
+  if (backButton) {
+    backButton.dataset.section = returnSection;
+    backButton.textContent =
+      returnSection === "genius-offers"
+        ? "Volver a mis ofertas"
+        : "Volver al panel Genius";
+  }
 
   const container = document.getElementById("surprise_detail_container");
 
@@ -486,9 +498,9 @@ export async function openGeniusReadonlyDetail(surpriseId) {
 
   const surprise = response.json?.data || response.json;
 
-  renderGeniusReadonlyDetail(surprise);
+  renderGeniusReadonlyDetail(surprise, returnSection);
 }
-function renderGeniusReadonlyDetail(surprise) {
+function renderGeniusReadonlyDetail(surprise, returnSection = "genius") {
   const container = document.getElementById("surprise_detail_container");
 
   if (!container) return;
@@ -607,13 +619,17 @@ function renderGeniusReadonlyDetail(surprise) {
             Ir a conversación
           </button>
 
-          <button
-            class="detail-secondary-btn"
-            type="button"
-            data-section="genius"
-          >
-            Volver al panel
-          </button>
+        <button
+  class="detail-secondary-btn"
+  type="button"
+  data-section="${returnSection}"
+>
+  ${
+    returnSection === "genius-offers"
+      ? "Volver a mis ofertas"
+      : "Volver al panel Genius"
+  }
+</button>
         </div>
 
       </div>
